@@ -29,6 +29,7 @@
       font-size: 1.45rem; /* 전체 글자 크기 대폭 상향 */
       font-weight: 700; /* 동글동글하고 두꺼워 가독성 극대화 */
       background-color: #f7fee7; /* 부드러운 연두색 배경 */
+      word-break: keep-all; /* 한글 단어 단위 줄바꿈 유지 */
     }
     .title-font {
       font-family: 'GangwonEduPower', sans-serif;
@@ -85,6 +86,14 @@
       opacity: 1;
       transform: scale(1);
       transition: all 0.5s ease;
+    }
+    /* 페이드인 애니메이션 */
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -184,8 +193,8 @@
       <!-- 인터랙티브 데이터 매칭 미션 -->
       <div class="border-4 border-dashed border-lime-200 rounded-2xl p-4 sm:p-6 bg-lime-50/30">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-2xl sm:text-3xl font-bold text-lime-800 flex items-center gap-2 title-font">
-            <span>🎯 [실습 미션]</span> 10가지 일상 데이터 수집하기
+          <h3 class="text-2xl sm:text-3xl font-bold text-lime-800 title-font">
+            <span class="inline-block mr-2">🎯 [실습 미션]</span> 10가지 일상 데이터 수집하기
           </h3>
           <div class="bg-lime-200 text-lime-900 font-bold px-4 py-1.5 rounded-full text-base title-font">
             찾아낸 개수: <span id="pending-cards-count" class="text-xl">0</span> / 10
@@ -207,59 +216,96 @@
       </div>
     </section>
 
-    <!-- STEP 3: 데이터 전처리 (이상한 데이터 지우기) (7분) -->
+    <!-- STEP 3: 데이터 전처리 (목표 맞춤형 가공) (10분) -->
     <section id="step3" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-sky-300">
       <div class="text-center mb-6">
         <span class="text-7xl">🧹</span>
-        <h2 class="text-4xl sm:text-5xl font-bold text-sky-700 mt-2 title-font">3단계: 고장 나고 상한 데이터를 청소하자!</h2>
-        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">공부 로봇은 불량 데이터를 먹으면 배탈이 나요! 깨끗하게 다듬는 '데이터 청소'를 배웁니다.</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-sky-700 mt-2 title-font">3단계: 목표에 맞게 데이터를 다듬자!</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">인공지능 공부의 80%는 데이터를 원하는 목표 결과에 맞게 정리하고 가공하는 '데이터 전처리'랍니다!</p>
       </div>
 
-      <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-5 mb-6 text-gray-700">
-        <p class="font-bold text-sky-800 text-2xl mb-1 title-font">💡 데이터 청소(전처리)가 왜 중요할까요?</p>
-        <p class="text-lg sm:text-xl font-bold leading-relaxed">
-          과일 가게 로봇에게 싱싱한 과일을 구분하게 하려면, <strong>상한 과일(🤢)</strong>이나 <strong>장난감 과일(🧸)</strong>, <strong>알 수 없는 빈 상자(❓)</strong>는 미리 치워야 해요. <br>
-          이렇게 이상한 데이터를 지우고 깔끔하게 청소하는 것을 어려운 말로 <strong class="text-sky-600">"데이터 전처리"</strong>라고 불러요.
-        </p>
-      </div>
-
-      <!-- 실습 활동 2 -->
-      <div class="border-4 border-dashed border-sky-200 rounded-2xl p-4 sm:p-6 bg-sky-50/40">
-        <h3 class="text-2xl sm:text-3xl font-bold text-sky-800 mb-2 flex items-center gap-2 title-font">
-          <span>🧹 [실습 미션]</span> 불량 데이터를 클릭해 휴지통에 쏙 넣기!
-        </h3>
-        <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">
-          공부방에 들어온 데이터 중 <strong>상한 과일(🤢)</strong>, <strong>장난감(🧸)</strong>, <strong>물음표 상자(❓)</strong>를 눌러 휴지통에 버려주세요! <br>
-          <span class="text-red-500 font-bold">주의: 신선하고 싱싱한 진짜 과일(🍎, 🍊 등)은 버리면 절대 안 돼요!</span>
-        </p>
-
-        <!-- 청소 컨테이너 (과일 트레이와 쓰레기통 비주얼 매치) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <!-- 왼쪽: 과일이 담긴 데이터 트레이 -->
-          <div class="md:col-span-2 bg-white p-4 rounded-2xl border-2 border-sky-100 min-h-[160px] flex flex-wrap gap-4 justify-center items-center shadow-inner" id="preprocessing-tray">
-            <!-- JS에서 동적 타겟 생성 -->
-          </div>
-          <!-- 오른쪽: 쓰레기통 수집 영역 -->
-          <div class="bg-red-50 border-4 border-dashed border-red-300 rounded-2xl p-4 flex flex-col justify-center items-center text-center shadow-md">
-            <span class="text-7xl animate-bounce">🗑️</span>
-            <span class="font-bold text-red-700 mt-2 text-xl title-font">데이터 휴지통</span>
-            <p class="text-xs text-red-500 mt-1 font-bold">불량 데이터 청소 구역</p>
-            <div class="bg-red-200 text-red-950 font-bold py-1.5 px-4 rounded-full mt-3 text-base title-font">
-              비운 개수: <span id="trash-success-count" class="text-xl">0</span>개
-            </div>
-          </div>
+      <!-- [1부: 데이터 청소 컨테이너] -->
+      <div id="preprocess-part1" class="block">
+        <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-5 mb-6 text-gray-700 text-left">
+          <p class="font-bold text-sky-800 text-2xl mb-1 title-font">🧹 1부: 고장 나고 상한 불량 데이터 청소하기</p>
+          <p class="text-lg sm:text-xl font-bold leading-relaxed">
+            과일 가게 로봇에게 신선한 과일을 구분하게 하려면, 상한 과일(🤢)이나 장난감 과일(🧸), 물음표 상자(❓) 같은 '불량 데이터(이상치)'를 먼저 깨끗이 치워야 해요!
+          </p>
         </div>
 
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-sky-100/50 p-4 rounded-xl">
-          <div class="text-xl font-bold">
-            남은 불량 데이터: <strong id="dirty-count" class="text-red-500 text-3xl">4</strong>개
+        <div class="border-4 border-dashed border-sky-200 rounded-2xl p-4 sm:p-6 bg-sky-50/40">
+          <h3 class="text-2xl sm:text-3xl font-bold text-sky-850 mb-2 title-font">
+            <span class="inline-block mr-2">🧹 [실습 미션]</span> 불량 데이터를 클릭해 휴지통에 쏙 넣기!
+          </h3>
+          <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">
+            공부방에 들어온 데이터 중 <strong>상한 과일(🤢)</strong>, <strong>장난감(🧸)</strong>, <strong>물음표 상자(❓)</strong>를 눌러 휴지통에 버려주세요!
+          </p>
+
+          <!-- 청소 컨테이너 (과일 트레이와 쓰레기통 비주얼 매치) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- 왼쪽: 과일이 담긴 데이터 트레이 -->
+            <div class="md:col-span-2 bg-white p-4 rounded-2xl border-2 border-sky-100 min-h-[160px] flex flex-wrap gap-4 justify-center items-center shadow-inner" id="preprocessing-tray">
+              <!-- JS에서 동적 타겟 생성 -->
+            </div>
+            <!-- 오른쪽: 쓰레기통 수집 영역 -->
+            <div class="bg-red-50 border-4 border-dashed border-red-300 rounded-2xl p-4 flex flex-col justify-center items-center text-center shadow-md">
+              <span class="text-7xl animate-bounce">🗑️</span>
+              <span class="font-bold text-red-700 mt-2 text-xl title-font">데이터 휴지통</span>
+              <p class="text-xs text-red-500 mt-1 font-bold">불량 데이터 청소 구역</p>
+              <div class="bg-red-200 text-red-950 font-bold py-1.5 px-4 rounded-full mt-3 text-base title-font">
+                비운 개수: <span id="trash-success-count" class="text-xl">0</span>개
+              </div>
+            </div>
           </div>
-          <div class="text-xl font-bold">
-            살려낸 싱싱 데이터: <strong id="clean-count" class="text-emerald-600 text-3xl">0</strong>개
+
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-sky-100/50 p-4 rounded-xl">
+            <div class="text-xl font-bold">
+              남은 불량 데이터: <strong id="dirty-count" class="text-red-500 text-3xl">4</strong>개
+            </div>
+            <div class="text-xl font-bold">
+              살려낸 싱싱 데이터: <strong id="clean-count" class="text-emerald-600 text-3xl">0</strong>개
+            </div>
+            <button onclick="resetPreprocessing()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-2xl text-base fancy-btn">
+              과일 다시 놓기 🔄
+            </button>
           </div>
-          <button onclick="resetPreprocessing()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-2xl text-base fancy-btn">
-            과일 다시 놓기 🔄
-          </button>
+        </div>
+      </div>
+
+      <!-- [2부: 데이터 가공 컨테이너] -->
+      <div id="preprocess-part2" class="hidden animate-fade-in">
+        <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 mb-6 text-gray-700 text-left">
+          <p class="font-bold text-amber-800 text-2xl mb-1 title-font">🎯 2부: 목표 결과를 얻기 위한 데이터 가공 (꿀과일 찾기)</p>
+          <p class="text-lg sm:text-xl font-bold leading-relaxed">
+            데이터 청소는 시작일 뿐이에요! 진짜 전처리는 **우리가 얻고자 하는 특정 결과(예: 손님에게 엄청 달콤한 꿀과일 골라주기)**를 얻기 위해 데이터를 알맞게 가공하는 과정이랍니다!
+          </p>
+        </div>
+
+        <div class="border-4 border-dashed border-amber-200 rounded-2xl p-4 sm:p-6 bg-amber-50/40">
+          <h3 class="text-2xl sm:text-3xl font-bold text-amber-900 mb-2 title-font">
+            <span class="inline-block mr-2">🧪 [실습 미션]</span> 과일의 당도를 측정하고 '꿀과일' 라벨을 달아주세요!
+          </h3>
+          <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">
+            우리의 목표는 **당도(달콤한 정도)가 8점 이상인 과일**을 골라내는 것입니다! <br>
+            각 과일 카드의 <span class="text-sky-600 font-bold">당도를 측정</span>하고, 8점 이상인 과일에 <span class="text-amber-700 font-bold">🍯 꿀맛 합격</span> 이름표를 콕 달아주세요!
+          </p>
+
+          <!-- 4개 과일 가공 대기판 -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="sweet-fruits-grid">
+            <!-- JS로 동적 생성 -->
+          </div>
+
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-amber-100/50 p-4 rounded-xl">
+            <div class="text-xl font-bold">
+              측정 완료 과일: <strong id="measured-count" class="text-sky-600 text-3xl">0</strong> / 4개
+            </div>
+            <div class="text-xl font-bold">
+              찾아낸 꿀과일: <strong id="honey-count" class="text-amber-600 text-3xl">0</strong> / 2개
+            </div>
+            <button onclick="resetPart2()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-2xl text-base fancy-btn">
+              측정 처음부터 하기 🔄
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -282,8 +328,8 @@
 
       <!-- 실습 활동 3 -->
       <div class="border-4 border-dashed border-orange-200 rounded-2xl p-4 sm:p-6 bg-orange-50/40">
-        <h3 class="text-2xl sm:text-3xl font-bold text-orange-800 mb-2 flex items-center gap-2 title-font">
-          <span>🤖 [실습 미션]</span> 20마리 동물 친구 이름표 붙여주기!
+        <h3 class="text-2xl sm:text-3xl font-bold text-orange-800 mb-2 title-font">
+          <span class="inline-block mr-2">🤖 [실습 미션]</span> 20마리 동물 친구 이름표 붙여주기!
         </h3>
 
         <!-- 현재 학습시킬 대상 -->
@@ -343,8 +389,8 @@
         
         <!-- 1부: 정상 테스트 단계 -->
         <div id="normal-test-zone" class="bg-white p-6 rounded-2xl border-2 border-amber-100 max-w-xl mx-auto shadow-md block text-center">
-          <h3 class="text-2xl sm:text-3xl font-bold text-amber-900 mb-2 flex items-center justify-center gap-2 title-font">
-            <span>🎯 [1부]</span> 배운 내용 시험 치기 📝
+          <h3 class="text-2xl sm:text-3xl font-bold text-amber-900 mb-2 text-center title-font">
+            <span class="inline-block mr-2">🎯 [1부]</span> 배운 내용 시험 치기 📝
           </h3>
           <p class="text-gray-600 text-base sm:text-lg mb-4 leading-relaxed font-bold">
             방금 로봇에게 가르쳐 준 강아지와 고양이 문제를 내볼게요.<br>
@@ -380,8 +426,8 @@
           
           <!-- 왼쪽: 돌발 동물 시험대 -->
           <div class="bg-white p-5 rounded-2xl border-2 border-red-200 shadow-md">
-            <h3 class="text-2xl sm:text-3xl font-bold text-red-800 mb-2 text-center flex items-center justify-center gap-2 title-font">
-              <span>🦁 [2부]</span> 처음 보는 사자의 등장!
+            <h3 class="text-2xl sm:text-3xl font-bold text-red-800 mb-2 text-center title-font">
+              <span class="inline-block mr-2">🦁 [2부]</span> 처음 보는 사자의 등장!
             </h3>
             <p class="text-xs text-gray-500 text-center mb-3 font-bold">로봇의 평생에 한 번도 공부한 적 없는 동물이 등장했어요!</p>
             <div class="flex flex-col items-center">
@@ -452,8 +498,8 @@
 
       <!-- 실습 활동 5 -->
       <div class="border-4 border-dashed border-teal-200 rounded-2xl p-4 sm:p-6 bg-teal-50/40">
-        <h3 class="text-2xl sm:text-3xl font-bold text-teal-800 mb-2 flex items-center gap-2 title-font">
-          <span>👾 [실습 미션]</span> 스스로 외계인 끼리끼리 정렬시키기!
+        <h3 class="text-2xl sm:text-3xl font-bold text-teal-800 mb-2 title-font">
+          <span class="inline-block mr-2">👾 [실습 미션]</span> 스스로 외계인 끼리끼리 정렬시키기!
         </h3>
         <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">아래 정렬 기준 단추를 클릭해 로봇이 어떤 생김새를 보고 데이터를 끼리끼리 묶는지 관찰해보세요!</p>
 
@@ -490,8 +536,8 @@
 
       <!-- 파트 1: 일상 사용처 구분 미션 -->
       <div class="border-4 border-dashed border-indigo-200 rounded-2xl p-4 sm:p-6 bg-indigo-50/30 mb-6">
-        <h3 class="text-2xl sm:text-3xl font-bold text-indigo-800 mb-2 flex items-center gap-2 title-font">
-          <span>🎯 [미션 1]</span> 인공지능 일상 예시 상자 담기!
+        <h3 class="text-2xl sm:text-3xl font-bold text-indigo-800 mb-2 title-font">
+          <span class="inline-block mr-2">🎯 [미션 1]</span> 인공지능 일상 예시 상자 담기!
         </h3>
         <p class="text-base sm:text-lg text-gray-600 mb-4 font-bold">
           일상생활 속의 예시가 그려진 카드를 읽고, 알맞은 공부법 상자로 <strong>단추를 클릭해</strong> 쏙 담아주세요!
@@ -879,6 +925,27 @@
             playFailureSound();
             return;
           }
+
+          // 만약 1부가 끝났는데 2부가 활성화되지 않은 상태라면, 2부를 열어줍니다.
+          const part2 = document.getElementById('preprocess-part2');
+          if (part2.classList.contains('hidden')) {
+            initPart2();
+            showCustomModal(
+              "2부 시작! 🎯🧪", 
+              "와! 불량 과일 청소를 잘 마쳤어요!\n이제 우리의 진짜 목표인 '손님을 위한 달콤한 꿀과일 추천'에 맞게 과일 데이터를 가공하는 2부를 진행해 보아요!", 
+              "🧪"
+            );
+            return;
+          }
+
+          // 2부가 열려있는데 완료되지 않았다면 차단
+          const allMeasured = activeSweetFruits.every(x => x.isMeasured);
+          const allLabeled = activeSweetFruits.filter(x => x.sweetness >= 8).every(x => x.isLabeled);
+          if (!allMeasured || !allLabeled) {
+            showCustomModal("가공 중! 🧪", "모든 과일의 당도를 측정하고, 8점 이상인 꿀과일에는 '꿀맛 합격' 마크를 마저 달아주세요!", "⚠️");
+            playFailureSound();
+            return;
+          }
         }
         if (currentStep === 4) {
           if (currentTrainIndex < trainingDataList.length) {
@@ -930,6 +997,10 @@
         initDataGallery();
       } else if (currentStep === 3) {
         resetPreprocessing();
+        document.getElementById('preprocess-part1').classList.remove('hidden');
+        document.getElementById('preprocess-part1').classList.add('block');
+        document.getElementById('preprocess-part2').classList.add('hidden');
+        document.getElementById('preprocess-part2').classList.remove('block');
       } else if (currentStep === 4) {
         renderTrainItem();
         renderDatabaseGrid();
@@ -975,16 +1046,16 @@
             <p class="text-sm sm:text-base text-red-500 mb-4 font-bold">👇 아래 4개의 데이터 상자 단추를 클릭해 데이터를 컴퓨터에 넣어보세요!</p>
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 justify-center mb-6">
-              <button onclick="triggerInteractiveData('text', '🔤 글자 상자', '📱 엄마의 문자: \'조심히 오렴!\'')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+              <button onclick="triggerInteractiveData('text', '🔤 글자 상자', '📱 엄마의 문자: 조심히 오렴!')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
                 🔤 글자 상자
               </button>
-              <button onclick="triggerInteractiveData('number', '🔢 숫자 상자', '🌡️ 오늘 날씨: \'22도\'')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+              <button onclick="triggerInteractiveData('number', '🔢 숫자 상자', '🌡️ 오늘 날씨: 22도')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
                 🔢 숫자 상자
               </button>
-              <button onclick="triggerInteractiveData('sound', '🔊 소리 상자', '🎵 노래: \'아기상어 뚜루루뚜루~\'')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+              <button onclick="triggerInteractiveData('sound', '🔊 소리 상자', '🎵 노래: 아기상어 뚜루루뚜루~')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
                 🔊 소리 상자
               </button>
-              <button onclick="triggerInteractiveData('image', '🖼️ 그림 상자', '📸 사진: \'가족들의 활짝 웃는 얼굴\'')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+              <button onclick="triggerInteractiveData('image', '🖼️ 그림 상자', '📸 사진: 가족들의 활짝 웃는 얼굴')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
                 🖼️ 그림 상자
               </button>
             </div>
@@ -1166,7 +1237,11 @@
         const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
         if (remainingBad === 0) {
           playSuccessSound();
-          showCustomModal("데이터 청소 완료! 🧹", "상하고 고장 난 불량 데이터(🤢, 🧸, ❓)를 모두 휴지통에 깨끗이 치웠어요! 이제 신선한 진짜 데이터로만 로봇을 가르쳐주러 가볼까요?", "🥳");
+          showCustomModal(
+            "1부: 데이터 청소 완료! 🧹", 
+            "상하고 고장 난 불량 데이터들을 모두 휴지통에 깨끗이 치웠어요!\n이제 아래의 '다음 단계로 ➡️' 단추를 눌러 2부: 목표 맞춤형 데이터 가공을 시작해 보아요!", 
+            "🥳"
+          );
         }
       } else {
         playFailureSound();
@@ -1180,6 +1255,130 @@
       const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
       document.getElementById('dirty-count').textContent = remainingBad;
       document.getElementById('clean-count').textContent = rawDataList.filter(d => d.type === 'good').length - activePreprocessingList.filter(d => d.type === 'good').length;
+    }
+
+    // 3단계 2부: 당도 및 가공 데이터 상태
+    const sweetFruitsData = [
+      { id: 'sf1', emoji: '🍎', name: '사과', sweetness: 9, isMeasured: false, isLabeled: false },
+      { id: 'sf2', emoji: '🍌', name: '바나나', sweetness: 5, isMeasured: false, isLabeled: false },
+      { id: 'sf3', emoji: '🍇', name: '싱싱 포도', sweetness: 8.5, isMeasured: false, isLabeled: false },
+      { id: 'sf4', emoji: '🍊', name: '오렌지', sweetness: 4, isMeasured: false, isLabeled: false }
+    ];
+    let activeSweetFruits = [];
+
+    function initPart2() {
+      document.getElementById('preprocess-part1').classList.add('hidden');
+      document.getElementById('preprocess-part1').classList.remove('block');
+      document.getElementById('preprocess-part2').classList.remove('hidden');
+      document.getElementById('preprocess-part2').classList.add('block');
+      
+      activeSweetFruits = JSON.parse(JSON.stringify(sweetFruitsData));
+      renderSweetFruits();
+      updatePart2Counts();
+    }
+
+    function resetPart2() {
+      activeSweetFruits = JSON.parse(JSON.stringify(sweetFruitsData));
+      renderSweetFruits();
+      updatePart2Counts();
+      playTone(320, 'triangle', 0.1);
+    }
+
+    function renderSweetFruits() {
+      const grid = document.getElementById('sweet-fruits-grid');
+      grid.innerHTML = '';
+
+      activeSweetFruits.forEach(item => {
+        const card = document.createElement('div');
+        card.className = `p-4 bg-white border-2 rounded-2xl flex flex-col items-center justify-between text-center transition-all duration-300 min-h-[220px] shadow-sm ${item.isLabeled ? 'border-amber-400 bg-amber-50/20' : 'border-sky-100 hover:border-sky-200'}`;
+        
+        let sweetnessText = '당도: 측정 대기 ❓';
+        if (item.isMeasured) {
+          sweetnessText = `당도: <span class="text-2xl font-bold text-sky-600">${item.sweetness}</span> 점`;
+        }
+
+        let actionHtml = '';
+        if (!item.isMeasured) {
+          actionHtml = `
+            <button onclick="measureSweetness('${item.id}')" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 rounded-xl text-sm fancy-btn title-font">
+              🧪 당도 측정하기
+            </button>
+          `;
+        } else if (item.sweetness >= 8 && !item.isLabeled) {
+          actionHtml = `
+            <button onclick="labelHoneyFruit('${item.id}')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-sm fancy-btn title-font animate-bounce">
+              🍯 꿀맛 합격 달기
+            </button>
+          `;
+        } else if (item.isLabeled) {
+          actionHtml = `
+            <span class="text-amber-700 font-extrabold text-base flex items-center gap-1 title-font bg-amber-100 px-3 py-1 rounded-full animate-pulse">
+              🍯 꿀맛 합격!
+            </span>
+          `;
+        } else {
+          actionHtml = `
+            <span class="text-gray-400 font-bold text-sm bg-gray-100 px-3 py-1.5 rounded-full title-font">
+              일반 과일
+            </span>
+          `;
+        }
+
+        card.innerHTML = `
+          <span class="text-6xl mb-2 block">${item.emoji}</span>
+          <span class="font-bold text-lg text-gray-800 block title-font">${item.name}</span>
+          <div class="text-sm font-bold text-gray-500 my-2">${sweetnessText}</div>
+          <div class="w-full flex justify-center mt-auto">${actionHtml}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function measureSweetness(id) {
+      const item = activeSweetFruits.find(x => x.id === id);
+      if (!item) return;
+
+      playTone(450, 'sine', 0.1);
+      setTimeout(() => {
+        playTone(600, 'sine', 0.15);
+        item.isMeasured = true;
+        renderSweetFruits();
+        updatePart2Counts();
+        checkPart2Complete();
+      }, 600);
+    }
+
+    function labelHoneyFruit(id) {
+      const item = activeSweetFruits.find(x => x.id === id);
+      if (!item) return;
+
+      playSuccessSound();
+      item.isLabeled = true;
+      renderSweetFruits();
+      updatePart2Counts();
+      checkPart2Complete();
+    }
+
+    function updatePart2Counts() {
+      const measured = activeSweetFruits.filter(x => x.isMeasured).length;
+      const labeled = activeSweetFruits.filter(x => x.isLabeled).length;
+
+      document.getElementById('measured-count').textContent = measured;
+      document.getElementById('honey-count').textContent = labeled;
+    }
+
+    function checkPart2Complete() {
+      const allMeasured = activeSweetFruits.every(x => x.isMeasured);
+      const allLabeled = activeSweetFruits.filter(x => x.sweetness >= 8).every(x => x.isLabeled);
+
+      if (allMeasured && allLabeled) {
+        playSuccessSound();
+        showCustomModal(
+          "꿀과일 전처리 완료! 🎯✨", 
+          "우와! 상한 과일을 지운 다음, 우리의 목표인 '손님을 위한 달콤한 꿀과일 추천'에 맞게 당도를 측정하고 꿀맛 합격 이름표까지 성공적으로 달아주었어요!\n이것이 바로 목적을 달성하는 진짜 데이터 전처리랍니다!", 
+          "🎉"
+        );
+      }
     }
 
     /* ==========================================================================
