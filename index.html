@@ -111,6 +111,22 @@
     </div>
   </div>
 
+  <!-- 2단계 데이터 4지선다 팝업 퀴즈 모달 -->
+  <div id="quiz-modal-step2" class="fixed inset-0 bg-black/60 z-[101] flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full text-center border-4 border-lime-400 shadow-2xl transform scale-95 transition-all">
+      <span id="q2-icon" class="text-6xl block mb-2">🤔</span>
+      <h3 class="text-3xl font-bold text-lime-800 mb-2 title-font">데이터 활용 탐색 퀴즈</h3>
+      <p id="q2-question" class="text-gray-700 mb-6 text-xl leading-relaxed font-bold"></p>
+      
+      <!-- 4개 보기 버튼 -->
+      <div id="q2-choices" class="grid grid-cols-1 gap-2.5 mb-6 text-left">
+        <!-- JS로 동적 생성 -->
+      </div>
+      
+      <p id="q2-feedback" class="text-base font-extrabold text-red-500 mb-4 hidden"></p>
+    </div>
+  </div>
+
   <!-- 상단 네비게이션 헤더 -->
   <header class="bg-white/90 backdrop-blur-md shadow-md p-4 sticky top-0 z-50 border-b-4 border-lime-200">
     <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
@@ -315,27 +331,27 @@
       <div class="text-center mb-6">
         <span class="text-7xl">🏷️</span>
         <h2 class="text-4xl sm:text-5xl font-bold text-orange-700 mt-2 title-font">4단계: 이름표를 붙여서 로봇 가르치기</h2>
-        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">"이것은 개야!", "이것은 고양이야!" 정답 이름표를 알려주어 공부시키는 공부법이에요.</p>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">"이것은 꿀과일이야!", "이것은 시큼과일이야!" 정답 이름표를 직접 달아 공부시키는 공부법이에요.</p>
       </div>
 
       <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 mb-6 text-gray-700">
-        <p class="font-bold text-orange-800 text-2xl mb-1 title-font">🎓 ⚡ 20마리 동물 이름표 공부시키기 미션!</p>
+        <p class="font-bold text-orange-850 text-2xl mb-1 title-font">🎓 ⚡ 20가지 과일 이름표 공부시키기 미션!</p>
         <p class="text-lg sm:text-xl font-bold leading-relaxed">
-          로봇이 강아지와 고양이를 똑똑하게 맞추려면 **많은 공부 데이터**가 필요해요. <br>
-          아래에 등장하는 동물 카드 특징을 읽고 알맞은 <strong>이름표 버튼</strong>을 콕 눌러 로봇에게 알려주세요!
+          로봇이 꿀맛 과일과 시큼한 과일을 똑똑하게 맞추려면 **많은 공부 데이터**가 필요해요. <br>
+          아래에 등장하는 과일 카드의 특징을 읽고 알맞은 <strong>이름표 버튼</strong>을 콕 눌러 로봇에게 알려주세요!
         </p>
       </div>
 
       <!-- 실습 활동 3 -->
       <div class="border-4 border-dashed border-orange-200 rounded-2xl p-4 sm:p-6 bg-orange-50/40">
         <h3 class="text-2xl sm:text-3xl font-bold text-orange-800 mb-2 title-font">
-          <span class="inline-block mr-2">🤖 [실습 미션]</span> 20마리 동물 친구 이름표 붙여주기!
+          <span class="inline-block mr-2">🤖 [실습 미션]</span> 20가지 과일 친구 이름표 붙여주기!
         </h3>
 
         <!-- 현재 학습시킬 대상 -->
         <div class="bg-white p-6 rounded-2xl border-2 border-orange-100 max-w-md mx-auto shadow-md mb-6 text-center">
           <div class="flex justify-between text-gray-500 text-base mb-2 font-bold">
-            <span>공부한 동물 수</span>
+            <span>공부한 과일 수</span>
             <span id="train-index-text" class="text-orange-600 text-lg">1 / 20</span>
           </div>
           <!-- 진도 게이지 바 -->
@@ -344,31 +360,31 @@
           </div>
           
           <div class="flex justify-center items-center gap-6 my-4">
-            <!-- 동물 이미지 대용 대형 아이콘 -->
-            <div id="train-animal-view" class="text-8xl p-5 bg-orange-50 rounded-2xl border-2 border-orange-200 transition-all transform duration-150">🐶</div>
+            <!-- 과일 이미지 대용 대형 아이콘 -->
+            <div id="train-animal-view" class="text-8xl p-5 bg-orange-50 rounded-2xl border-2 border-orange-200 transition-all transform duration-150">🍎</div>
             <!-- 특징 리스트 -->
             <div class="text-left bg-gray-50 p-4 rounded-xl border border-gray-200 w-56 min-h-[110px] flex flex-col justify-center">
-              <p class="font-bold text-sm text-gray-400 mb-1">동물 특징</p>
+              <p class="font-bold text-sm text-gray-400 mb-1">과일 특징</p>
               <ul id="train-animal-features" class="text-lg text-gray-700 list-disc list-inside space-y-1">
-                <li>귀가 펄럭임</li>
-                <li>왈왈 하고 짖음</li>
+                <li>붉고 아주 예쁜 빨간색</li>
+                <li>설탕처럼 달콤한 향기</li>
               </ul>
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <button onclick="submitLabel('dog')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
-              🐶 강아지 이름표
+            <button onclick="submitLabel('sweet')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+              🍯 꿀맛 과일 이름표
             </button>
-            <button onclick="submitLabel('cat')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
-              🐱 고양이 이름표
+            <button onclick="submitLabel('sour')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+              🍋 시큼 과일 이름표
             </button>
           </div>
         </div>
 
         <!-- 훈련 데이터 누적 테이블 전시 -->
         <div class="bg-white p-4 rounded-xl border border-orange-200">
-          <p class="font-bold text-orange-850 text-center mb-2 text-lg">📊 내가 가르쳐준 동물 이름표 공부장 (총 20개)</p>
+          <p class="font-bold text-orange-850 text-center mb-2 text-lg">📊 내가 가르쳐준 과일 이름표 공부장 (총 20개)</p>
           <div class="grid grid-cols-5 sm:grid-cols-10 gap-2" id="training-database-grid">
             <!-- 20칸 대기 슬롯 -->
           </div>
@@ -381,7 +397,7 @@
       <div class="text-center mb-6">
         <span class="text-7xl">🚨</span>
         <h2 class="text-4xl sm:text-5xl font-bold text-amber-700 mt-2 title-font">5단계: 로봇의 시험 시간 & 돌발 상황!</h2>
-        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">배운 내용을 잘 맞히는지 시험해보고, 처음 보는 새로운 동물이 오면 어떻게 될까요?</p>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">배운 내용을 잘 맞히는지 시험해보고, 처음 보는 새로운 데이터가 오면 어떻게 될까요?</p>
       </div>
 
       <!-- 실습 활동 4 -->
@@ -393,16 +409,16 @@
             <span class="inline-block mr-2">🎯 [1부]</span> 배운 내용 시험 치기 📝
           </h3>
           <p class="text-gray-600 text-base sm:text-lg mb-4 leading-relaxed font-bold">
-            방금 로봇에게 가르쳐 준 강아지와 고양이 문제를 내볼게요.<br>
+            방금 로봇에게 가르쳐 준 꿀과일과 시큼과일 문제를 내볼게요.<br>
             로봇이 백 점을 맞추는지 먼저 확인해 봅시다!
           </p>
 
           <div class="flex flex-col items-center border-t border-gray-100 pt-4">
-            <div id="test-animal-emoji" class="text-8xl p-4 bg-amber-50 rounded-2xl border-2 border-amber-200 mb-3">🐕‍🦺</div>
-            <p class="text-lg font-bold text-gray-500 mb-4" id="test-features font-bold">특징: 검은색 털을 가졌고, 왈왈 짖는 중이에요.</p>
+            <div id="test-animal-emoji" class="text-8xl p-4 bg-amber-50 rounded-2xl border-2 border-amber-200 mb-3">🍉</div>
+            <p class="text-lg font-bold text-gray-500 mb-4" id="test-features font-bold">특징: 초록색 검은 줄무늬, 여름날 시원하고 달달한 맛.</p>
             
             <button onclick="robotEvaluateNormal()" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold px-8 py-3.5 rounded-2xl text-lg fancy-btn w-full max-w-xs">
-              🤖 로봇아, 이 동물이 뭔지 맞춰봐!
+              🤖 로봇아, 이 과일이 뭔지 맞춰봐!
             </button>
           </div>
 
@@ -414,9 +430,9 @@
 
           <!-- 완료 후 다음 돌발 미션으로 활성화되는 버튼 -->
           <div id="goto-ood-zone" class="hidden mt-6 text-center border-t-2 border-dashed border-amber-200 pt-4">
-            <p class="text-emerald-700 font-bold mb-3 text-lg">🎉 최고예요! 배운 강아지와 고양이는 아주 척척 맞췄어요!</p>
+            <p class="text-emerald-700 font-bold mb-3 text-lg">🎉 최고예요! 배운 꿀과일과 시큼과일은 아주 척척 맞췄어요!</p>
             <button onclick="startOodStage()" class="bg-red-500 hover:bg-red-600 text-white font-bold px-8 py-3.5 rounded-2xl text-xl fancy-btn animate-bounce w-full max-w-xs">
-              🚨 2부: 돌발 사자 친구 등장! 🦁
+              🚨 2부: 돌발 새빨간 불고추 등장! 🌶️
             </button>
           </div>
         </div>
@@ -424,18 +440,18 @@
         <!-- 2부: 돌발 상황 단계 -->
         <div id="ood-test-zone" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          <!-- 왼쪽: 돌발 동물 시험대 -->
+          <!-- 왼쪽: 돌발 고추 시험대 -->
           <div class="bg-white p-5 rounded-2xl border-2 border-red-200 shadow-md">
             <h3 class="text-2xl sm:text-3xl font-bold text-red-800 mb-2 text-center title-font">
-              <span class="inline-block mr-2">🦁 [2부]</span> 처음 보는 사자의 등장!
+              <span class="inline-block mr-2">🌶️ [2부]</span> 처음 보는 새빨간 불고추!
             </h3>
-            <p class="text-xs text-gray-500 text-center mb-3 font-bold">로봇의 평생에 한 번도 공부한 적 없는 동물이 등장했어요!</p>
+            <p class="text-xs text-gray-500 text-center mb-3 font-bold">로봇의 평생에 한 번도 공부한 적 없는 매운 고추가 등장했어요!</p>
             <div class="flex flex-col items-center">
-              <div id="ood-animal-emoji" class="text-8xl p-4 bg-red-50 rounded-2xl border-2 border-red-200 mb-3">🦁</div>
-              <p class="text-base font-bold text-gray-500 mb-3 text-center" id="ood-features">특징: 멋진 갈기가 있고, 고양이처럼 쫑긋한 귀와 수염이 있어요.</p>
+              <div id="ood-animal-emoji" class="text-8xl p-4 bg-red-50 rounded-2xl border-2 border-red-200 mb-3">🌶️</div>
+              <p class="text-base font-bold text-gray-500 mb-3 text-center" id="ood-features">특징: 새빨간 색깔을 띠고 있으며, 길쭉하고 작습니다.</p>
               
               <button onclick="robotEvaluateOod()" class="bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold px-6 py-3.5 rounded-2xl text-lg fancy-btn w-full">
-                🤖 로봇아, 이 동물이 뭔지 맞춰봐!
+                🤖 로봇아, 이 과일이 뭔지 맞춰봐!
               </button>
             </div>
 
@@ -449,18 +465,18 @@
           <!-- 오른쪽: 돌발 상자와 질문 -->
           <div id="ood-riddle-card" class="bg-white p-5 rounded-2xl border-2 border-amber-200 flex flex-col justify-between hidden">
             <div>
-              <p class="font-bold text-red-600 mb-2 text-center text-xl title-font">🦁 사자 수수께끼! 로봇이 왜 고양이라고 했을까?</p>
+              <p class="font-bold text-red-600 mb-2 text-center text-xl title-font">🌶️ 고추 수수께끼! 로봇이 왜 꿀맛과일이라 했을까?</p>
               <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-4 font-bold">
-                강아지와 고양이만 공부한 로봇 앞에 사자가 나타났을 때, 왜 <strong>고양이</strong>라고 생각했을까요?
+                과일만 공부한 로봇 앞에 새빨간 불고추가 나타났을 때, 왜 <strong>🍯 꿀맛 과일</strong>이라고 생각했을까요?
               </p>
             </div>
 
             <div class="space-y-2 text-base sm:text-lg">
-              <button onclick="chooseOutboundAnswer('wrong')" class="w-full text-left bg-gray-50 hover:bg-red-50 p-3 rounded-xl border border-gray-200 transition font-bold">
-                ❶ 사자는 고양이처럼 높은 상자에 들어가는 버릇이 있어서
+              <button onclick="chooseOutboundAnswer('wrong')" class="w-full text-left bg-gray-50 hover:bg-red-50 p-3 rounded-xl border border-gray-200 transition font-bold text-sm sm:text-base leading-relaxed">
+                ❶ 고추는 원래 설탕보다 훨씬 더 달콤한 맛을 숨기고 있어서
               </button>
-              <button onclick="chooseOutboundAnswer('correct')" class="w-full text-left bg-gray-50 hover:bg-emerald-50 p-3 rounded-xl border border-gray-200 transition font-bold leading-relaxed">
-                ❷ 사자 이름표를 공부한 적이 한 번도 없어서, 자기가 공부한 고양이 이름표를 억지로 붙였기 때문이에요!
+              <button onclick="chooseOutboundAnswer('correct')" class="w-full text-left bg-gray-50 hover:bg-emerald-50 p-3 rounded-xl border border-gray-200 transition font-bold text-sm sm:text-base leading-relaxed">
+                ❷ 빨갛고 작은 과일(사과나 딸기)만 열심히 공부한 탓에, 처음 보는 빨간 고추도 꿀맛 과일 이름표를 억지로 붙였기 때문이에요!
               </button>
             </div>
           </div>
@@ -472,8 +488,8 @@
           <p class="font-bold text-emerald-800 text-xl mb-1 title-font">🎉 정답이에요! 아주 똑똑해요!</p>
           <p class="text-base sm:text-lg text-emerald-700 leading-relaxed font-bold">
             인공지능 로봇은 <strong>자신이 공부한 범위 안에서만 생각</strong>할 수 있어요. <br>
-            사자는 한 번도 가르쳐 준 적이 없기 때문에, 가지고 있는 지식 중 가장 닮은 '고양이'에 억지로 끼워 맞춰 생각했던 거예요. <br>
-            그래서 인공지능을 가르칠 때는 **편견 없이 아주 다양하고 넓은 공부 데이터**를 듬뿍 주어야 한답니다!
+            매운 고추는 한 번도 가르쳐 준 적이 없기 때문에, 자신이 배운 지식 중 '사과'처럼 생김새(빨간색)가 가장 닮은 '꿀맛 과일'에 억지로 끼워 맞춰 생각했던 거예요. <br>
+            그래서 인공지능을 가르칠 때는 **편견 없이 아주 다양하고 넓은 공부 데이터(채소, 매운 음식 등)**를 듬뿍 주어야 한답니다!
           </p>
         </div>
 
@@ -726,18 +742,20 @@
     let currentStep = 1;
     const totalSteps = 8;
 
-    // STEP 1: 그림책 슬라이드 데이터 (쉽고 친근한 비유로 수정)
+    // STEP 1: 그림책 슬라이드 데이터 (귀여운 일러스트 삽입 및 수정)
     let currentSlide = 0;
     const bookSlides = [
       {
         title: "1장: '데이터'가 무엇일까요? 🤔",
         emoji: "📦",
+        image: "degu_hello.png",
         desc: "컴퓨터 친구들은 우리가 '눈'으로 보고, '귀'로 듣고, '몸'으로 느끼는 모든 기억들을 다 기록할 수 있어요! 이 소중한 기억들의 조각을 바로 <strong class='text-amber-600 font-bold'>'데이터'</strong>라고 불러요!",
         tips: "예를 들면 스마트폰 속에 찍어 둔 강아지 사진, 오늘 바깥 날씨 온도, 즐거운 아기상어 노랫소리가 전부 데이터예요!"
       },
       {
         title: "2장: 데이터가 생각으로 바뀌면 '정보'가 돼요! 💡",
         emoji: "🎩",
+        image: "degu_data_bubbles.png",
         desc: "데이터 조각들을 모아서 우리의 머릿속에서 쓸모 있게 변신한 생각을 <strong class='text-indigo-600 font-bold'>'정보'</strong>라고 해요!",
         tips: "데이터 조각: '현재 온도 22도' 🌡️ ➜ 정보로 변신: '오늘 날씨가 선선하네? 밖에서 킥보드 타고 놀자! 🛹'"
       },
@@ -750,8 +768,9 @@
       {
         title: "4장: 인공지능 로봇을 공부시키는 두 가지 마법 🪄",
         emoji: "🤖",
+        image: "degu_brain_chest.png",
         desc: "모은 데이터로 로봇 친구를 공부시킬 때, 두 가지 재미있는 마법 공부법이 있어요!",
-        tips: "• <strong>① 이름표 공부법 (지도학습)</strong>: '이건 강아지야!', '이건 고양이야!' 정답을 알려주면서 공부하는 마법!<br>• <strong>② 스스로 모으기 공부법 (비지도학습)</strong>: 정답 없이 로봇 스스로 관찰해 비슷한 생김새끼리 모으는 마법!"
+        tips: "• <strong>① 이름표 공부법 (지도학습)</strong>: '이건 꿀과일!', '이건 시큼과일!' 정답을 알려주면서 공부하는 마법!<br>• <strong>② 스스로 모으기 공부법 (비지도학습)</strong>: 정답 없이 로봇 스스로 관찰해 비슷한 생김새끼리 모으는 마법!"
       },
       {
         title: "5장: 직접 만져보는 데이터 상자! 🎮",
@@ -790,36 +809,36 @@
     let activePreprocessingList = [];
     let trashSuccessCount = 0;
 
-    // STEP 4: 지도학습 20마리 댕냥이 데이터 세트
+    // STEP 4: 지도학습 20가지 과일 데이터 세트
     const trainingDataList = [
-      { emoji: '🐶', label: 'dog', text: '귀가 펄럭이고, 멍멍 짖어요' },
-      { emoji: '🐱', label: 'cat', text: '뾰족한 귀와 수염, 야옹 소리' },
-      { emoji: '🐕', label: 'dog', text: '마당에서 꼬리를 힘차게 흔들어요' },
-      { emoji: '🐈', label: 'cat', text: '동그랗게 식빵 자세를 구워요' },
-      { emoji: '🐩', label: 'dog', text: '복슬복슬 곱슬곱슬 하얀색 털' },
-      { emoji: '😸', label: 'cat', text: '눈을 초승달처럼 접고 야옹해요' },
-      { emoji: '🦮', label: 'dog', text: '조끼를 입은 든든한 안내견 리트리버' },
-      { emoji: '🐈‍⬛', label: 'cat', text: '밤하늘처럼 아주 깜깜한 검은 고양이' },
-      { emoji: '🐕‍🦺', label: 'dog', text: '늠름하게 사람을 구하는 검정 진돗개' },
-      { emoji: '😺', label: 'cat', text: '장난을 걸어오는 주황빛 줄무늬 고양이' },
-      { emoji: '🦴', label: 'dog', text: '뼈다귀를 제일 좋아하는 말티즈' },
-      { emoji: '😻', label: 'cat', text: '눈을 반짝이며 생선 냄새를 맡아요' },
-      { emoji: '🐾', label: 'dog', text: '모래 위에 발바닥 흔적을 꾹 찍은 댕댕이' },
-      { emoji: '😽', label: 'cat', text: '애교 듬뿍 볼을 비비는 귀여운 삼색이' },
-      { emoji: '🐺', label: 'dog', text: '눈밭을 신나게 달리는 멋진 허스키견' },
-      { emoji: '🙀', label: 'cat', text: '눈이 왕창 커진 놀란 깜짝 야옹이' },
-      { emoji: '🦊', label: 'dog', text: '귀가 아주 길고 다리가 짧은 웰시코기' },
-      { emoji: '😼', label: 'cat', text: '얼굴 한쪽만 사뿐히 올린 장난꾸러기 삼색이' },
-      { emoji: '🐕', label: 'dog', text: '세상에서 제일 작은 수염 털 치와와' },
-      { emoji: '🐈', label: 'cat', text: '얼굴과 다리만 초콜릿빛을 띤 신비한 샴냥이' }
+      { emoji: '🍎', label: 'sweet', text: '붉고 아주 예쁜 빨간색, 설탕처럼 달콤한 향기' },
+      { emoji: '🍋', label: 'sour', text: '노란 레몬 모양, 과즙이 입안에서 찌릿찌릿 셔요' },
+      { emoji: '🍇', label: 'sweet', text: '송이송이 맺힌 포도, 한입 쏙 베어 물면 꿀맛' },
+      { emoji: ' kiwi', label: 'sour', text: '갈색 껍질 솜털 가득, 속은 초록색이고 아주 셔요' },
+      { emoji: '🍌', label: 'sweet', text: '길쭉하고 샛노란 색깔, 아주 부드럽고 달콤함' },
+      { emoji: '🍊', label: 'sour', text: '동글동글 주황 귤, 먹으면 눈이 저절로 찌푸려지는 시큼함' },
+      { emoji: '🍉', label: 'sweet', text: '초록색 검은 줄무늬, 여름날 시원하고 달달한 맛' },
+      { emoji: ' lime', label: 'sour', text: '새파란 라임 조각, 침이 고이도록 엄청 셔요' },
+      { emoji: '🍑', label: 'sweet', text: '핑크빛 분홍 복숭아, 달콤한 솜사탕 향기가 폴폴' },
+      { emoji: ' green_grape', label: 'sour', text: '덜 익은 청포도 알, 단맛보다는 신맛이 톡 터져요' },
+      { emoji: '🍈', label: 'sweet', text: '그물 무늬 연두색 멜론, 입안에 넣자마자 꿀 향기 가득' },
+      { emoji: ' green_mango', label: 'sour', text: '아주 딱딱한 초록 풋망고, 시큼하고 아삭아삭해요' },
+      { emoji: '🍓', label: 'sweet', text: '하트 모양 빨간 딸기, 아이스크림에 얹어먹는 달달함' },
+      { emoji: ' grapefruit', label: 'sour', text: '뚱뚱한 루비 자몽, 씁쓸하고 톡 쏘는 강한 신맛' },
+      { emoji: ' Pineapple', label: 'sweet', text: '왕관을 쓴 노란 파인애플, 주스로 마시는 달콤 시원한 맛' },
+      { emoji: ' green_apple', label: 'sour', text: '초록색 청사과, 한입 베면 아주 풋풋하고 시큼새큼' },
+      { emoji: ' mango', label: 'sweet', text: '말랑말랑 황금색 망고, 부드럽고 꿀처럼 단 맛' },
+      { emoji: ' green_plum', label: 'sour', text: '초록빛 풋매실, 씹으면 깜짝 놀라도록 신 즙이 나와요' },
+      { emoji: '🍒', label: 'sweet', text: '두 알이 모인 빨간 체리, 케이크 위의 최고 달콤한 열매' },
+      { emoji: ' berry', label: 'sour', text: '탱글탱글 덜 익은 머루, 신맛이 강한 산과일이에요' }
     ];
     let currentTrainIndex = 0;
     let labeledDatabase = []; 
 
-    // STEP 5: 순차 테스트 전용 데이터 목록 분리
+    // STEP 5: 순차 테스트 전용 데이터 목록 분리 (과일 매칭)
     const normalTestDataList = [
-      { emoji: '🐕‍🦺', correctLabel: 'dog', labelKorean: '강아지', desc: '검은색 털을 가졌고, 왈왈 짖는 중이에요.' },
-      { emoji: '🐈', correctLabel: 'cat', labelKorean: '고양이', desc: '생선을 아주아주 좋아하는 귀여운 턱시도 고양이예요.' }
+      { emoji: '🍉', correctLabel: 'sweet', labelKorean: '꿀맛 과일', desc: '초록색 검은 줄무늬, 여름날 시원하고 달달한 맛.' },
+      { emoji: '🥝', correctLabel: 'sour', labelKorean: '시큼 과일', desc: '갈색 껍질 솜털 가득, 속은 초록색이고 아주 셔요.' }
     ];
     let currentNormalTestIndex = 0;
     let isNormalTestDone = false;
@@ -1076,14 +1095,24 @@
         `;
       } else {
         container.innerHTML = `
-          <div class="text-center slide-active">
-            <span class="text-7xl block mb-2 animate-bounce">${item.emoji}</span>
-            <h3 class="text-3xl sm:text-4xl font-bold text-amber-800 mb-2 title-font">${item.title}</h3>
-            <div class="text-xl sm:text-2xl text-gray-700 leading-relaxed max-w-lg mx-auto font-bold mb-4">
-              ${item.desc}
-            </div>
-            <div class="bg-amber-100/60 rounded-2xl p-5 border border-amber-200 text-left max-w-lg mx-auto text-lg text-amber-900 leading-relaxed font-bold">
-              ${item.tips}
+          <div class="slide-active flex flex-col md:flex-row items-center gap-6 text-left max-w-3xl mx-auto p-2">
+            ${item.image ? `
+              <div class="w-full md:w-1/2 flex justify-center">
+                <img src="${item.image}" alt="그림책 일러스트" class="w-64 h-64 sm:w-80 sm:h-80 object-cover rounded-3xl border-4 border-amber-300 shadow-xl transform transition hover:scale-105">
+              </div>
+            ` : `
+              <div class="w-full md:w-1/3 flex justify-center py-6">
+                <span class="text-9xl block animate-bounce">${item.emoji}</span>
+              </div>
+            `}
+            <div class="w-full ${item.image ? 'md:w-1/2' : 'md:w-2/3'}">
+              <h3 class="text-3xl sm:text-4xl font-bold text-amber-800 mb-3 title-font border-b-2 border-amber-100 pb-2">${item.title}</h3>
+              <div class="text-lg sm:text-xl text-gray-700 leading-relaxed font-bold mb-4">
+                ${item.desc}
+              </div>
+              <div class="bg-amber-100/60 rounded-2xl p-4 border border-amber-200 text-sm sm:text-base text-amber-900 leading-relaxed font-bold shadow-inner">
+                💡 <span class="text-amber-850 font-bold">${item.tips}</span>
+              </div>
             </div>
           </div>
         `;
@@ -1158,30 +1187,182 @@
       document.getElementById('pending-cards-count').textContent = count;
     }
 
+    // STEP 2: 데이터 도감 수집 퀴즈 데이터
+    const step2QuizData = {
+      1: {
+        question: "🌡️ '오늘의 온도 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 내 스마트폰 속 만화 동영상 추천해주기", correct: false },
+          { text: "❷ 날씨에 따라 '오늘 입기 딱 좋은 옷'을 추천해주기", correct: true },
+          { text: "❸ 버스가 언제 정류장에 오는지 가르쳐주기", correct: false },
+          { text: "❹ 마트 계산기 바코드에서 물건 가격을 찾아주기", correct: false }
+        ]
+      },
+      2: {
+        question: "🚌 '버스 번호와 노선 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 내가 타고 싶은 신나는 노래를 자동으로 틀어주기", correct: false },
+          { text: "❷ 마트에서 장바구니 총가격을 계산하기", correct: false },
+          { text: "❸ 지도 앱에서 목적지까지 가는 최적의 길 찾기", correct: true },
+          { text: "❹ 스마트폰 속 사진에 액자 필터 씌우기", correct: false }
+        ]
+      },
+      3: {
+        question: "🎵 '신나는 노래 소리 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 내가 방금 들은 콧노래와 똑같은 노래의 이름 찾아주기", correct: true },
+          { text: "❷ 오늘 기온에 맞춘 감기 조심 알림 날려주기", correct: false },
+          { text: "❸ 버스 정류장에서 다음 버스가 언제 오는지 알려주기", correct: false },
+          { text: "❹ 내 몸무게가 얼마나 늘었는지 체중계로 재기", correct: false }
+        ]
+      },
+      4: {
+        question: "📸 '가족 사진 그림 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 소리 인식을 통해 스마트폰 화면 잠금을 열기", correct: false },
+          { text: "❷ 스마트폰 카메라가 우리 얼굴을 인식하고 뽀얗게 예쁜 필터 씌워주기", correct: true },
+          { text: "❸ 날씨 온도계가 내일 비가 오는지 맞춰주기", correct: false },
+          { text: "❹ 달력 속 내 생일까지 며칠 남았는지 날짜 세어주기", correct: false }
+        ]
+      },
+      5: {
+        question: "📅 '달력 날짜 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 스마트폰으로 노래 볼륨 높여주기", correct: false },
+          { text: "❷ 과일 가게에 붉은색 사과만 골라 담아주기", correct: false },
+          { text: "❸ 소중한 내 생일이나 가족 캠핑날에 '까먹지 말라'고 디데이 알림 띄워주기", correct: true },
+          { text: "❹ 버스가 도로의 몇 번째 차선을 가고 있는지 측정하기", correct: false }
+        ]
+      },
+      6: {
+        question: "📊 '내 키 재기 측정 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 버스 정류장에 도착하는 소음 크기 데시벨 측정하기", correct: false },
+          { text: "❷ 내 키가 작년보다 얼마나 컸는지 성장 그래프로 그려 비교해보기", correct: true },
+          { text: "❸ 오늘 저녁 반찬에 매운 고추를 넣을지 말지 결정하기", correct: false },
+          { text: "❹ 유튜브 알고리즘으로 동요 비디오 틀어주기", correct: false }
+        ]
+      },
+      7: {
+        question: "🚦 '신호등 불빛 색깔 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 횡단보도 바닥의 센서가 초록불에만 맞춰 안전 음성 안내 방송 틀어주기", correct: true },
+          { text: "❷ 날씨 온도계가 오늘 온도를 숫자로 바꿔주기", correct: false },
+          { text: "❸ 편의점 냉장고 바코드 가격 찾기", correct: false },
+          { text: "❹ 노래방 기계에서 100점 점수 띄워주기", correct: false }
+        ]
+      },
+      8: {
+        question: "❤️ '심장 소리 맥박 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 내 얼굴 표정을 관찰해 신나는 만화 틀어주기", correct: false },
+          { text: "❷ 마트 기계가 바코드를 읽어 찌익 소리 내기", correct: false },
+          { text: "❸ 스마트 워치(손목시계)가 내 몸 건강 상태를 파악해 쿵쾅쿵쾅 위험 신호 알려주기", correct: true },
+          { text: "❹ 달력 날짜에 맞춰 크리스마스 캐롤송 준비하기", correct: false }
+        ]
+      },
+      9: {
+        question: "📱 '다정한 문자 글자 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 보이스톡 전화기 목소리를 더 예쁘게 바꾸기", correct: false },
+          { text: "❷ 마트 물건의 유통기한 날짜 계산하기", correct: false },
+          { text: "❸ 메신저에서 '사랑해' 같은 다정한 말에 움직이는 하트 이모티콘 팡 띄워주기", correct: true },
+          { text: "❹ 카메라 렌즈 속 신호등 불빛 찾기", correct: false }
+        ]
+      },
+      10: {
+        question: "🐱 '고양이 소리 데이터'는 일상생활에서 주로 어디에 활용할까요?",
+        choices: [
+          { text: "❶ 날씨 기온이 몇 도인지 알아내기", correct: false },
+          { text: "❷ 동물 번역기 앱에 목소리를 넣어 '간식 주세요!'라고 뜻을 한글로 보여주기", correct: true },
+          { text: "❸ 버스 정류장 전광판에 몇 번 버스인지 글씨로 적어주기", correct: false },
+          { text: "❹ 가족 앨범 속 사진을 시간 순서대로 정렬하기", correct: false }
+        ]
+      }
+    };
+
     function revealDailyData(id) {
       const item = dailyDataItems.find(x => x.id === id);
       if (!item) return;
 
       if (!step2Discovered[id]) {
+        openStep2QuizModal(id);
+      } else {
+        playTone(300, 'sine', 0.05);
+        showStep2DetailPanel(item);
+      }
+    }
+
+    function openStep2QuizModal(id) {
+      const item = dailyDataItems.find(x => x.id === id);
+      const quiz = step2QuizData[id];
+      if (!item || !quiz) return;
+
+      document.getElementById('q2-icon').textContent = item.icon;
+      document.getElementById('q2-question').textContent = quiz.question;
+      
+      const feedbackEl = document.getElementById('q2-feedback');
+      feedbackEl.classList.add('hidden');
+      feedbackEl.textContent = '';
+
+      const choicesBox = document.getElementById('q2-choices');
+      choicesBox.innerHTML = '';
+
+      quiz.choices.forEach((choice, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left bg-gray-50 hover:bg-lime-50 p-4 rounded-2xl border-2 border-gray-250 hover:border-lime-400 transition font-bold text-base sm:text-lg flex items-center justify-between fancy-btn leading-relaxed";
+        btn.innerHTML = `<span>${choice.text}</span>`;
+        btn.onclick = () => submitStep2QuizAnswer(id, choice.correct, btn);
+        choicesBox.appendChild(btn);
+      });
+
+      document.getElementById('quiz-modal-step2').classList.remove('hidden');
+      playTone(400, 'triangle', 0.1);
+    }
+
+    function submitStep2QuizAnswer(id, isCorrect, buttonElement) {
+      const feedbackEl = document.getElementById('q2-feedback');
+      if (isCorrect) {
+        playSuccessSound();
         step2Discovered[id] = true;
         
-        const cardEl = document.getElementById(`gallery-card-${id}`);
-        cardEl.classList.add('flipped');
+        buttonElement.classList.remove('border-gray-250');
+        buttonElement.classList.add('border-emerald-500', 'bg-emerald-50');
 
-        playTone(400 + (id * 40), 'sine', 0.12);
-        
+        // 카드 뒤집기 연출
+        const cardEl = document.getElementById(`gallery-card-${id}`);
+        if (cardEl) {
+          cardEl.classList.add('flipped');
+          const innerEl = cardEl.querySelector('.flip-card-inner');
+          if (innerEl) {
+            innerEl.classList.add('flipped');
+          }
+        }
+
         const count = Object.keys(step2Discovered).length;
         document.getElementById('pending-cards-count').textContent = count;
 
-        if (count === 10) {
-          playSuccessSound();
-          showCustomModal("축하합니다! 🕵️‍♂️✨", "우와! 우리 하루 일상 속 데이터 도감 10가지를 모두 수집하여 데이터 대도감을 완성했어요! 이제 다음 단계에서 불량 데이터를 청소하러 출발합시다!", "🎉");
-        }
-      } else {
-        playTone(300, 'sine', 0.05);
-      }
+        setTimeout(() => {
+          document.getElementById('quiz-modal-step2').classList.add('hidden');
+          
+          const item = dailyDataItems.find(x => x.id === id);
+          showStep2DetailPanel(item);
 
-      // 하단 상세 패널
+          if (count === 10) {
+            playSuccessSound();
+            showCustomModal("축하합니다! 🕵️‍♂️✨", "우와! 우리 하루 일상 속 데이터 도감 10가지를 모두 수집하여 데이터 대도감을 완성했어요! 이제 다음 단계에서 불량 데이터를 청소하러 출발합시다!", "🎉");
+          }
+        }, 800);
+      } else {
+        playFailureSound();
+        feedbackEl.classList.remove('hidden');
+        feedbackEl.textContent = "앗! 그 용도는 데이터를 활용하기에 조금 어색한 것 같아요. 다른 걸 신중히 골라볼까요? 🔍";
+        buttonElement.classList.add('border-red-400', 'bg-red-50', 'animate-bounce');
+        setTimeout(() => buttonElement.classList.remove('animate-bounce'), 800);
+      }
+    }
+
+    function showStep2DetailPanel(item) {
       const panel = document.getElementById('data-detail-panel');
       panel.classList.remove('hidden');
       
@@ -1434,12 +1615,12 @@
 
     function submitLabel(label) {
       if (currentTrainIndex >= trainingDataList.length) {
-        showCustomModal("알림 🤖", "이미 모든 동물 친구들 공부가 끝났습니다! 다음 시험 단계로 넘어가보세요.", "💡");
+        showCustomModal("알림 🤖", "이미 모든 과일 친구들 공부가 끝났습니다! 다음 시험 단계로 넘어가보세요.", "💡");
         return;
       }
 
       const activeItem = trainingDataList[currentTrainIndex];
-      const correctKorean = label === 'dog' ? '강아지' : '고양이';
+      const correctKorean = label === 'sweet' ? '꿀맛 과일' : '시큼 과일';
 
       labeledDatabase.push({
         emoji: activeItem.emoji,
@@ -1455,7 +1636,7 @@
     }
 
     /* ==========================================================================
-       [5단계] 테스트 & 돌발 상황 (사자/치타) 고찰
+       [5단계] 테스트 & 돌발 상황 (매운 불고추) 고찰
        ========================================================================== */
     function resetTestStage() {
       currentNormalTestIndex = 0;
@@ -1497,8 +1678,8 @@
       bubble.classList.remove('hidden');
       playTone(600, 'sine', 0.2);
 
-      const labelColor = item.correctLabel === 'dog' ? 'text-sky-600' : 'text-pink-600';
-      text.innerHTML = `🤖 "나는 방금 강아지 이름표를 열심히 공부했어! 특징을 보니... 이건 귀여운 <strong class='${labelColor}'>${item.labelKorean}</strong>가 맞아!"`;
+      const labelColor = item.correctLabel === 'sweet' ? 'text-amber-600' : 'text-yellow-600';
+      text.innerHTML = `🤖 "나는 방금 과일 이름표를 열심히 공부했어! 특징을 보니... 이건 맛있는 <strong class='${labelColor}'>${item.labelKorean}</strong>가 맞아!"`;
 
       setTimeout(() => {
         currentNormalTestIndex++;
@@ -1522,11 +1703,11 @@
       bubble.classList.remove('hidden');
       playTone(400, 'triangle', 0.35);
 
-      text.innerHTML = `🤖 "어라..? 사자는 내 공부장에 없는데... 얼굴에 귀가 고양이랑 쫑긋 닮았고 귀여운 수염이 있으니까... 내 생각엔 <strong class='text-red-500'>고양이</strong> 같아!"`;
+      text.innerHTML = `🤖 "어라..? 고추는 내 공부장에 없는데... 색깔이 빨간 사과나 딸기랑 똑같고 작으니까... 내 생각엔 <strong class='text-amber-600'>꿀맛 과일</strong> 같아!"`;
 
       setTimeout(() => {
         document.getElementById('ood-riddle-card').classList.remove('hidden');
-        showCustomModal("로봇의 엉뚱한 실수! 🧐", "로봇이 배운 적 없는 사자에게 '고양이'라는 이름표를 억지로 붙였어요! 왜 그런 실수를 했는지 오른쪽 문제를 같이 풀어보아요.", "⚡");
+        showCustomModal("로봇의 엉뚱한 실수! 🧐", "로봇이 배운 적 없는 빨간 고추에게 '꿀맛 과일'이라는 이름표를 억지로 붙였어요! 왜 그런 실수를 했는지 오른쪽 문제를 같이 풀어보아요.", "⚡");
         playTone(650, 'sine', 0.25);
       }, 600);
     }
@@ -1538,7 +1719,7 @@
         isTestCompleted = true; 
       } else {
         playFailureSound();
-        showCustomModal("다시 한 번 고민해 보세요! ❌", "사자는 한 번도 가르쳐 준 적 없는 새로운 동물 데이터예요! 로봇은 배운 좁은 범위 안에서만 억지로 끼워 맞춰 오판한 것이랍니다.", "⚠️");
+        showCustomModal("다시 한 번 고민해 보세요! ❌", "고추는 한 번도 가르쳐 준 적 없는 새로운 채소 데이터예요! 로봇은 자신이 공부한 좁은 범위(빨간 과일) 안에서만 억지로 끼워 맞춰 오판한 것이랍니다.", "⚠️");
       }
     }
 
