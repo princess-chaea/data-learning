@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주니어 데이터 과학자: AI 로봇을 훈련시켜라! 🚀</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: 영어/숫자용 깔끔한 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- 강원교육튼튼체 및 나눔스퀘어라운드 웹폰트 임포트 -->
+  <style>
+    @font-face {
+      font-family: 'GangwonEduPower';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'NanumSquareRound';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      font-family: 'NanumSquareRound', sans-serif;
+      font-size: 1.45rem; /* 전체 글자 크기 대폭 상향 */
+      font-weight: 700; /* 동글동글하고 두꺼워 가독성 극대화 */
+      background-color: #f7fee7; /* 부드러운 연두색 배경 */
+    }
+    .title-font {
+      font-family: 'GangwonEduPower', sans-serif;
+    }
+    .eng-font {
+      font-family: 'Outfit', sans-serif;
+    }
+    /* 입체감 있는 푸시 버튼 스타일 */
+    .fancy-btn {
+      transition: all 0.1s ease;
+      box-shadow: 0 6px 0px 0px rgba(0,0,0,0.15);
+    }
+    .fancy-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0px 0px rgba(0,0,0,0.15);
+    }
+    @keyframes bounce-slow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .bounce-slow {
+      animation: bounce-slow 3s ease-in-out infinite;
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    .wiggle {
+      animation: wiggle 0.5s ease-in-out infinite;
+    }
+    /* 뒤집기 카드 애니메이션 효과 */
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      backface-visibility: hidden;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+    /* 그림책 슬라이더 연출 */
+    .slide-enter {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    .slide-active {
+      opacity: 1;
+      transform: scale(1);
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+<body class="text-gray-800 min-h-screen flex flex-col justify-between selection:bg-yellow-200">
+
+  <!-- 커스텀 모달 알림창 UI (기본 alert 대체용) -->
+  <div id="custom-modal" class="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full text-center border-4 border-amber-400 shadow-2xl transform scale-95 transition-all">
+      <span id="modal-icon" class="text-6xl block mb-2">💡</span>
+      <h3 id="modal-title" class="text-3xl font-bold text-gray-800 mb-2 title-font">알림</h3>
+      <p id="modal-desc" class="text-gray-600 mb-6 text-xl leading-relaxed"></p>
+      <button onclick="closeModal()" class="w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-3.5 rounded-2xl fancy-btn text-xl">
+        확인 완료! 👍
+      </button>
+    </div>
+  </div>
+
+  <!-- 상단 네비게이션 헤더 -->
+  <header class="bg-white/90 backdrop-blur-md shadow-md p-4 sticky top-0 z-50 border-b-4 border-lime-200">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <span class="text-5xl bounce-slow">🕵️‍♂️</span>
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-bold text-lime-700 title-font leading-none">주니어 데이터 과학자 아카데미</h1>
+          <p class="text-sm text-lime-600 font-bold mt-1">그림책 이론부터 전처리, 이름표 공부와 스스로 모으기까지 완벽 마스터! 🚀</p>
+        </div>
+      </div>
+      <!-- 단계 표시 뱃지 -->
+      <div class="flex items-center gap-2">
+        <span id="step-badge" class="bg-lime-100 text-lime-800 font-bold px-5 py-2 rounded-full border-2 border-lime-300 text-xl title-font">
+          1단계 / 8단계
+        </span>
+      </div>
+    </div>
+    <!-- 학습 진척도 바 -->
+    <div class="max-w-4xl mx-auto w-full bg-gray-100 h-4 mt-3 rounded-full overflow-hidden border border-gray-200">
+      <div id="progress-bar" class="bg-gradient-to-r from-lime-400 to-emerald-500 h-full transition-all duration-500" style="width: 12.5%"></div>
+    </div>
+  </header>
+
+  <!-- 메인 학습 무대 -->
+  <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 flex-grow">
+
+    <!-- STEP 1: 신규 데이터 이론 (📖 꼬마 데구의 데이터 대모험) -->
+    <section id="step1" class="step-section block bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-lime-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">📖</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-lime-700 mt-2 title-font">1단계: 꼬마 데구의 데이터 대모험!</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-1 font-bold">데이터가 무엇인지 그림책을 한 장씩 넘기며 쉽고 재미있게 알아보아요!</p>
+      </div>
+
+      <!-- 그림책 뷰어 컨테이너 -->
+      <div class="bg-yellow-50/50 border-4 border-amber-200 rounded-3xl p-6 relative min-h-[400px] flex flex-col justify-between shadow-inner">
+        <!-- 슬라이드 내용 -->
+        <div id="book-content" class="transition-all duration-300">
+          <!-- JS에서 동적으로 슬라이드를 렌더링합니다. -->
+        </div>
+
+        <!-- 슬라이더 네비게이션 -->
+        <div class="flex justify-between items-center mt-6 border-t-2 border-amber-100 pt-4">
+          <button onclick="prevSlide()" id="slide-prev" class="bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold px-5 py-2.5 rounded-2xl text-lg fancy-btn">
+            ◀ 이전 이야기
+          </button>
+          <span id="slide-indicator" class="font-bold text-amber-700 text-xl title-font">1 / 5</span>
+          <button onclick="nextSlide()" id="slide-next" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold px-5 py-2.5 rounded-2xl text-lg fancy-btn">
+            다음 이야기 ▶
+          </button>
+        </div>
+      </div>
+
+      <!-- 선생님 힌트 코너 -->
+      <div class="mt-6 bg-lime-50 border-2 border-lime-200 rounded-2xl p-4 flex gap-3 items-center">
+        <span class="text-4xl">💬</span>
+        <p class="text-base sm:text-lg text-lime-900 font-bold leading-relaxed">
+          <strong>선생님 콕콕:</strong> 우리 일상생활 속에서 우리가 눈으로 보고, 귀로 듣고, 손으로 만지는 모든 조각들이 전부 로봇의 훌륭한 **'데이터'**가 된답니다!
+        </p>
+      </div>
+    </section>
+
+    <!-- STEP 2: 일상 속 데이터 탐색 (5분) -->
+    <section id="step2" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-lime-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">🔍</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-lime-700 mt-2 title-font">2단계: 우리 일상은 온통 "데이터" 야!</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">우리가 보고, 세고, 듣는 모든 정보의 조각들이 바로 데이터랍니다!</p>
+      </div>
+
+      <!-- 탐정 놀이 상황 설명 -->
+      <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 mb-6 text-gray-700">
+        <p class="font-bold text-amber-800 text-2xl mb-2 title-font">🕵️‍♂️ 우리 하루 일상 속 숨어 있는 데이터 도감 찾기 미션!</p>
+        <p class="text-lg sm:text-xl font-bold leading-relaxed">
+          초등학생의 하루 일과 중 어디에 데이터가 들어있을까요? <br>
+          아래의 데이터 상자들을 <strong>클릭하여 도감을 뒤집고</strong> 어떤 데이터들이 숨어있는지 확인해 주세요!
+        </p>
+      </div>
+
+      <!-- 인터랙티브 데이터 매칭 미션 -->
+      <div class="border-4 border-dashed border-lime-200 rounded-2xl p-4 sm:p-6 bg-lime-50/30">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-2xl sm:text-3xl font-bold text-lime-800 flex items-center gap-2 title-font">
+            <span>🎯 [실습 미션]</span> 10가지 일상 데이터 수집하기
+          </h3>
+          <div class="bg-lime-200 text-lime-900 font-bold px-4 py-1.5 rounded-full text-base title-font">
+            찾아낸 개수: <span id="pending-cards-count" class="text-xl">0</span> / 10
+          </div>
+        </div>
+        
+        <!-- 10개 카드 그리드 -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6" id="data-gallery-grid">
+          <!-- JS에서 동적으로 10개의 카드를 그려냅니다. -->
+        </div>
+
+        <!-- 클릭 시 상세 설명 구역 -->
+        <div id="data-detail-panel" class="hidden bg-gradient-to-r from-lime-50 to-emerald-50 p-5 rounded-2xl border-2 border-lime-400 text-center shadow-inner">
+          <span id="detail-icon" class="text-6xl block mb-2">🎈</span>
+          <h4 id="detail-title" class="font-bold text-2xl text-lime-800 title-font">선택된 데이터</h4>
+          <p id="detail-example" class="text-lime-600 italic text-base mt-1 font-bold">예시 들어가는 곳</p>
+          <p id="detail-desc" class="text-gray-700 font-bold text-lg sm:text-xl mt-2 leading-relaxed">설명 들어가는 곳</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 데이터 전처리 (이상한 데이터 지우기) (7분) -->
+    <section id="step3" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-sky-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">🧹</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-sky-700 mt-2 title-font">3단계: 고장 나고 상한 데이터를 청소하자!</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">공부 로봇은 불량 데이터를 먹으면 배탈이 나요! 깨끗하게 다듬는 '데이터 청소'를 배웁니다.</p>
+      </div>
+
+      <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-5 mb-6 text-gray-700">
+        <p class="font-bold text-sky-800 text-2xl mb-1 title-font">💡 데이터 청소(전처리)가 왜 중요할까요?</p>
+        <p class="text-lg sm:text-xl font-bold leading-relaxed">
+          과일 가게 로봇에게 싱싱한 과일을 구분하게 하려면, <strong>상한 과일(🤢)</strong>이나 <strong>장난감 과일(🧸)</strong>, <strong>알 수 없는 빈 상자(❓)</strong>는 미리 치워야 해요. <br>
+          이렇게 이상한 데이터를 지우고 깔끔하게 청소하는 것을 어려운 말로 <strong class="text-sky-600">"데이터 전처리"</strong>라고 불러요.
+        </p>
+      </div>
+
+      <!-- 실습 활동 2 -->
+      <div class="border-4 border-dashed border-sky-200 rounded-2xl p-4 sm:p-6 bg-sky-50/40">
+        <h3 class="text-2xl sm:text-3xl font-bold text-sky-800 mb-2 flex items-center gap-2 title-font">
+          <span>🧹 [실습 미션]</span> 불량 데이터를 클릭해 휴지통에 쏙 넣기!
+        </h3>
+        <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">
+          공부방에 들어온 데이터 중 <strong>상한 과일(🤢)</strong>, <strong>장난감(🧸)</strong>, <strong>물음표 상자(❓)</strong>를 눌러 휴지통에 버려주세요! <br>
+          <span class="text-red-500 font-bold">주의: 신선하고 싱싱한 진짜 과일(🍎, 🍊 등)은 버리면 절대 안 돼요!</span>
+        </p>
+
+        <!-- 청소 컨테이너 (과일 트레이와 쓰레기통 비주얼 매치) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <!-- 왼쪽: 과일이 담긴 데이터 트레이 -->
+          <div class="md:col-span-2 bg-white p-4 rounded-2xl border-2 border-sky-100 min-h-[160px] flex flex-wrap gap-4 justify-center items-center shadow-inner" id="preprocessing-tray">
+            <!-- JS에서 동적 타겟 생성 -->
+          </div>
+          <!-- 오른쪽: 쓰레기통 수집 영역 -->
+          <div class="bg-red-50 border-4 border-dashed border-red-300 rounded-2xl p-4 flex flex-col justify-center items-center text-center shadow-md">
+            <span class="text-7xl animate-bounce">🗑️</span>
+            <span class="font-bold text-red-700 mt-2 text-xl title-font">데이터 휴지통</span>
+            <p class="text-xs text-red-500 mt-1 font-bold">불량 데이터 청소 구역</p>
+            <div class="bg-red-200 text-red-950 font-bold py-1.5 px-4 rounded-full mt-3 text-base title-font">
+              비운 개수: <span id="trash-success-count" class="text-xl">0</span>개
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-sky-100/50 p-4 rounded-xl">
+          <div class="text-xl font-bold">
+            남은 불량 데이터: <strong id="dirty-count" class="text-red-500 text-3xl">4</strong>개
+          </div>
+          <div class="text-xl font-bold">
+            살려낸 싱싱 데이터: <strong id="clean-count" class="text-emerald-600 text-3xl">0</strong>개
+          </div>
+          <button onclick="resetPreprocessing()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-2xl text-base fancy-btn">
+            과일 다시 놓기 🔄
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: 지도학습 로봇 학습시키기 (8분) -->
+    <section id="step4" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-orange-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">🏷️</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-orange-700 mt-2 title-font">4단계: 이름표를 붙여서 로봇 가르치기</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">"이것은 개야!", "이것은 고양이야!" 정답 이름표를 알려주어 공부시키는 공부법이에요.</p>
+      </div>
+
+      <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 mb-6 text-gray-700">
+        <p class="font-bold text-orange-800 text-2xl mb-1 title-font">🎓 ⚡ 20마리 동물 이름표 공부시키기 미션!</p>
+        <p class="text-lg sm:text-xl font-bold leading-relaxed">
+          로봇이 강아지와 고양이를 똑똑하게 맞추려면 **많은 공부 데이터**가 필요해요. <br>
+          아래에 등장하는 동물 카드 특징을 읽고 알맞은 <strong>이름표 버튼</strong>을 콕 눌러 로봇에게 알려주세요!
+        </p>
+      </div>
+
+      <!-- 실습 활동 3 -->
+      <div class="border-4 border-dashed border-orange-200 rounded-2xl p-4 sm:p-6 bg-orange-50/40">
+        <h3 class="text-2xl sm:text-3xl font-bold text-orange-800 mb-2 flex items-center gap-2 title-font">
+          <span>🤖 [실습 미션]</span> 20마리 동물 친구 이름표 붙여주기!
+        </h3>
+
+        <!-- 현재 학습시킬 대상 -->
+        <div class="bg-white p-6 rounded-2xl border-2 border-orange-100 max-w-md mx-auto shadow-md mb-6 text-center">
+          <div class="flex justify-between text-gray-500 text-base mb-2 font-bold">
+            <span>공부한 동물 수</span>
+            <span id="train-index-text" class="text-orange-600 text-lg">1 / 20</span>
+          </div>
+          <!-- 진도 게이지 바 -->
+          <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden mb-4 border border-gray-100">
+            <div id="train-mini-progress" class="bg-orange-500 h-full transition-all" style="width: 5%"></div>
+          </div>
+          
+          <div class="flex justify-center items-center gap-6 my-4">
+            <!-- 동물 이미지 대용 대형 아이콘 -->
+            <div id="train-animal-view" class="text-8xl p-5 bg-orange-50 rounded-2xl border-2 border-orange-200 transition-all transform duration-150">🐶</div>
+            <!-- 특징 리스트 -->
+            <div class="text-left bg-gray-50 p-4 rounded-xl border border-gray-200 w-56 min-h-[110px] flex flex-col justify-center">
+              <p class="font-bold text-sm text-gray-400 mb-1">동물 특징</p>
+              <ul id="train-animal-features" class="text-lg text-gray-700 list-disc list-inside space-y-1">
+                <li>귀가 펄럭임</li>
+                <li>왈왈 하고 짖음</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="submitLabel('dog')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+              🐶 강아지 이름표
+            </button>
+            <button onclick="submitLabel('cat')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+              🐱 고양이 이름표
+            </button>
+          </div>
+        </div>
+
+        <!-- 훈련 데이터 누적 테이블 전시 -->
+        <div class="bg-white p-4 rounded-xl border border-orange-200">
+          <p class="font-bold text-orange-850 text-center mb-2 text-lg">📊 내가 가르쳐준 동물 이름표 공부장 (총 20개)</p>
+          <div class="grid grid-cols-5 sm:grid-cols-10 gap-2" id="training-database-grid">
+            <!-- 20칸 대기 슬롯 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: 테스트 셋 검증 & 돌발 오작동 분석 (7분) -->
+    <section id="step5" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">🚨</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-amber-700 mt-2 title-font">5단계: 로봇의 시험 시간 & 돌발 상황!</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">배운 내용을 잘 맞히는지 시험해보고, 처음 보는 새로운 동물이 오면 어떻게 될까요?</p>
+      </div>
+
+      <!-- 실습 활동 4 -->
+      <div class="border-4 border-dashed border-amber-200 rounded-2xl p-4 sm:p-6 bg-amber-50/40">
+        
+        <!-- 1부: 정상 테스트 단계 -->
+        <div id="normal-test-zone" class="bg-white p-6 rounded-2xl border-2 border-amber-100 max-w-xl mx-auto shadow-md block text-center">
+          <h3 class="text-2xl sm:text-3xl font-bold text-amber-900 mb-2 flex items-center justify-center gap-2 title-font">
+            <span>🎯 [1부]</span> 배운 내용 시험 치기 📝
+          </h3>
+          <p class="text-gray-600 text-base sm:text-lg mb-4 leading-relaxed font-bold">
+            방금 로봇에게 가르쳐 준 강아지와 고양이 문제를 내볼게요.<br>
+            로봇이 백 점을 맞추는지 먼저 확인해 봅시다!
+          </p>
+
+          <div class="flex flex-col items-center border-t border-gray-100 pt-4">
+            <div id="test-animal-emoji" class="text-8xl p-4 bg-amber-50 rounded-2xl border-2 border-amber-200 mb-3">🐕‍🦺</div>
+            <p class="text-lg font-bold text-gray-500 mb-4" id="test-features font-bold">특징: 검은색 털을 가졌고, 왈왈 짖는 중이에요.</p>
+            
+            <button onclick="robotEvaluateNormal()" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold px-8 py-3.5 rounded-2xl text-lg fancy-btn w-full max-w-xs">
+              🤖 로봇아, 이 동물이 뭔지 맞춰봐!
+            </button>
+          </div>
+
+          <!-- 정상 대답 말풍선 -->
+          <div id="test-result-bubble" class="hidden mt-4 bg-amber-50 border-2 border-amber-200 p-3 rounded-xl">
+            <span class="text-xs text-gray-400 block font-bold">로봇의 생각 주머니 💭</span>
+            <p id="test-result-text" class="text-lg sm:text-xl font-bold text-amber-800 leading-relaxed"></p>
+          </div>
+
+          <!-- 완료 후 다음 돌발 미션으로 활성화되는 버튼 -->
+          <div id="goto-ood-zone" class="hidden mt-6 text-center border-t-2 border-dashed border-amber-200 pt-4">
+            <p class="text-emerald-700 font-bold mb-3 text-lg">🎉 최고예요! 배운 강아지와 고양이는 아주 척척 맞췄어요!</p>
+            <button onclick="startOodStage()" class="bg-red-500 hover:bg-red-600 text-white font-bold px-8 py-3.5 rounded-2xl text-xl fancy-btn animate-bounce w-full max-w-xs">
+              🚨 2부: 돌발 사자 친구 등장! 🦁
+            </button>
+          </div>
+        </div>
+
+        <!-- 2부: 돌발 상황 단계 -->
+        <div id="ood-test-zone" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- 왼쪽: 돌발 동물 시험대 -->
+          <div class="bg-white p-5 rounded-2xl border-2 border-red-200 shadow-md">
+            <h3 class="text-2xl sm:text-3xl font-bold text-red-800 mb-2 text-center flex items-center justify-center gap-2 title-font">
+              <span>🦁 [2부]</span> 처음 보는 사자의 등장!
+            </h3>
+            <p class="text-xs text-gray-500 text-center mb-3 font-bold">로봇의 평생에 한 번도 공부한 적 없는 동물이 등장했어요!</p>
+            <div class="flex flex-col items-center">
+              <div id="ood-animal-emoji" class="text-8xl p-4 bg-red-50 rounded-2xl border-2 border-red-200 mb-3">🦁</div>
+              <p class="text-base font-bold text-gray-500 mb-3 text-center" id="ood-features">특징: 멋진 갈기가 있고, 고양이처럼 쫑긋한 귀와 수염이 있어요.</p>
+              
+              <button onclick="robotEvaluateOod()" class="bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold px-6 py-3.5 rounded-2xl text-lg fancy-btn w-full">
+                🤖 로봇아, 이 동물이 뭔지 맞춰봐!
+              </button>
+            </div>
+
+            <!-- 로봇의 억지 판단 대답 말풍선 -->
+            <div id="ood-result-bubble" class="hidden mt-4 bg-red-50 border-2 border-red-200 p-3 rounded-xl text-center">
+              <span class="text-xs text-red-400 block font-bold">당황해서 눈을 깜빡이는 로봇 🤖💦</span>
+              <p id="ood-result-text" class="text-lg sm:text-xl font-bold text-red-700 leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- 오른쪽: 돌발 상자와 질문 -->
+          <div id="ood-riddle-card" class="bg-white p-5 rounded-2xl border-2 border-amber-200 flex flex-col justify-between hidden">
+            <div>
+              <p class="font-bold text-red-600 mb-2 text-center text-xl title-font">🦁 사자 수수께끼! 로봇이 왜 고양이라고 했을까?</p>
+              <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-4 font-bold">
+                강아지와 고양이만 공부한 로봇 앞에 사자가 나타났을 때, 왜 <strong>고양이</strong>라고 생각했을까요?
+              </p>
+            </div>
+
+            <div class="space-y-2 text-base sm:text-lg">
+              <button onclick="chooseOutboundAnswer('wrong')" class="w-full text-left bg-gray-50 hover:bg-red-50 p-3 rounded-xl border border-gray-200 transition font-bold">
+                ❶ 사자는 고양이처럼 높은 상자에 들어가는 버릇이 있어서
+              </button>
+              <button onclick="chooseOutboundAnswer('correct')" class="w-full text-left bg-gray-50 hover:bg-emerald-50 p-3 rounded-xl border border-gray-200 transition font-bold leading-relaxed">
+                ❷ 사자 이름표를 공부한 적이 한 번도 없어서, 자기가 공부한 고양이 이름표를 억지로 붙였기 때문이에요!
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 5단계 최종 피드백 설명 -->
+        <div id="ood-explanation" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4 mt-6 max-w-xl mx-auto">
+          <p class="font-bold text-emerald-800 text-xl mb-1 title-font">🎉 정답이에요! 아주 똑똑해요!</p>
+          <p class="text-base sm:text-lg text-emerald-700 leading-relaxed font-bold">
+            인공지능 로봇은 <strong>자신이 공부한 범위 안에서만 생각</strong>할 수 있어요. <br>
+            사자는 한 번도 가르쳐 준 적이 없기 때문에, 가지고 있는 지식 중 가장 닮은 '고양이'에 억지로 끼워 맞춰 생각했던 거예요. <br>
+            그래서 인공지능을 가르칠 때는 **편견 없이 아주 다양하고 넓은 공부 데이터**를 듬뿍 주어야 한답니다!
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STEP 6: 비지도학습 (스스로 끼리끼리) (5분) -->
+    <section id="step6" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-teal-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">🛸</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-teal-700 mt-2 title-font">6단계: 스스로 모으기 - 이름표 없이 척척!</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">정답 이름표가 없어도, 로봇이 스스로 공통점을 관찰해 끼리끼리 모아요.</p>
+      </div>
+
+      <div class="bg-teal-50 border-2 border-teal-200 rounded-2xl p-5 mb-6 text-gray-700">
+        <p class="font-bold text-teal-800 text-2xl mb-1 title-font">🔍 스스로 모으기 공부법(비지도학습)이란?</p>
+        <p class="text-lg sm:text-xl font-bold leading-relaxed">
+          정답 이름표를 알려주지 않아도, <strong>로봇 스스로 관찰하여 성질이나 생김새가 비슷한 부류끼리 그룹</strong>을 나누는 방식이에요.<br>
+          우주 정거장에 도달한 꼬마 외계인들을 스스로 묶어 정렬하는 모습을 구경해 볼까요?
+        </p>
+      </div>
+
+      <!-- 실습 활동 5 -->
+      <div class="border-4 border-dashed border-teal-200 rounded-2xl p-4 sm:p-6 bg-teal-50/40">
+        <h3 class="text-2xl sm:text-3xl font-bold text-teal-800 mb-2 flex items-center gap-2 title-font">
+          <span>👾 [실습 미션]</span> 스스로 외계인 끼리끼리 정렬시키기!
+        </h3>
+        <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">아래 정렬 기준 단추를 클릭해 로봇이 어떤 생김새를 보고 데이터를 끼리끼리 묶는지 관찰해보세요!</p>
+
+        <!-- 정렬되지 않은 도형들 배치 공간 -->
+        <div id="clustering-area" class="bg-white p-6 rounded-2xl border-2 border-teal-100 min-h-[220px] transition-all duration-700 flex flex-wrap gap-4 items-center justify-center shadow-inner">
+          <!-- JS에서 외계인 캐릭터들을 흩뿌려줌 -->
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+          <button onclick="runClustering('color')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-3.5 rounded-full text-lg transition fancy-btn">
+            🎨 "몸의 색깔" 기준으로 묶기!
+          </button>
+          <button onclick="runClustering('feature')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3.5 rounded-full text-lg transition fancy-btn">
+            👽 "눈의 개수" 기준으로 묶기!
+          </button>
+          <button onclick="resetClustering()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-3.5 rounded-full text-lg transition fancy-btn">
+            뒤섞어버리기 🔄
+          </button>
+        </div>
+
+        <p class="text-center text-teal-900 text-base mt-4 font-bold bg-teal-100/50 p-2 rounded-xl">
+          💡 이름표를 주지 않았지만, 몸의 색깔이나 눈의 모습을 로봇이 스스로 비교하며 예쁘게 정렬해 냅니다!
+        </p>
+      </div>
+    </section>
+
+    <!-- STEP 7: 일상 속 AI 공부법 매칭 & 비지도 학습 추가 돌발 미션! -->
+    <section id="step7" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-indigo-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">🧩</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-indigo-700 mt-2 title-font">7단계: 로봇 공부법 일상 탐험 & 추가 미션!</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-1 font-bold">두 가지 공부 마법은 우리 생활 속에서 어떻게 사용되고 있을까요?</p>
+      </div>
+
+      <!-- 파트 1: 일상 사용처 구분 미션 -->
+      <div class="border-4 border-dashed border-indigo-200 rounded-2xl p-4 sm:p-6 bg-indigo-50/30 mb-6">
+        <h3 class="text-2xl sm:text-3xl font-bold text-indigo-800 mb-2 flex items-center gap-2 title-font">
+          <span>🎯 [미션 1]</span> 인공지능 일상 예시 상자 담기!
+        </h3>
+        <p class="text-base sm:text-lg text-gray-600 mb-4 font-bold">
+          일상생활 속의 예시가 그려진 카드를 읽고, 알맞은 공부법 상자로 <strong>단추를 클릭해</strong> 쏙 담아주세요!
+        </p>
+
+        <!-- 예시 카드 배치 공간 -->
+        <div id="matching-cards-tray" class="flex flex-wrap gap-3 justify-center mb-6">
+          <!-- JS에서 동적으로 매칭 카드 배치 -->
+        </div>
+
+        <!-- 보관 상자 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-orange-50 border-4 border-dashed border-orange-300 rounded-2xl p-4 text-center">
+            <span class="text-4xl block">🏷️</span>
+            <span class="font-bold text-orange-800 text-xl title-font">이름표 공부법 상자</span>
+            <p class="text-xs text-orange-600 mb-3 font-bold">(정답 이름표를 알려주어 공부하는 지도학습)</p>
+            <div id="supervised-box" class="min-h-[100px] bg-white rounded-xl p-2 border-2 border-orange-100 flex flex-col gap-2">
+              <!-- 매칭된 카드 목록 -->
+            </div>
+          </div>
+          <div class="bg-teal-50 border-4 border-dashed border-teal-300 rounded-2xl p-4 text-center">
+            <span class="text-4xl block">👽</span>
+            <span class="font-bold text-teal-800 text-xl title-font">스스로 모으기 상자</span>
+            <p class="text-xs text-teal-600 mb-3 font-bold">(스스로 특징을 묶어서 공부하는 비지도학습)</p>
+            <div id="unsupervised-box" class="min-h-[100px] bg-white rounded-xl p-2 border-2 border-teal-100 flex flex-col gap-2">
+              <!-- 매칭된 카드 목록 -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 파트 2: 비지도 추가 돌발 미션 - 새로운 외계인의 도착! -->
+      <div id="new-alien-mission-box" class="hidden border-4 border-dashed border-rose-200 rounded-2xl p-4 sm:p-6 bg-rose-50/20">
+        <div class="text-center mb-3">
+          <span class="text-6xl animate-bounce block">👾</span>
+          <h3 class="text-2xl sm:text-3xl font-bold text-rose-800 title-font">🚨 돌발 상황: 우주 정거장에 새로운 외계인 도착!</h3>
+          <p class="text-base sm:text-lg text-gray-600 mt-1 font-bold">
+            스스로 모으기(비지도학습) 정렬을 마치자마자, <strong>새로운 외계인 친구 2마리</strong>가 정거장에 도착했어요! <br>
+            이 친구들의 생김새 특징을 보고, 알맞은 우주선에 탑승할 수 있도록 <strong>직접 분류</strong>해 주세요!
+          </p>
+        </div>
+
+        <!-- 새로운 외계인 전송 대기 구역 -->
+        <div class="flex justify-center gap-6 my-5 bg-white p-4 rounded-xl border border-rose-200 shadow-inner">
+          <div id="new-alien-1" class="text-center p-3 border-2 border-gray-200 rounded-xl w-36 flex flex-col items-center">
+            <span class="text-6xl block mb-1">🟢</span>
+            <span class="text-xs font-bold text-gray-500">초록눈이 (눈 1개)</span>
+            <div class="flex gap-1.5 mt-2 text-xs">
+              <button onclick="sortNewAlien(1, 'one')" class="bg-amber-400 hover:bg-amber-500 px-3 py-1.5 rounded text-amber-950 font-bold title-font">외눈박이선</button>
+              <button onclick="sortNewAlien(1, 'many')" class="bg-indigo-400 hover:bg-indigo-500 px-3 py-1.5 rounded text-white font-bold title-font">다눈이선</button>
+            </div>
+          </div>
+          <div id="new-alien-2" class="text-center p-3 border-2 border-gray-200 rounded-xl w-36 flex flex-col items-center">
+            <span class="text-6xl block mb-1">🦖</span>
+            <span class="text-xs font-bold text-gray-500">다눈공룡 (눈 3개)</span>
+            <div class="flex gap-1.5 mt-2 text-xs">
+              <button onclick="sortNewAlien(2, 'one')" class="bg-amber-400 hover:bg-amber-500 px-3 py-1.5 rounded text-amber-950 font-bold title-font">외눈박이선</button>
+              <button onclick="sortNewAlien(2, 'many')" class="bg-indigo-400 hover:bg-indigo-500 px-3 py-1.5 rounded text-white font-bold title-font">다눈이선</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="new-alien-success" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4 text-center mt-4">
+          <span class="text-3xl block title-font">🎉 새로운 외계인도 완벽 탑승 성공!</span>
+          <p class="text-base sm:text-lg text-emerald-800 font-bold mt-1">
+            처음 보는 새로운 친구(🟢, 🦖)도 스스로 발견한 '눈의 개수' 규칙에 따라 척척 끼리끼리 분류할 수 있음을 확인했어요!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 8: 데이터 과학자 면허 시험 & 수료증 (5분) -->
+    <section id="step8" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-purple-300">
+      <div class="text-center mb-6">
+        <span class="text-7xl">🎓</span>
+        <h2 class="text-4xl sm:text-5xl font-bold text-purple-700 mt-2 title-font">8단계: 명예 데이터 과학자 수료 퀴즈</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">완벽한 주니어 과학자가 되기 위한 최종 관문! 퀴즈 3문제를 모두 맞춰보세요!</p>
+      </div>
+
+      <div class="border-4 border-dashed border-purple-200 rounded-2xl p-4 sm:p-6 bg-purple-50/40">
+        
+        <!-- 퀴즈 1 -->
+        <div class="quiz-card block" id="quiz-1">
+          <div class="bg-purple-100 text-purple-800 font-bold px-3 py-1 rounded-full text-base inline-block mb-2 title-font">문제 1 / 3</div>
+          <p class="text-xl sm:text-2xl text-purple-900 font-bold mb-4 leading-relaxed">Q. 쓸모없거나 고장 난 불량 데이터(예: 썩은 과일 🤢)를 깨끗이 치워주는 청소 과정을 무엇이라 부를까요?</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button onclick="checkQuiz(1, false)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold transition active:scale-95 text-lg sm:text-xl">
+              ① 데이터 포장하기 🎁
+            </button>
+            <button onclick="checkQuiz(1, true)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold transition active:scale-95 text-lg sm:text-xl">
+              ② 데이터 청소하기 (전처리) 🧹
+            </button>
+          </div>
+        </div>
+
+        <!-- 퀴즈 2 -->
+        <div class="quiz-card hidden" id="quiz-2">
+          <div class="bg-purple-100 text-purple-800 font-bold px-3 py-1 rounded-full text-base inline-block mb-2 title-font">문제 2 / 3</div>
+          <p class="text-xl sm:text-2xl text-purple-900 font-bold mb-4 leading-relaxed">Q. 얼굴을 알아보는 얼굴인식 카메라나 스팸 편지 차단 기능처럼, 정답 이름표를 보며 공부시키는 방법은 무엇일까요?</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button onclick="checkQuiz(2, true)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold transition active:scale-95 text-lg sm:text-xl">
+              ① 이름표 공부법 (지도학습) 🏷️
+            </button>
+            <button onclick="checkQuiz(2, false)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold transition active:scale-95 text-lg sm:text-xl">
+              ② 스스로 모으기 공부법 (비지도학습) 🔍
+            </button>
+          </div>
+        </div>
+
+        <!-- 퀴즈 3 -->
+        <div class="quiz-card hidden" id="quiz-3">
+          <div class="bg-purple-100 text-purple-800 font-bold px-3 py-1 rounded-full text-base inline-block mb-2 title-font">문제 3 / 3</div>
+          <p class="text-xl sm:text-2xl text-purple-900 font-bold mb-4 leading-relaxed">Q. 강아지와 고양이 이름표만 공부한 로봇 앞에 사자(🦁)가 나타났을 때, 고양이라고 엉뚱하게 오판한 진짜 이유는 무엇일까요?</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button onclick="checkQuiz(3, false)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold text-base sm:text-lg transition active:scale-95 px-2 font-bold">
+              ① 사자는 원래 고양이 친구라서 🦁🐾
+            </button>
+            <button onclick="checkQuiz(3, true)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold text-base sm:text-lg transition active:scale-95 px-2 font-bold leading-relaxed">
+              ② 한 번도 배운 적 없는 새로운 종류의 동물이라, 자신이 공부한 범위 안에서 억지로 판단해서 🦁
+            </button>
+          </div>
+        </div>
+
+        <!-- 최종 성공 및 수료증 입력란 -->
+        <div class="quiz-card hidden text-center py-6" id="quiz-success">
+          <span class="text-6xl wiggle block mb-4">🏆</span>
+          <h3 class="text-3xl sm:text-4xl font-bold text-purple-800 mb-2 title-font">우와! 백 점으로 수료 완료!</h3>
+          <p class="text-gray-600 mb-6 text-lg sm:text-xl font-bold">데이터 청소와 인공지능 공부법을 완벽하게 통과한 자랑스러운 어린이 과학자입니다.</p>
+          
+          <div class="max-w-xs mx-auto flex gap-2 justify-center mb-6">
+            <input type="text" id="student-name" placeholder="멋진 내 이름을 적어주세요" class="border-2 border-purple-300 rounded-xl px-4 py-2 w-full focus:outline-none focus:border-purple-500 text-lg text-center font-bold">
+            <button onclick="generateCertificate()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-2.5 rounded-xl transition fancy-btn whitespace-nowrap text-lg title-font">
+              수료증 받기 🎓
+            </button>
+          </div>
+
+          <!-- 수료증 출력 영역 (고급 황금 액자 테두리 스타일) -->
+          <div id="certificate-box" class="hidden max-w-lg mx-auto bg-amber-50 border-[10px] border-double border-yellow-600 p-6 sm:p-8 rounded-3xl shadow-2xl relative text-center">
+            <span class="absolute top-4 left-4 text-3xl">🎖️</span>
+            <span class="absolute top-4 right-4 text-3xl">🎖️</span>
+            <h4 class="text-3xl sm:text-4xl font-bold text-amber-900 mb-6 title-font">명예 주니어 데이터 과학자 증서</h4>
+            <p class="text-xl sm:text-2xl text-gray-700 mb-4 font-bold">과학자명: <strong id="cert-name" class="text-2xl sm:text-3xl text-purple-700 border-b-2 border-purple-400 px-3 title-font">홍길동</strong></p>
+            <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-bold">
+              위 어린이는 우리 일상 속 숨어 있는 데이터를 발견하고,<br>
+              불량 데이터를 걸러내는 <strong>"데이터 청소"</strong> 과정과<br>
+              이름표를 다는 <strong>"이름표 공부법"</strong>, 예외를 찾아보는 <strong>"돌발 검증"</strong>,<br>
+              스스로 묶어 정렬하는 <strong>"스스로 모으기 공부법"</strong>의 기초를 훌륭히 이수하였습니다.<br>
+              이에 멋진 주니어 과학자 자격을 수여합니다.
+            </p>
+            <div class="flex justify-between items-center text-xs text-gray-500 mt-8 border-t border-amber-300 pt-4 font-bold">
+              <span>수여일자: <span id="cert-date">2026. 05. 26</span></span>
+              <span class="font-bold text-amber-800">우주 최강 AI 로봇 교실 🤖</span>
+            </div>
+
+            <!-- 인쇄하기 버튼 -->
+            <button onclick="window.print()" class="mt-6 bg-yellow-600 hover:bg-yellow-700 text-white font-bold px-6 py-2.5 rounded-xl text-base transition fancy-btn title-font">
+              🖨️ 수료증 인쇄하기
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 하단 탐색 네비게이터 -->
+  <footer class="bg-white border-t-4 border-lime-100 p-4 shadow-lg">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <button id="prev-btn" onclick="changeStep(-1)" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-7 py-3 rounded-full text-base transition fancy-btn disabled:opacity-40 title-font" disabled>
+        ⬅️ 이전 단계로
+      </button>
+      <button id="next-btn" onclick="changeStep(1)" class="bg-lime-500 hover:bg-lime-600 text-lime-950 font-bold px-7 py-3 rounded-full text-base transition fancy-btn title-font">
+        다음 단계로 ➡️
+      </button>
+    </div>
+  </footer>
+
+  <!-- 불꽃놀이 캔버스 -->
+  <canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50 hidden"></canvas>
+
+  <script>
+    /* ==========================================================================
+       앱 상태 및 수집 데이터 구성
+       ========================================================================== */
+    let currentStep = 1;
+    const totalSteps = 8;
+
+    // STEP 1: 그림책 슬라이드 데이터 (쉽고 친근한 비유로 수정)
+    let currentSlide = 0;
+    const bookSlides = [
+      {
+        title: "1장: '데이터'가 무엇일까요? 🤔",
+        emoji: "📦",
+        desc: "컴퓨터 친구들은 우리가 '눈'으로 보고, '귀'로 듣고, '몸'으로 느끼는 모든 기억들을 다 기록할 수 있어요! 이 소중한 기억들의 조각을 바로 <strong class='text-amber-600 font-bold'>'데이터'</strong>라고 불러요!",
+        tips: "예를 들면 스마트폰 속에 찍어 둔 강아지 사진, 오늘 바깥 날씨 온도, 즐거운 아기상어 노랫소리가 전부 데이터예요!"
+      },
+      {
+        title: "2장: 데이터가 생각으로 바뀌면 '정보'가 돼요! 💡",
+        emoji: "🎩",
+        desc: "데이터 조각들을 모아서 우리의 머릿속에서 쓸모 있게 변신한 생각을 <strong class='text-indigo-600 font-bold'>'정보'</strong>라고 해요!",
+        tips: "데이터 조각: '현재 온도 22도' 🌡️ ➜ 정보로 변신: '오늘 날씨가 선선하네? 밖에서 킥보드 타고 놀자! 🛹'"
+      },
+      {
+        title: "3장: 우리 일상 속 데이터는 어디에 쓰일까요? 🏪",
+        emoji: "📱",
+        desc: "우리가 모르는 사이에 매일 데이터를 쓰며 살아가고 있어요!",
+        tips: "• <strong>유튜브</strong>: 내가 봤던 만화영화 <strong>'데이터'</strong>들을 척척 기억해서 또 재미있어 할 영상을 보여줘요!<br>• <strong>마트 계산대</strong>: 맛있는 초코과자의 가격 <strong>'데이터'</strong>가 들어있어서 바코드를 띡! 찍으면 화면에 가격이 바로 나와요!"
+      },
+      {
+        title: "4장: 인공지능 로봇을 공부시키는 두 가지 마법 🪄",
+        emoji: "🤖",
+        desc: "모은 데이터로 로봇 친구를 공부시킬 때, 두 가지 재미있는 마법 공부법이 있어요!",
+        tips: "• <strong>① 이름표 공부법 (지도학습)</strong>: '이건 강아지야!', '이건 고양이야!' 정답을 알려주면서 공부하는 마법!<br>• <strong>② 스스로 모으기 공부법 (비지도학습)</strong>: 정답 없이 로봇 스스로 관찰해 비슷한 생김새끼리 모으는 마법!"
+      },
+      {
+        title: "5장: 직접 만져보는 데이터 상자! 🎮",
+        emoji: "⚡",
+        desc: "아래 네 가지 데이터 상자를 클릭해 데이터가 로봇의 머릿속 기억 창고로 쏙 날아가는 모습을 관찰해 보아요!",
+        interactive: true
+      }
+    ];
+
+    // STEP 2: 발견한 데이터 수집 목록
+    const dailyDataItems = [
+      { id: 1, icon: '🌡️', title: '오늘의 온도', example: '"바깥 온도가 22도예요!"', desc: '🔢 숫자 데이터: 날씨나 온도처럼 높고 낮음을 숫자로 기록한 정보예요.' },
+      { id: 2, icon: '🚌', title: '버스 번호', example: '"우리는 100번 버스를 타요."', desc: '🔤/🔢 글자와 숫자 데이터: 길을 헤매지 않게 돕는 신기한 번호예요.' },
+      { id: 3, icon: '🎵', title: '신나는 노래', example: '"아기상어 뚜루루뚜루~"', desc: '🔊 소리 데이터: 귀로 들려오는 즐거운 멜로디의 모음이에요.' },
+      { id: 4, icon: '📸', title: '가족 사진', example: '"휴대폰에 담긴 우리가족 얼굴"', desc: '🖼️ 그림 데이터: 눈으로 보는 소중한 추억을 사진 파일로 기록한 거예요.' },
+      { id: 5, icon: '📅', title: '달력 날짜', example: '"내 생일은 12월 25일이야!"', desc: '📅 날짜 데이터: 언제 특별한 약속이 다가오는지 알려주는 날짜 정보예요.' },
+      { id: 6, icon: '📊', title: '내 키 재기', example: '"와! 내 키가 128cm예요!"', desc: '🔢 측정 데이터: 자라나는 내 몸의 성장 크기를 세는 키 수치예요.' },
+      { id: 7, icon: '🚦', title: '신호등 불빛', example: '"초록불이 반짝 켜졌어요!"', desc: '🎨 색깔 데이터: 안전하게 건널 수 있게 보살펴주는 신호 정보예요.' },
+      { id: 8, icon: '❤️', title: '심장 소리', example: '"지금 뛰는 가슴 소리는 90번!"', desc: '🔢 맥박 데이터: 내 몸속 장기들이 힘차게 뛰고 있는지 들려주는 건강 수치예요.' },
+      { id: 9, icon: '📱', title: '엄마의 문자', example: '"사랑해, 얼른 조심히 오렴!"', desc: '🔤 글자 데이터: 사람의 마음과 다정한 목소리를 글로 전하는 낱말이에요.' },
+      { id: 10, icon: '🐱', title: '고양이 소리', example: '"야옹~ 야옹 소리를 내요."', desc: '🔊 소리 데이터: 동물이 원하는 마음을 표현하기 위해 내는 소리 신호예요.' }
+    ];
+    const step2Discovered = {}; 
+
+    // STEP 3: 데이터 전처리 (불량 과일 전처리 미션)
+    const rawDataList = [
+      { id: 1, type: 'good', emoji: '🍎', name: '사과' },
+      { id: 2, type: 'bad', emoji: '🤢', name: '상한 포도' },
+      { id: 3, type: 'good', emoji: '🍌', name: '바나나' },
+      { id: 4, type: 'bad', emoji: '🧸', name: '딸기 완구' },
+      { id: 5, type: 'good', emoji: '🍇', name: '싱싱 포도' },
+      { id: 6, type: 'bad', emoji: '❓', name: '물음표 상자' },
+      { id: 7, type: 'good', emoji: '🍊', name: '오렌지' },
+      { id: 8, type: 'bad', emoji: '🤢', name: '상한 바나나' }
+    ];
+    let activePreprocessingList = [];
+    let trashSuccessCount = 0;
+
+    // STEP 4: 지도학습 20마리 댕냥이 데이터 세트
+    const trainingDataList = [
+      { emoji: '🐶', label: 'dog', text: '귀가 펄럭이고, 멍멍 짖어요' },
+      { emoji: '🐱', label: 'cat', text: '뾰족한 귀와 수염, 야옹 소리' },
+      { emoji: '🐕', label: 'dog', text: '마당에서 꼬리를 힘차게 흔들어요' },
+      { emoji: '🐈', label: 'cat', text: '동그랗게 식빵 자세를 구워요' },
+      { emoji: '🐩', label: 'dog', text: '복슬복슬 곱슬곱슬 하얀색 털' },
+      { emoji: '😸', label: 'cat', text: '눈을 초승달처럼 접고 야옹해요' },
+      { emoji: '🦮', label: 'dog', text: '조끼를 입은 든든한 안내견 리트리버' },
+      { emoji: '🐈‍⬛', label: 'cat', text: '밤하늘처럼 아주 깜깜한 검은 고양이' },
+      { emoji: '🐕‍🦺', label: 'dog', text: '늠름하게 사람을 구하는 검정 진돗개' },
+      { emoji: '😺', label: 'cat', text: '장난을 걸어오는 주황빛 줄무늬 고양이' },
+      { emoji: '🦴', label: 'dog', text: '뼈다귀를 제일 좋아하는 말티즈' },
+      { emoji: '😻', label: 'cat', text: '눈을 반짝이며 생선 냄새를 맡아요' },
+      { emoji: '🐾', label: 'dog', text: '모래 위에 발바닥 흔적을 꾹 찍은 댕댕이' },
+      { emoji: '😽', label: 'cat', text: '애교 듬뿍 볼을 비비는 귀여운 삼색이' },
+      { emoji: '🐺', label: 'dog', text: '눈밭을 신나게 달리는 멋진 허스키견' },
+      { emoji: '🙀', label: 'cat', text: '눈이 왕창 커진 놀란 깜짝 야옹이' },
+      { emoji: '🦊', label: 'dog', text: '귀가 아주 길고 다리가 짧은 웰시코기' },
+      { emoji: '😼', label: 'cat', text: '얼굴 한쪽만 사뿐히 올린 장난꾸러기 삼색이' },
+      { emoji: '🐕', label: 'dog', text: '세상에서 제일 작은 수염 털 치와와' },
+      { emoji: '🐈', label: 'cat', text: '얼굴과 다리만 초콜릿빛을 띤 신비한 샴냥이' }
+    ];
+    let currentTrainIndex = 0;
+    let labeledDatabase = []; 
+
+    // STEP 5: 순차 테스트 전용 데이터 목록 분리
+    const normalTestDataList = [
+      { emoji: '🐕‍🦺', correctLabel: 'dog', labelKorean: '강아지', desc: '검은색 털을 가졌고, 왈왈 짖는 중이에요.' },
+      { emoji: '🐈', correctLabel: 'cat', labelKorean: '고양이', desc: '생선을 아주아주 좋아하는 귀여운 턱시도 고양이예요.' }
+    ];
+    let currentNormalTestIndex = 0;
+    let isNormalTestDone = false;
+    let isTestCompleted = false;
+
+    // STEP 6: 비지도학습 외계인 데이터셋
+    const alienList = [
+      { id: 1, color: 'pink', eyes: 'one', emoji: '👾' }, 
+      { id: 2, color: 'blue', eyes: 'many', emoji: '👽' }, 
+      { id: 3, color: 'pink', eyes: 'one', emoji: '🐙' }, 
+      { id: 4, color: 'blue', eyes: 'many', emoji: '🤖' }, 
+      { id: 5, color: 'pink', eyes: 'many', emoji: '👹' }, 
+      { id: 6, color: 'blue', eyes: 'one', emoji: '👁️' }   
+    ];
+
+    // STEP 7: 매칭 데이터 목록 및 신규 외계인
+    const matchingItems = [
+      { id: 'm1', text: "📸 얼굴인식 사진", type: 'super', name: "얼굴 인식" },
+      { id: 'm2', text: "✉️ 스팸 메일 차단", type: 'super', name: "스팸 필터" },
+      { id: 'm3', text: "👗 취향 옷끼리 묶기", type: 'unsuper', name: "추천 추천" },
+      { id: 'm4', text: "👥 관심사 그룹 나누기", type: 'unsuper', name: "친구 관심 그룹" }
+    ];
+    let activeMatchingList = [];
+    let supervisedMatched = [];
+    let unsupervisedMatched = [];
+    let solvedNewAliens = { 1: false, 2: false };
+
+    /* ==========================================================================
+       오디오 시스템 (Web Audio API)
+       ========================================================================== */
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playTone(freq, type = 'sine', duration = 0.1) {
+      try {
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function playSuccessSound() {
+      playTone(523.25, 'sine', 0.15); // C5
+      setTimeout(() => playTone(659.25, 'sine', 0.15), 100); // E5
+      setTimeout(() => playTone(783.99, 'sine', 0.3), 200); // G5
+    }
+
+    function playFailureSound() {
+      playTone(220, 'triangle', 0.3); // A3
+    }
+
+    /* ==========================================================================
+       모달 커스텀 알림 시스템
+       ========================================================================== */
+    function showCustomModal(title, desc, icon = '💡') {
+      document.getElementById('modal-icon').textContent = icon;
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-desc').textContent = desc;
+      document.getElementById('custom-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('custom-modal').classList.add('hidden');
+      playTone(300, 'sine', 0.05);
+    }
+
+    /* ==========================================================================
+       단계 이동 핸들러
+       ========================================================================== */
+    function changeStep(direction) {
+      if (currentStep + direction < 1 || currentStep + direction > totalSteps) return;
+
+      // 단계별 최소 실습 미션 수행 상태 검증
+      if (direction > 0) {
+        if (currentStep === 1) {
+          if (currentSlide < bookSlides.length - 1) {
+            showCustomModal("알림 📖", "그림책을 5장 끝까지 넘겨서 재미있는 이론을 먼저 공부해 보세요!", "⚠️");
+            playFailureSound();
+            return;
+          }
+        }
+        if (currentStep === 2) {
+          const revealedCount = Object.keys(step2Discovered).length;
+          if (revealedCount < 10) {
+            showCustomModal("잠깐만요! 🕵️‍♂️", `아직 확인하지 못한 일상 도감이 있어요! (${revealedCount} / 10 발견함) 10개를 모두 눌러서 확인해 주세요!`, "⚠️");
+            playFailureSound();
+            return;
+          }
+        }
+        if (currentStep === 3) {
+          const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
+          if (remainingBad > 0) {
+            showCustomModal("청소 중! 🧹", `남은 불량 데이터(${remainingBad}개)를 마저 클릭해 쓰레기통에 쏙 버려주세요!`, "⚠️");
+            playFailureSound();
+            return;
+          }
+        }
+        if (currentStep === 4) {
+          if (currentTrainIndex < trainingDataList.length) {
+            showCustomModal("공부가 더 필요해요! 🤖", `현재 ${currentTrainIndex}/20마리만 학습시켰어요! 20마리를 완벽히 채워 로봇을 끝까지 가르쳐주세요!`, "⚠️");
+            playFailureSound();
+            return;
+          }
+        }
+        if (currentStep === 5) {
+          if (!isTestCompleted) {
+            showCustomModal("시험 단계 📝", "1부 일반 시험과 2부 돌발 사자 문제의 정답을 모두 확인해야 다음 단계로 이동할 수 있어요!", "⚠️");
+            playFailureSound();
+            return;
+          }
+        }
+        if (currentStep === 7) {
+          const totalMatched = supervisedMatched.length + unsupervisedMatched.length;
+          const isAliensSolved = solvedNewAliens[1] && solvedNewAliens[2];
+          if (totalMatched < matchingItems.length) {
+            showCustomModal("상자 담기 미완료 🧩", "일상 속의 두 가지 공부법 알맞은 상자에 카드를 쏙 다 담아주세요!", "⚠️");
+            playFailureSound();
+            return;
+          }
+          if (!isAliensSolved) {
+            showCustomModal("새로운 외계인 미분류 👾", "추가 미션! 새로 들어온 외계인 2마리를 특징에 알맞은 우주선에 태워주세요!", "⚠️");
+            playFailureSound();
+            return;
+          }
+        }
+      }
+
+      // 스텝 교환
+      document.getElementById(`step${currentStep}`).classList.add('hidden');
+      document.getElementById(`step${currentStep}`).classList.remove('block');
+
+      currentStep += direction;
+
+      document.getElementById(`step${currentStep}`).classList.remove('hidden');
+      document.getElementById(`step${currentStep}`).classList.add('block');
+
+      // UI 갱신
+      updateStepHeader();
+      playTone(350, 'sine', 0.05);
+
+      // 단계별 초기 렌더링 호출 트리거
+      if (currentStep === 1) {
+        renderSlide();
+      } else if (currentStep === 2) {
+        initDataGallery();
+      } else if (currentStep === 3) {
+        resetPreprocessing();
+      } else if (currentStep === 4) {
+        renderTrainItem();
+        renderDatabaseGrid();
+      } else if (currentStep === 5) {
+        resetTestStage();
+      } else if (currentStep === 6) {
+        resetClustering();
+      } else if (currentStep === 7) {
+        initMatchingGame();
+      }
+    }
+
+    function updateStepHeader() {
+      document.getElementById('step-badge').textContent = `${currentStep}단계 / ${totalSteps}단계`;
+      const percentage = (currentStep / totalSteps) * 100;
+      document.getElementById('progress-bar').style.width = `${percentage}%`;
+
+      document.getElementById('prev-btn').disabled = (currentStep === 1);
+      if (currentStep === totalSteps) {
+        document.getElementById('next-btn').classList.add('hidden');
+      } else {
+        document.getElementById('next-btn').classList.remove('hidden');
+      }
+    }
+
+    /* ==========================================================================
+       [1단계] 신규 그림책 렌더링 시스템
+       ========================================================================== */
+    function renderSlide() {
+      const container = document.getElementById('book-content');
+      const item = bookSlides[currentSlide];
+      
+      document.getElementById('slide-indicator').textContent = `${currentSlide + 1} / ${bookSlides.length}`;
+      document.getElementById('slide-prev').disabled = (currentSlide === 0);
+      
+      if (item.interactive) {
+        container.innerHTML = `
+          <div class="text-center slide-active">
+            <span class="text-6xl block mb-2">${item.emoji}</span>
+            <h3 class="text-2xl sm:text-3xl font-bold text-amber-800 mb-2 title-font">${item.title}</h3>
+            <p class="text-xl text-gray-700 font-bold mb-4">${item.desc}</p>
+            
+            <p class="text-sm sm:text-base text-red-500 mb-4 font-bold">👇 아래 4개의 데이터 상자 단추를 클릭해 데이터를 컴퓨터에 넣어보세요!</p>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 justify-center mb-6">
+              <button onclick="triggerInteractiveData('text', '🔤 글자 상자', '📱 엄마의 문자: \'조심히 오렴!\'')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🔤 글자 상자
+              </button>
+              <button onclick="triggerInteractiveData('number', '🔢 숫자 상자', '🌡️ 오늘 날씨: \'22도\'')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🔢 숫자 상자
+              </button>
+              <button onclick="triggerInteractiveData('sound', '🔊 소리 상자', '🎵 노래: \'아기상어 뚜루루뚜루~\'')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🔊 소리 상자
+              </button>
+              <button onclick="triggerInteractiveData('image', '🖼️ 그림 상자', '📸 사진: \'가족들의 활짝 웃는 얼굴\'')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🖼️ 그림 상자
+              </button>
+            </div>
+
+            <!-- 데이터가 실시간 적재되는 대시보드 화면 (글라스모피즘 아동 맞춤형) -->
+            <div id="interactive-dashboard" class="hidden bg-white/95 border-4 border-lime-300 p-5 rounded-3xl text-center max-w-sm mx-auto shadow-md transform transition-all duration-300">
+              <span class="text-4xl block">🧠</span>
+              <h4 class="font-bold text-lime-800 text-2xl mt-1 title-font">로봇의 머릿속 기억 창고</h4>
+              <p class="text-sm text-lime-600 font-bold mb-3">데이터가 공부방으로 쏙 도착했어요! 📥</p>
+              
+              <div class="bg-lime-50 rounded-2xl p-4 border-2 border-lime-200 text-left text-lg text-gray-700 font-bold">
+                <p id="dash-type" class="font-bold text-lime-700">상자 이름: -</p>
+                <p id="dash-content" class="mt-1 text-gray-800">기억한 내용: -</p>
+              </div>
+              <p id="dash-status" class="mt-3 text-base text-emerald-600 font-extrabold animate-pulse">✨ 로봇 머릿속 서랍에 저장 완료! ✨</p>
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="text-center slide-active">
+            <span class="text-7xl block mb-2 animate-bounce">${item.emoji}</span>
+            <h3 class="text-3xl sm:text-4xl font-bold text-amber-800 mb-2 title-font">${item.title}</h3>
+            <div class="text-xl sm:text-2xl text-gray-700 leading-relaxed max-w-lg mx-auto font-bold mb-4">
+              ${item.desc}
+            </div>
+            <div class="bg-amber-100/60 rounded-2xl p-5 border border-amber-200 text-left max-w-lg mx-auto text-lg text-amber-900 leading-relaxed font-bold">
+              ${item.tips}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function triggerInteractiveData(type, title, content) {
+      playTone(400 + (type === 'text' ? 50 : type === 'number' ? 100 : type === 'sound' ? 150 : 200), 'sine', 0.15);
+      
+      const dashboard = document.getElementById('interactive-dashboard');
+      dashboard.classList.remove('hidden');
+
+      document.getElementById('dash-type').innerHTML = `상자 이름: <span class="text-lime-700 font-bold">${title}</span>`;
+      document.getElementById('dash-content').textContent = `기억한 내용: ${content}`;
+      
+      playTone(700, 'sine', 0.05);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        renderSlide();
+        playTone(300, 'sine', 0.05);
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < bookSlides.length - 1) {
+        currentSlide++;
+        renderSlide();
+        playTone(350, 'sine', 0.05);
+      } else {
+        changeStep(1); 
+      }
+    }
+
+    /* ==========================================================================
+       [2단계] 10종 일상 데이터 도감 렌더링 및 클릭 이벤트
+       ========================================================================== */
+    function initDataGallery() {
+      const container = document.getElementById('data-gallery-grid');
+      container.innerHTML = '';
+      
+      dailyDataItems.forEach(item => {
+        const flipCard = document.createElement('div');
+        flipCard.className = "flip-card w-full h-24 cursor-pointer";
+        flipCard.id = `gallery-card-${item.id}`;
+        flipCard.onclick = () => revealDailyData(item.id);
+
+        const isRevealed = step2Discovered[item.id];
+        flipCard.innerHTML = `
+          <div class="flip-card-inner relative w-full h-full text-center transition-transform duration-500 transform-gpu ${isRevealed ? 'flipped' : ''}" style="transform-style: preserve-3d;">
+            <!-- 앞면: ? 물음표 기호 -->
+            <div class="flip-card-front absolute w-full h-full bg-white border-2 border-dashed border-lime-300 rounded-2xl flex flex-col justify-center items-center shadow-sm">
+              <span class="text-4xl">${item.icon}</span>
+              <span class="text-xs font-bold text-gray-500 mt-1 title-font">${item.title}</span>
+            </div>
+            <!-- 뒷면: 수집 성공 체크 및 이모지 -->
+            <div class="flip-card-back absolute w-full h-full bg-lime-100 border-2 border-lime-500 rounded-2xl flex flex-col justify-center items-center shadow-md text-lime-900" style="transform: rotateY(180deg); backface-visibility: hidden;">
+              <span class="text-4xl">✅</span>
+              <span class="text-[12px] font-bold mt-1 title-font">도감 등록!</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(flipCard);
+        if (isRevealed) {
+          flipCard.classList.add('flipped');
+        }
+      });
+
+      const count = Object.keys(step2Discovered).length;
+      document.getElementById('pending-cards-count').textContent = count;
+    }
+
+    function revealDailyData(id) {
+      const item = dailyDataItems.find(x => x.id === id);
+      if (!item) return;
+
+      if (!step2Discovered[id]) {
+        step2Discovered[id] = true;
+        
+        const cardEl = document.getElementById(`gallery-card-${id}`);
+        cardEl.classList.add('flipped');
+
+        playTone(400 + (id * 40), 'sine', 0.12);
+        
+        const count = Object.keys(step2Discovered).length;
+        document.getElementById('pending-cards-count').textContent = count;
+
+        if (count === 10) {
+          playSuccessSound();
+          showCustomModal("축하합니다! 🕵️‍♂️✨", "우와! 우리 하루 일상 속 데이터 도감 10가지를 모두 수집하여 데이터 대도감을 완성했어요! 이제 다음 단계에서 불량 데이터를 청소하러 출발합시다!", "🎉");
+        }
+      } else {
+        playTone(300, 'sine', 0.05);
+      }
+
+      // 하단 상세 패널
+      const panel = document.getElementById('data-detail-panel');
+      panel.classList.remove('hidden');
+      
+      document.getElementById('detail-icon').textContent = item.icon;
+      document.getElementById('detail-title').textContent = item.title;
+      document.getElementById('detail-example').textContent = `실제 예시: ${item.example}`;
+      document.getElementById('detail-desc').textContent = item.desc;
+    }
+
+    /* ==========================================================================
+       [3단계] 데이터 전처리 (불량 과일 쓰레기통 청소)
+       ========================================================================== */
+    function resetPreprocessing() {
+      activePreprocessingList = JSON.parse(JSON.stringify(rawDataList)).sort(() => Math.random() - 0.5);
+      trashSuccessCount = 0;
+      document.getElementById('trash-success-count').textContent = trashSuccessCount;
+      renderPreprocessingTray();
+      updatePreprocessingCounts();
+    }
+
+    function renderPreprocessingTray() {
+      const tray = document.getElementById('preprocessing-tray');
+      tray.innerHTML = '';
+
+      activePreprocessingList.forEach(item => {
+        const btn = document.createElement('button');
+        btn.innerHTML = `
+          <span class="text-5xl block mb-1 transition transform duration-150 active:scale-75">${item.emoji}</span>
+          <span class="text-[13px] font-bold text-gray-600 block leading-none title-font">${item.name}</span>
+        `;
+        btn.className = "p-3 bg-slate-50 border-2 border-gray-200 rounded-2xl transition transform hover:scale-105 hover:border-sky-300 w-24 h-24 flex flex-col items-center justify-center fancy-btn";
+        btn.onclick = () => handlePreprocessingClick(item, btn);
+        tray.appendChild(btn);
+      });
+    }
+
+    function handlePreprocessingClick(item, element) {
+      if (item.type === 'bad') {
+        playTone(700, 'sine', 0.08);
+        element.style.pointerEvents = 'none';
+        element.style.opacity = '0';
+        element.style.transform = 'scale(0) translateY(50px)';
+        
+        setTimeout(() => {
+          element.classList.add('hidden');
+        }, 200);
+
+        activePreprocessingList = activePreprocessingList.filter(x => x.id !== item.id);
+        trashSuccessCount++;
+        document.getElementById('trash-success-count').textContent = trashSuccessCount;
+        updatePreprocessingCounts();
+
+        const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
+        if (remainingBad === 0) {
+          playSuccessSound();
+          showCustomModal("데이터 청소 완료! 🧹", "상하고 고장 난 불량 데이터(🤢, 🧸, ❓)를 모두 휴지통에 깨끗이 치웠어요! 이제 신선한 진짜 데이터로만 로봇을 가르쳐주러 가볼까요?", "🥳");
+        }
+      } else {
+        playFailureSound();
+        element.classList.add('animate-bounce', 'border-red-400');
+        setTimeout(() => element.classList.remove('animate-bounce'), 800);
+        showCustomModal("앗! 버리면 안 돼요 ⚠️", "그 과일은 깨끗하고 훌륭한 진짜 데이터예요! 로봇이 올바르게 훈련할 수 있도록 보관해야 합니다.", "🍎");
+      }
+    }
+
+    function updatePreprocessingCounts() {
+      const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
+      document.getElementById('dirty-count').textContent = remainingBad;
+      document.getElementById('clean-count').textContent = rawDataList.filter(d => d.type === 'good').length - activePreprocessingList.filter(d => d.type === 'good').length;
+    }
+
+    /* ==========================================================================
+       [4단계] 지도학습 훈련 (20마리 댕냥이 데이터 구축)
+       ========================================================================== */
+    function renderTrainItem() {
+      if (currentTrainIndex < trainingDataList.length) {
+        const item = trainingDataList[currentTrainIndex];
+        document.getElementById('train-index-text').textContent = `${currentTrainIndex + 1} / ${trainingDataList.length}`;
+        
+        const progressPct = ((currentTrainIndex) / trainingDataList.length) * 100;
+        document.getElementById('train-mini-progress').style.width = `${progressPct}%`;
+        
+        document.getElementById('train-animal-view').textContent = item.emoji;
+        
+        const featureBox = document.getElementById('train-animal-features');
+        featureBox.innerHTML = '';
+        const features = item.text.split(', ');
+        features.forEach(f => {
+          const li = document.createElement('li');
+          li.textContent = f;
+          featureBox.appendChild(li);
+        });
+      } else {
+        document.getElementById('train-index-text').textContent = "공부 완료!";
+        document.getElementById('train-mini-progress').style.width = `100%`;
+        document.getElementById('train-animal-view').textContent = "🎓";
+        document.getElementById('train-animal-features').innerHTML = "<li class='text-orange-600 font-bold'>20마리 공부를 마쳤어요!</li><li>로봇이 시험을 치를 준비가 다 되었어요!</li>";
+        playSuccessSound();
+      }
+    }
+
+    function renderDatabaseGrid() {
+      const grid = document.getElementById('training-database-grid');
+      grid.innerHTML = '';
+
+      for (let i = 0; i < trainingDataList.length; i++) {
+        const slot = document.createElement('div');
+        if (i < labeledDatabase.length) {
+          const data = labeledDatabase[i];
+          slot.className = "border-2 border-orange-400 bg-orange-50/50 p-1.5 rounded-xl text-center flex flex-col items-center justify-center transition-all scale-100";
+          slot.innerHTML = `
+            <span class="text-3xl">${data.emoji}</span>
+            <span class="text-[11px] font-bold text-orange-900 bg-orange-200 px-1 rounded mt-0.5 leading-none title-font">${data.labelKorean}</span>
+          `;
+        } else {
+          slot.className = "border-2 border-dashed border-gray-200 bg-gray-50 h-12 rounded-xl flex items-center justify-center text-gray-350 text-base font-bold title-font";
+          slot.textContent = `${i + 1}`;
+        }
+        grid.appendChild(slot);
+      }
+    }
+
+    function submitLabel(label) {
+      if (currentTrainIndex >= trainingDataList.length) {
+        showCustomModal("알림 🤖", "이미 모든 동물 친구들 공부가 끝났습니다! 다음 시험 단계로 넘어가보세요.", "💡");
+        return;
+      }
+
+      const activeItem = trainingDataList[currentTrainIndex];
+      const correctKorean = label === 'dog' ? '강아지' : '고양이';
+
+      labeledDatabase.push({
+        emoji: activeItem.emoji,
+        label: label,
+        labelKorean: correctKorean
+      });
+
+      playTone(300 + (currentTrainIndex * 25), 'sine', 0.08);
+      currentTrainIndex++;
+      
+      renderTrainItem();
+      renderDatabaseGrid();
+    }
+
+    /* ==========================================================================
+       [5단계] 테스트 & 돌발 상황 (사자/치타) 고찰
+       ========================================================================== */
+    function resetTestStage() {
+      currentNormalTestIndex = 0;
+      isNormalTestDone = false;
+      isTestCompleted = false;
+
+      document.getElementById('normal-test-zone').classList.remove('hidden');
+      document.getElementById('ood-test-zone').classList.add('hidden');
+      document.getElementById('goto-ood-zone').classList.add('hidden');
+      document.getElementById('test-result-bubble').classList.add('hidden');
+      document.getElementById('ood-result-bubble').classList.add('hidden');
+      document.getElementById('ood-riddle-card').classList.add('hidden');
+      document.getElementById('ood-explanation').classList.add('hidden');
+
+      renderNormalTestItem();
+    }
+
+    function renderNormalTestItem() {
+      if (currentNormalTestIndex < normalTestDataList.length) {
+        const item = normalTestDataList[currentNormalTestIndex];
+        document.getElementById('test-animal-emoji').textContent = item.emoji;
+        document.getElementById('test-features').textContent = `특징: ${item.desc}`;
+        document.getElementById('test-result-bubble').classList.add('hidden');
+      } else {
+        isNormalTestDone = true;
+        document.getElementById('test-animal-emoji').textContent = "💯";
+        document.getElementById('test-features').textContent = "공부했던 문제를 다 풀었습니다!";
+        document.getElementById('goto-ood-zone').classList.remove('hidden');
+      }
+    }
+
+    function robotEvaluateNormal() {
+      if (currentNormalTestIndex >= normalTestDataList.length) return;
+
+      const item = normalTestDataList[currentNormalTestIndex];
+      const bubble = document.getElementById('test-result-bubble');
+      const text = document.getElementById('test-result-text');
+
+      bubble.classList.remove('hidden');
+      playTone(600, 'sine', 0.2);
+
+      const labelColor = item.correctLabel === 'dog' ? 'text-sky-600' : 'text-pink-600';
+      text.innerHTML = `🤖 "나는 방금 강아지 이름표를 열심히 공부했어! 특징을 보니... 이건 귀여운 <strong class='${labelColor}'>${item.labelKorean}</strong>가 맞아!"`;
+
+      setTimeout(() => {
+        currentNormalTestIndex++;
+        renderNormalTestItem();
+      }, 1500);
+    }
+
+    function startOodStage() {
+      playTone(700, 'sine', 0.15);
+      
+      document.getElementById('normal-test-zone').classList.add('hidden');
+      document.getElementById('ood-test-zone').classList.remove('hidden');
+      document.getElementById('ood-result-bubble').classList.add('hidden');
+      document.getElementById('ood-riddle-card').classList.add('hidden');
+    }
+
+    function robotEvaluateOod() {
+      const bubble = document.getElementById('ood-result-bubble');
+      const text = document.getElementById('ood-result-text');
+
+      bubble.classList.remove('hidden');
+      playTone(400, 'triangle', 0.35);
+
+      text.innerHTML = `🤖 "어라..? 사자는 내 공부장에 없는데... 얼굴에 귀가 고양이랑 쫑긋 닮았고 귀여운 수염이 있으니까... 내 생각엔 <strong class='text-red-500'>고양이</strong> 같아!"`;
+
+      setTimeout(() => {
+        document.getElementById('ood-riddle-card').classList.remove('hidden');
+        showCustomModal("로봇의 엉뚱한 실수! 🧐", "로봇이 배운 적 없는 사자에게 '고양이'라는 이름표를 억지로 붙였어요! 왜 그런 실수를 했는지 오른쪽 문제를 같이 풀어보아요.", "⚡");
+        playTone(650, 'sine', 0.25);
+      }, 600);
+    }
+
+    function chooseOutboundAnswer(ansType) {
+      if (ansType === 'correct') {
+        playSuccessSound();
+        document.getElementById('ood-explanation').classList.remove('hidden');
+        isTestCompleted = true; 
+      } else {
+        playFailureSound();
+        showCustomModal("다시 한 번 고민해 보세요! ❌", "사자는 한 번도 가르쳐 준 적 없는 새로운 동물 데이터예요! 로봇은 배운 좁은 범위 안에서만 억지로 끼워 맞춰 오판한 것이랍니다.", "⚠️");
+      }
+    }
+
+    /* ==========================================================================
+       [6단계] 비지도학습 (이름표 없이 공통점 끼리끼리 정렬)
+       ========================================================================== */
+    function resetClustering() {
+      const area = document.getElementById('clustering-area');
+      area.innerHTML = '';
+      area.className = "bg-white p-6 rounded-2xl border-2 border-teal-100 min-h-[220px] flex flex-wrap gap-4 items-center justify-center shadow-inner";
+
+      alienList.forEach(item => {
+        const el = document.createElement('div');
+        el.className = "text-6xl transition-all duration-700 ease-in-out p-3 bg-gray-50 border border-gray-100 rounded-xl shadow-sm cursor-pointer";
+        el.textContent = item.emoji;
+        el.id = `alien-item-${item.id}`;
+        area.appendChild(el);
+      });
+      playTone(320, 'triangle', 0.1);
+    }
+
+    function runClustering(criteria) {
+      const area = document.getElementById('clustering-area');
+      area.innerHTML = '';
+      area.className = "bg-white p-6 rounded-2xl border-2 border-teal-100 min-h-[220px] grid grid-cols-2 gap-4 transition-all duration-700 shadow-inner";
+
+      playTone(650, 'sine', 0.1);
+
+      if (criteria === 'color') {
+        const pinkGroup = document.createElement('div');
+        pinkGroup.className = "bg-pink-50 border-2 border-dashed border-pink-300 p-4 rounded-xl text-center transition-all";
+        pinkGroup.innerHTML = "<p class='font-bold text-pink-700 text-lg mb-2 title-font'>🌸 분홍색 몸 외모 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👾 🐙 👹</div>";
+
+        const blueGroup = document.createElement('div');
+        blueGroup.className = "bg-sky-50 border-2 border-dashed border-sky-300 p-4 rounded-xl text-center transition-all";
+        blueGroup.innerHTML = "<p class='font-bold text-sky-700 text-lg mb-2 title-font'>💎 파란색 몸 외모 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👽 🤖 👁️</div>";
+
+        area.appendChild(pinkGroup);
+        area.appendChild(blueGroup);
+      } else {
+        const oneEyeGroup = document.createElement('div');
+        oneEyeGroup.className = "bg-amber-50 border-2 border-dashed border-amber-300 p-4 rounded-xl text-center transition-all";
+        oneEyeGroup.innerHTML = "<p class='font-bold text-amber-700 text-lg mb-2 title-font'>👁️ 눈이 1개인 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👾 🐙 👁️</div>";
+
+        const multiEyeGroup = document.createElement('div');
+        multiEyeGroup.className = "bg-indigo-50 border-2 border-dashed border-indigo-300 p-4 rounded-xl text-center transition-all";
+        multiEyeGroup.innerHTML = "<p class='font-bold text-indigo-700 text-lg mb-2 title-font'>👁️👁️ 눈이 여러 개인 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👽 🤖 👹</div>";
+
+        area.appendChild(oneEyeGroup);
+        area.appendChild(multiEyeGroup);
+      }
+    }
+
+    /* ==========================================================================
+       [7단계] 일상 AI 공부법 매칭 및 신규 데이터 추가 분류 미션
+       ========================================================================== */
+    function initMatchingGame() {
+      activeMatchingList = JSON.parse(JSON.stringify(matchingItems)).sort(() => Math.random() - 0.5);
+      supervisedMatched = [];
+      unsupervisedMatched = [];
+      solvedNewAliens = { 1: false, 2: false };
+
+      document.getElementById('supervised-box').innerHTML = `<p class='text-base text-gray-400 italic py-4 font-bold'>알맞은 카드의 단추를 클릭해 분류하세요</p>`;
+      document.getElementById('unsupervised-box').innerHTML = `<p class='text-base text-gray-400 italic py-4 font-bold'>알맞은 카드의 단추를 클릭해 분류하세요</p>`;
+      
+      document.getElementById('new-alien-mission-box').classList.add('hidden');
+      document.getElementById('new-alien-success').classList.add('hidden');
+      
+      document.getElementById('new-alien-1').classList.remove('opacity-50', 'bg-emerald-50');
+      document.getElementById('new-alien-2').classList.remove('opacity-50', 'bg-emerald-50');
+
+      renderMatchingCards();
+    }
+
+    function renderMatchingCards() {
+      const container = document.getElementById('matching-cards-tray');
+      container.innerHTML = '';
+
+      if (activeMatchingList.length === 0) {
+        container.innerHTML = `<span class='text-emerald-600 font-bold text-xl animate-bounce title-font'>🎉 일상 예시 상자 분류 완료! 이어서 아래의 2차 돌발 외계인 미션을 풀어주세요!</span>`;
+        document.getElementById('new-alien-mission-box').classList.remove('hidden');
+        return;
+      }
+
+      activeMatchingList.forEach(item => {
+        const btn = document.createElement('div');
+        btn.className = "bg-white border-2 border-indigo-200 rounded-xl p-3 shadow-md text-center max-w-[200px] cursor-pointer hover:border-indigo-500 hover:scale-105 transform transition duration-150 flex flex-col justify-between";
+        btn.innerHTML = `
+          <span class="font-bold text-indigo-900 text-lg mb-2 block title-font">${item.text}</span>
+          <div class="flex gap-2 justify-center text-xs">
+            <button onclick="matchCard('${item.id}', 'super')" class="bg-orange-400 hover:bg-orange-500 text-orange-950 font-bold px-2.5 py-1.5 rounded title-font">이름표 공부</button>
+            <button onclick="matchCard('${item.id}', 'unsuper')" class="bg-teal-400 hover:bg-teal-500 text-teal-950 font-bold px-2.5 py-1.5 rounded title-font">스스로 모으기</button>
+          </div>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function matchCard(id, selectedType) {
+      const itemIndex = activeMatchingList.findIndex(x => x.id === id);
+      if (itemIndex === -1) return;
+
+      const item = activeMatchingList[itemIndex];
+      
+      if (item.type === selectedType) {
+        playTone(600, 'sine', 0.1);
+        activeMatchingList.splice(itemIndex, 1);
+
+        if (selectedType === 'super') {
+          supervisedMatched.push(item);
+          renderMatchedBox('supervised-box', supervisedMatched, 'border-orange-200 bg-orange-50/30 text-orange-850');
+        } else {
+          unsupervisedMatched.push(item);
+          renderMatchedBox('unsupervised-box', unsupervisedMatched, 'border-teal-200 bg-teal-50/30 text-teal-850');
+        }
+
+        renderMatchingCards();
+        if (supervisedMatched.length + unsupervisedMatched.length === matchingItems.length) {
+          playSuccessSound();
+        }
+      } else {
+        playFailureSound();
+        showCustomModal("오답이에요 ⚠️", "로봇 공부법을 다시 한 번 떠올려보아요!\n\n• 이름표 공부: 정답 이름표(라벨)를 알려주며 공부\n• 스스로 모으기: 정답 없이 로봇 스스로 공통점 찾기", "❌");
+      }
+    }
+
+    function renderMatchedBox(elementId, list, classes) {
+      const container = document.getElementById(elementId);
+      container.innerHTML = '';
+      list.forEach(item => {
+        const div = document.createElement('div');
+        div.className = `p-3 border rounded-xl text-base font-bold ${classes} animate-pulse title-font`;
+        div.textContent = item.text + " (보관 완료!)";
+        container.appendChild(div);
+      });
+    }
+
+    function sortNewAlien(alienId, category) {
+      if (alienId === 1) {
+        if (category === 'one') {
+          playTone(550, 'sine', 0.1);
+          solvedNewAliens[1] = true;
+          document.getElementById('new-alien-1').classList.add('opacity-50', 'bg-emerald-50');
+          document.getElementById('new-alien-1').style.pointerEvents = 'none';
+        } else {
+          playFailureSound();
+          showCustomModal("다시 생각해보아요! ⚠️", "초록눈이(🟢)는 눈의 개수가 '1개'예요! 눈 개수 특징에 맞춰 '외눈박이선'에 태워주세요!", "👾");
+        }
+      } else if (alienId === 2) {
+        if (category === 'many') {
+          playTone(580, 'sine', 0.1);
+          solvedNewAliens[2] = true;
+          document.getElementById('new-alien-2').classList.add('opacity-50', 'bg-emerald-50');
+          document.getElementById('new-alien-2').style.pointerEvents = 'none';
+        } else {
+          playFailureSound();
+          showCustomModal("다시 생각해보아요! ⚠️", "다눈공룡(🦖)은 눈의 개수가 '3개'예요! 눈 개수 특징에 맞춰 '다눈이선'에 태워주세요!", "🦖");
+        }
+      }
+
+      if (solvedNewAliens[1] && solvedNewAliens[2]) {
+        playSuccessSound();
+        document.getElementById('new-alien-success').classList.remove('hidden');
+        startConfetti();
+      }
+    }
+
+    /* ==========================================================================
+       [8단계] 최종 퀴즈 및 수료증 발급
+       ========================================================================== */
+    function checkQuiz(questionNumber, isCorrect) {
+      if (isCorrect) {
+        playSuccessSound();
+        
+        document.getElementById(`quiz-${questionNumber}`).classList.add('hidden');
+        document.getElementById(`quiz-${questionNumber}`).classList.remove('block');
+        
+        const nextQuiz = document.getElementById(`quiz-${questionNumber + 1}`);
+        const successCard = document.getElementById(`quiz-success`);
+        
+        if (nextQuiz) {
+          nextQuiz.classList.remove('hidden');
+          nextQuiz.classList.add('block');
+        } else {
+          successCard.classList.remove('hidden');
+          successCard.classList.add('block');
+          startConfetti();
+        }
+      } else {
+        playFailureSound();
+        const activeCard = document.getElementById(`quiz-${questionNumber}`);
+        activeCard.classList.add('animate-bounce');
+        setTimeout(() => activeCard.classList.remove('animate-bounce'), 800);
+        showCustomModal("틀렸어요 😢", "데이터들의 정의를 잘 되새겨 보며 정답을 다시 골라보아요!", "⚠️");
+      }
+    }
+
+    function generateCertificate() {
+      const nameInput = document.getElementById('student-name').value.trim();
+      const finalName = nameInput === "" ? "어린이 데이터 과학자" : nameInput;
+      
+      document.getElementById('cert-name').textContent = finalName;
+      document.getElementById('certificate-box').classList.remove('hidden');
+      
+      const now = new Date();
+      document.getElementById('cert-date').textContent = `${now.getFullYear()}. ${String(now.getMonth() + 1).padStart(2, '0')}. ${String(now.getDate()).padStart(2, '0')}`;
+      
+      playSuccessSound();
+      startConfetti();
+    }
+
+    /* ==========================================================================
+       불꽃놀이 (Confetti) 파티클 효과
+       ========================================================================== */
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animationId = null;
+
+    function startConfetti() {
+      canvas.classList.remove('hidden');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      particles = [];
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * canvas.height,
+          color: `hsl(${Math.random() * 360}, 100%, 65%)`,
+          tilt: Math.random() * 10 - 5,
+          tiltAngleIncremental: Math.random() * 0.08 + 0.02,
+          tiltAngle: 0
+        });
+      }
+
+      if (animationId) cancelAnimationFrame(animationId);
+      drawConfetti();
+      setTimeout(() => {
+        canvas.classList.add('hidden');
+        cancelAnimationFrame(animationId);
+      }, 5000);
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, index) => {
+        p.tiltAngle += p.tiltAngleIncremental;
+        p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+        p.tilt = Math.sin(p.tiltAngle - index / 3) * 15;
+
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+        ctx.stroke();
+      });
+
+      particles.forEach(p => {
+        if (p.y > canvas.height) {
+          p.y = -20;
+          p.x = Math.random() * canvas.width;
+        }
+      });
+
+      animationId = requestAnimationFrame(drawConfetti);
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // 시작 기동 세팅
+    renderSlide();
+    updateStepHeader();
+  </script>
+</body>
+</html>
