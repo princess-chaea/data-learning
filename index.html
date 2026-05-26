@@ -370,12 +370,31 @@
         <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">"이것은 오늘의 추천 과일이야!", "이것은 추천 제외 과일이야!" 정답 이름표를 직접 달아 공부시키는 공부법이에요.</p>
       </div>
 
-      <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 mb-6 text-gray-700">
+      <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 mb-6 text-gray-700 text-center sm:text-left animate-fade-in">
         <p class="font-bold text-orange-850 text-2xl mb-1 title-font">🎓 ⚡ 20가지 과일 이름표 공부시키기 미션!</p>
-        <p class="text-lg sm:text-xl font-bold leading-relaxed">
-          로봇이 오늘의 추천 과일과 추천 제외 과일을 똑똑하게 맞추려면 **많은 공부 데이터**가 필요해요. <br>
-          아래에 등장하는 과일 카드의 특징을 읽고 알맞은 <strong>이름표 버튼</strong>을 콕 눌러 로봇에게 알려주세요!
+        <p class="text-lg sm:text-xl font-bold leading-relaxed mb-4 text-left">
+          인공지능 로봇이 손님에게 추천할 과일을 똑똑하게 고를 수 있도록 **오늘의 추천 과일 기준**을 직접 가르쳐주세요!<br>
+          아래 과일 카드의 당도 수치를 자세히 분석한 뒤, 규칙에 맞춰 알맞은 이름표 버튼을 콕 눌러 학습시켜 봅시다!
         </p>
+        
+        <!-- 학생들이 한눈에 볼 수 있는 초정밀 학습 약속 규칙 상자 -->
+        <div class="bg-white border-4 border-dashed border-orange-300 rounded-2xl p-4 flex flex-col sm:flex-row gap-4 items-center justify-around shadow-inner mt-2">
+          <div class="flex items-center gap-3">
+            <span class="text-5xl animate-bounce">👍</span>
+            <div class="text-left">
+              <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-extrabold tracking-wide font-mono">당도 7.0점 이상 ⭐</span>
+              <p class="font-extrabold text-lg text-emerald-950 mt-1">오늘의 추천 과일 이름표</p>
+            </div>
+          </div>
+          <div class="text-orange-200 text-3xl hidden sm:block">|</div>
+          <div class="flex items-center gap-3">
+            <span class="text-5xl animate-pulse">❌</span>
+            <div class="text-left">
+              <span class="bg-rose-100 text-rose-800 text-xs px-2.5 py-1 rounded-full font-extrabold tracking-wide font-mono">당도 7.0점 미만 🍋</span>
+              <p class="font-extrabold text-lg text-rose-950 mt-1">추천 제외 과일 이름표</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 실습 활동 3 -->
