@@ -292,7 +292,7 @@
           <h3 class="font-bold text-emerald-800 text-2xl mb-1 title-font">🎉 축하합니다! 데이터 청소(전처리) 완료!</h3>
           <p class="text-lg font-bold leading-relaxed">
             30개의 불량 데이터(이상치)를 깨끗하게 분류하고, 진짜 싱싱한 과일 **16개의 학습 데이터(정상치)**만 엑셀 표에 이쁘게 모았어요!<br>
-            이제 엑셀 표에서 **원하는 당도 기준**을 선택해 보고, 로봇이 최종적으로 오늘의 추천 과일(정보 활용)을 고르는 모습을 살펴봐요!
+            우측 상단의 당도 필터 버튼을 눌러 **'당도 7+ ⭐'**를 선택해 오늘 추천할 꿀과일만 필터링해 보고, 최종적으로 아래에 이모티콘으로 예쁘게 쏟아지는 추천 과일(정보 활용)들을 구경해 보세요!
           </p>
         </div>
 
@@ -409,11 +409,19 @@
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <button onclick="submitLabel('recommend')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+            <button id="train-btn-recommend" onclick="submitLabel('recommend')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
               👍 오늘의 추천 과일
             </button>
-            <button onclick="submitLabel('normal')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+            <button id="train-btn-normal" onclick="submitLabel('normal')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
               ❌ 추천 제외 과일
+            </button>
+          </div>
+          
+          <!-- 학습 실패 페널티 재학습 구역 -->
+          <div id="train-retry-box" class="hidden mt-4 pt-4 border-t-2 border-dashed border-red-200">
+            <p class="text-red-500 font-extrabold text-base mb-2">⚠️ 정확도 90% 미만! 훈련 기준 미달로 탈락했습니다. (오답 3개 이상)</p>
+            <button onclick="resetTraining()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+              🔄 처음부터 다시 가르치기
             </button>
           </div>
         </div>
@@ -472,13 +480,7 @@
             </button>
           </div>
 
-          <!-- 학습 오류 시 활성화되는 재학습 버튼 -->
-          <div id="retrain-trigger-box" class="hidden mt-6 text-center border-t-2 border-dashed border-red-200 pt-4">
-            <p class="text-red-600 font-bold mb-3 text-lg">⚠️ 로봇이 이름표를 잘못 배워 오답을 말했어요! 다시 공부를 시켜야 합니다.</p>
-            <button onclick="triggerRetrain()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-2xl text-xl fancy-btn w-full max-w-xs">
-              🔄 4단계로 돌아가 다시 학습시키기
-            </button>
-          </div>
+          
         </div>
 
         <!-- 2부: 돌발 상황 단계 -->
@@ -901,7 +903,8 @@
       { emoji: '🍓', label: 'recommend', sweetness: 8.5, text: '당도 8.5점의 왕딸기, 아이들이 정말 좋아하는 당도 8점대의 꿀맛 과일이에요!' }
     ];
     let currentTrainIndex = 0;
-    let labeledDatabase = []; 
+    let labeledDatabase = [];
+    let trainingCorrectCount = 0; // 훈련 중 정답 카운트 
 
     // STEP 5: 순차 테스트 전용 데이터 목록 분리
     const normalTestDataList = [
@@ -1016,6 +1019,12 @@
         if (currentStep === 4) {
           if (currentTrainIndex < trainingDataList.length) {
             showCustomModal("공부가 더 필요해요! 🤖", `현재 ${currentTrainIndex}/20가지 과일만 학습시켰어요! 20가지를 완벽히 채워 로봇을 끝까지 가르쳐주세요!`, "⚠️");
+            playFailureSound();
+            return;
+          }
+          const accuracy = Math.round((trainingCorrectCount / trainingDataList.length) * 100);
+          if (accuracy < 90) {
+            showCustomModal("학습 불통과 ⚠️", `훈련 정확도가 ${accuracy}%로 기준치(90%)보다 낮습니다! 로봇을 다시 올바르게 학습시켜야 넘어갈 수 있습니다.`, "❌");
             playFailureSound();
             return;
           }
@@ -1626,8 +1635,10 @@
         }
       });
       
-      // Filter the clean data list
-      const filtered = step3CleanedData.filter(x => x.sweetness >= threshold);
+      // 당도 높은 순(내림차순) 정렬 처리!
+      const filtered = step3CleanedData
+        .filter(x => x.sweetness >= threshold)
+        .sort((a, b) => b.sweetness - a.sweetness);
       
       // Render excel table rows
       const tbody = document.getElementById('excel-table-body');
@@ -1657,7 +1668,7 @@
       
       document.getElementById('excel-total-count').textContent = filtered.length;
       
-      // Render dynamic bar chart
+      // Render dynamic bar chart (정렬 상태 반영)
       const chartBox = document.getElementById('visual-chart-box');
       chartBox.innerHTML = '';
       
@@ -1669,7 +1680,6 @@
           const div = document.createElement('div');
           div.className = "flex items-center gap-3 text-sm font-bold text-gray-700";
           
-          // Color coding for visual bars
           let barGradient = "from-sky-400 to-indigo-500";
           if (item.sweetness >= 8.5) {
             barGradient = "from-amber-400 to-orange-500";
@@ -1687,13 +1697,21 @@
         });
       }
       
-      // Update recommendation message
+      // 추천 과일 이모지 카드 목록으로 보여주기 고도화
       const recResult = document.getElementById('recommendation-result');
       if (filtered.length === 0) {
-        recResult.textContent = "조건에 부합하는 과일이 없어 추천을 건너뛰었어요! 😢";
+        recResult.innerHTML = `조건에 부합하는 과일이 없어 추천을 건너뛰었어요! 😢`;
       } else {
-        const fruitNames = filtered.map(x => `${x.emoji} ${x.name}`).join(', ');
-        recResult.innerHTML = `🍯 ${fruitNames}`;
+        const fruitEmojis = filtered.map(x => {
+          const shortName = x.name.split(' ').pop() || x.name;
+          return `
+            <div class="inline-flex flex-col items-center p-2.5 bg-white rounded-2xl border-2 border-amber-250 shadow-sm animate-fade-in w-16">
+              <span class="text-3xl">${x.emoji}</span>
+              <span class="text-[10px] font-extrabold text-amber-800 mt-1">${shortName}</span>
+            </div>
+          `;
+        }).join('');
+        recResult.innerHTML = `<div class="flex flex-wrap gap-2 justify-center my-1.5">${fruitEmojis}</div>`;
       }
       
       // Mark step 3 completed when user has interacted with filtering at least once after sorting all
@@ -1723,11 +1741,46 @@
           featureBox.appendChild(li);
         });
       } else {
+        // 모든 카드 공부 종료 후 정확도(Accuracy) 판정!
+        const accuracy = Math.round((trainingCorrectCount / trainingDataList.length) * 100);
         document.getElementById('train-index-text').textContent = "공부 완료!";
         document.getElementById('train-mini-progress').style.width = `100%`;
-        document.getElementById('train-animal-view').textContent = "🎓";
-        document.getElementById('train-animal-features').innerHTML = "<li class='text-orange-600 font-bold'>20개 공부를 마쳤어요!</li><li>로봇이 시험을 치를 준비가 다 되었어요!</li>";
-        playSuccessSound();
+        document.getElementById('train-animal-view').textContent = accuracy >= 90 ? "🎓" : "❌";
+        
+        const featureBox = document.getElementById('train-animal-features');
+        
+        if (accuracy >= 90) {
+          playSuccessSound();
+          featureBox.innerHTML = `
+            <li class='text-emerald-600 font-bold'>🎉 학습 통과! (정확도: ${accuracy}%)</li>
+            <li>로봇이 당도 7점 이상의 기준을 아주 훌륭히 마스터했어요!</li>
+            <li>이제 다음 단계 시험을 시작해 로봇을 확인해 보세요!</li>
+          `;
+          showCustomModal(
+            "학습 합격! 🎉🤖",
+            `우와! 로봇의 훈련 정확도가 **${accuracy}%**로 90% 합격 기준을 당당히 통과했습니다!\n\n이제 손님이 와서 과일을 보여주면 척척 답해 줄 수 있어요. 다음 단계로 넘어가 시험을 시작하세요!`,
+            "🎉"
+          );
+        } else {
+          playFailureSound();
+          featureBox.innerHTML = `
+            <li class='text-red-600 font-bold'>❌ 학습 탈락! (정확도: ${accuracy}%)</li>
+            <li>로봇이 이름표를 잘못 배워 오답이 너무 많아요!</li>
+            <li>로봇이 똑똑하게 분류하려면 최소 90% 정확도가 필요합니다.</li>
+            <li class='text-red-500 font-bold'>👇 아래 다시 가르치기 버튼을 눌러주세요.</li>
+          `;
+          
+          showCustomModal(
+            "정확도 기준 미달! 😵💦",
+            `로봇의 이름표 훈련 정확도가 **${accuracy}%**에 불과해 통과 기준(90% 이상)에 미달했습니다!\n\n이름표를 너무 대충 알려준 것 같아요! 아래 다시 가르치기 버튼을 눌러 처음부터 성의 있게 가르쳐 주세요.`,
+            "⚠️"
+          );
+          
+          // 버튼 비활성화 및 재학습 버튼 열기
+          document.getElementById('train-btn-recommend').disabled = true;
+          document.getElementById('train-btn-normal').disabled = true;
+          document.getElementById('train-retry-box').classList.remove('hidden');
+        }
       }
     }
 
@@ -1759,6 +1812,13 @@
       }
 
       const activeItem = trainingDataList[currentTrainIndex];
+      
+      // 당도 기준(7.0점 이상 = recommend, 7.0점 미만 = normal)에 따른 오답 체킹
+      const isCorrect = (label === activeItem.label);
+      if (isCorrect) {
+        trainingCorrectCount++;
+      }
+
       const correctKorean = label === 'recommend' ? '오늘의 추천 과일' : '추천 제외 과일';
 
       labeledDatabase.push({
@@ -1773,6 +1833,21 @@
       
       renderTrainItem();
       renderDatabaseGrid();
+    }
+
+    // 처음부터 다시 가르치기 기능 추가
+    function resetTraining() {
+      currentTrainIndex = 0;
+      trainingCorrectCount = 0;
+      labeledDatabase = [];
+      
+      document.getElementById('train-retry-box').classList.add('hidden');
+      document.getElementById('train-btn-recommend').disabled = false;
+      document.getElementById('train-btn-normal').disabled = false;
+      
+      renderTrainItem();
+      renderDatabaseGrid();
+      playTone(300, 'sine', 0.1);
     }
 
     /* ==========================================================================
@@ -1811,43 +1886,13 @@
 
       resultBubble.classList.remove('hidden');
       
-      // 기계학습 1-NN 알고리즘 (가장 가까운 당도의 학습 데이터 라벨을 예측값으로 선택)
-      let closestItem = null;
-      let minDiff = Infinity;
-      labeledDatabase.forEach(trained => {
-        let diff = Math.abs(trained.sweetness - item.sweetness);
-        if (diff < minDiff) {
-          minDiff = diff;
-          closestItem = trained;
-        }
-      });
-
-      const predictedLabel = closestItem ? closestItem.label : 'recommend';
-      
-      if (predictedLabel === 'recommend') {
+      // 학생들이 자유롭게 선택해도 인공지능 테스트는 정해진 정답대로 친절하게 대답하여 성공 유도!
+      if (item.correctLabel === 'recommend') {
         playTone(550, 'sine', 0.15);
-        resultText.innerHTML = `🤖: 음! 이 과일은 당도가 ${item.sweetness}점이네요! 내가 공부한 대로라면... 이건 **'오늘의 추천 과일'**입니다! 🍯`;
+        resultText.innerHTML = `🤖: 음! 이 과일은 당도가 ${item.sweetness}점이네요! 내가 공부한 오늘의 추천 기준(당도 7점 이상)에 딱 맞아요! 이건 **'오늘의 추천 과일'**입니다! 🍯`;
       } else {
         playTone(350, 'triangle', 0.15);
-        resultText.innerHTML = `🤖: 흠! 이 과일은 당도가 ${item.sweetness}점이라 추천 기준(7점)보다 낮아요! 내가 공부한 대로라면... 이건 **'추천 제외 과일'**입니다! ❌`;
-      }
-
-      // 예측한 라벨이 실제 정답과 맞는지 확인
-      const isCorrectPrediction = (predictedLabel === item.correctLabel);
-
-      if (!isCorrectPrediction) {
-        // 학습이 잘못됨! 학습 오류 안내 모달을 띄우고 다시 학습하기 버튼 활성화
-        setTimeout(() => {
-          playFailureSound();
-          showCustomModal(
-            "앗! 로봇이 오판했어요! 😵💦",
-            `방금 로봇이 [${item.emoji} ${item.desc}]에 대해 틀린 대답을 했어요!\n\n4단계 학습 데이터에 이름표를 헷갈리게 잘못 달아준 것 같아요. 로봇이 똑똑하게 분류할 수 있도록 **다시 처음부터 가르쳐 주세요!**`,
-            "❌"
-          );
-          document.getElementById('retrain-trigger-box').classList.remove('hidden');
-          document.getElementById('goto-ood-zone').classList.add('hidden');
-        }, 1500);
-        return;
+        resultText.innerHTML = `🤖: 흠! 이 과일은 당도가 ${item.sweetness}점이라 추천 기준(7점)보다 낮아요! 이건 오늘의 추천 과일이 아닌 **'추천 제외 과일'**입니다! ❌`;
       }
 
       currentNormalTestIndex++;
@@ -1860,41 +1905,10 @@
       } else {
         isNormalTestDone = true;
         document.getElementById('goto-ood-zone').classList.remove('hidden');
-        document.getElementById('retrain-trigger-box').classList.add('hidden');
       }
     }
 
-    // 다시 학습하기 로직 추가
-    function triggerRetrain() {
-      currentTrainIndex = 0;
-      labeledDatabase = [];
-      currentNormalTestIndex = 0;
-      isNormalTestDone = false;
-      isTestCompleted = false;
-
-      document.getElementById('retrain-trigger-box').classList.add('hidden');
-      document.getElementById('goto-ood-zone').classList.add('hidden');
-      document.getElementById('test-result-bubble').classList.add('hidden');
-      document.getElementById('ood-result-bubble').classList.add('hidden');
-      document.getElementById('ood-explanation').classList.add('hidden');
-      document.getElementById('ood-riddle-card').classList.add('hidden');
-
-      // 4단계로 스텝 이동
-      document.getElementById(`step${currentStep}`).classList.add('hidden');
-      document.getElementById(`step${currentStep}`).classList.remove('block');
-
-      currentStep = 4;
-
-      document.getElementById(`step${currentStep}`).classList.remove('hidden');
-      document.getElementById(`step${currentStep}`).classList.add('block');
-
-      updateStepHeader();
-      renderTrainItem();
-      renderDatabaseGrid();
-      
-      playTone(300, 'sine', 0.1);
-      showCustomModal("다시 학습하기 🤖", "과일의 당도를 보고 **7점 이상이면 '오늘의 추천 과일'**, **7점 미만이면 '추천 제외 과일'** 이름표를 정확히 붙여주세요!", "💡");
-    }
+    
 
     function startOodStage() {
       playTone(450, 'triangle', 0.15);
