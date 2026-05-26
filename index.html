@@ -1005,15 +1005,15 @@
           }
         }
         if (currentStep === 3) {
-          if (!isStep3Completed) {
-            showCustomModal("데이터 청소 중! 🧹", "30개의 데이터를 모두 분류(전처리)하고, 엑셀 표에서 당도 필터링을 설정하여 오늘의 추천 과일을 완성해 주세요!", "⚠️");
+          if (currentStep3Index < step3Dataset.length) {
+            showCustomModal("데이터 청소 중! 🧹", "30개의 데이터를 모두 분류(전처리)한 뒤에 다음 단계로 이동할 수 있어요!", "⚠️");
             playFailureSound();
             return;
           }
         }
         if (currentStep === 4) {
           if (currentTrainIndex < trainingDataList.length) {
-            showCustomModal("공부가 더 필요해요! 🤖", `현재 ${currentTrainIndex}/20마리만 학습시켰어요! 20마리를 완벽히 채워 로봇을 끝까지 가르쳐주세요!`, "⚠️");
+            showCustomModal("공부가 더 필요해요! 🤖", `현재 ${currentTrainIndex}/20가지 과일만 학습시켰어요! 20가지를 완벽히 채워 로봇을 끝까지 가르쳐주세요!`, "⚠️");
             playFailureSound();
             return;
           }
