@@ -246,11 +246,11 @@
         <h3 class="font-bold text-sky-800 text-2xl mb-2 title-font">과일 가게 로봇의 미션: "달콤한 꿀과일을 추천하라!"</h3>
         <p class="text-lg font-bold leading-relaxed mb-5 text-left">
           우리 과일 가게 로봇에게 손님들이 아주 좋아하는 **달콤한 꿀과일**을 척척 골라내는 능력을 선물해 주려고 해요!<br><br>
-          로봇이 꿀과일을 완벽하게 공부하려면, 먼저 가게 창고에 마구 섞여 들어온 **쓸모없는 사물이나 썩은 과일(이상치)**을 휴지통에 쏙 버리고, **진짜 싱싱한 과일(정상치)**만 깨끗하게 남겨서 가르쳐야 해요! 이 깨끗한 데이터 가공 작업을 **데이터 청소(전처리)**라고 해요! <br><br>
+          로봇이 꿀과일을 완벽하게 공부하려면, 먼저 가게 창고에 마구 섞여 들어온 **쓸모없는 사물이나 썩은 과일(이상치)**을 휴지통에 쏙 버리고, **진짜 싱싱한 과일(정상치)**만 깨끗하게 남겨서 가르쳐야 해요! 이 깨끗한 데이터 가공 작업을 **데이터 전처리(청소)**라고 해요! <br><br>
           자, 지금부터 창고 속 30개의 데이터를 하나씩 검사하러 가볼까요? 🚀
         </p>
         <button onclick="startStep3Sorting()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-8 py-3.5 rounded-2xl text-xl fancy-btn">
-          데이터 청소(전처리) 시작하기! 🧹
+          데이터 전처리(청소) 시작하기! 🧹
         </button>
       </div>
 
@@ -289,7 +289,7 @@
       <!-- [파트 3: 엑셀 스프레드시트 + 필터링 + 시각화 + 오늘 추천 과일 결론] -->
       <div id="preprocess-excel-zone" class="hidden animate-fade-in">
         <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 mb-6 text-gray-700 text-center">
-          <h3 class="font-bold text-emerald-800 text-2xl mb-1 title-font">🎉 축하합니다! 데이터 청소(전처리) 완료!</h3>
+          <h3 class="font-bold text-emerald-800 text-2xl mb-1 title-font">🎉 축하합니다! 데이터 전처리(청소) 완료!</h3>
           <p class="text-lg font-bold leading-relaxed">
             30개의 불량 데이터(이상치)를 깨끗하게 분류하고, 진짜 싱싱한 과일 **16개의 학습 데이터(정상치)**만 엑셀 표에 이쁘게 모았어요!<br>
             우측 상단의 당도 필터 버튼을 눌러 **'당도 7+ ⭐'**를 선택해 오늘 추천할 꿀과일만 필터링해 보고, 최종적으로 아래에 이모티콘으로 예쁘게 쏟아지는 추천 과일(정보 활용)들을 구경해 보세요!
@@ -353,7 +353,7 @@
                 [과일 목록이 나타납니다]
               </div>
               <p class="text-xs text-gray-500 mt-2 font-bold">
-                💡 데이터 청소(전처리)와 분석(필터링)을 거쳐 완벽한 비즈니스 의사결정을 내렸습니다!
+                💡 데이터 전처리(청소)와 분석(필터링)을 거쳐 완벽한 비즈니스 의사결정을 내렸습니다!
               </p>
             </div>
           </div>
@@ -478,7 +478,7 @@
 
           <div class="flex flex-col items-center border-t border-gray-100 pt-4">
             <div id="test-animal-emoji" class="text-8xl p-4 bg-amber-50 rounded-2xl border-2 border-amber-200 mb-3">🍉</div>
-            <p id="test-features" class="text-lg font-bold text-gray-500 mb-4">특징: 당도 8.8점</p>
+            <p id="test-features" class="text-lg font-bold text-gray-500 mb-4 hidden">특징: 당도 8.8점</p>
             
             <button onclick="robotEvaluateNormal()" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold px-8 py-3.5 rounded-2xl text-lg fancy-btn w-full max-w-xs">
               🤖 로봇아, 이 과일이 뭔지 맞춰봐!
@@ -530,9 +530,9 @@
           <!-- 오른쪽: 돌발 상자와 질문 -->
           <div id="ood-riddle-card" class="bg-white p-5 rounded-2xl border-2 border-amber-200 flex flex-col justify-between hidden">
             <div>
-              <p class="font-bold text-red-600 mb-2 text-center text-xl title-font">🌶️ 고추 수수께끼! 로봇이 왜 꿀맛과일이라 했을까?</p>
+              <p class="font-bold text-red-600 mb-2 text-center text-xl title-font">🌶️ 고추 수수께끼! 로봇이 왜 추천 과일이라고 했을까?</p>
               <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-4 font-bold">
-                과일만 공부한 로봇 앞에 새빨간 불고추가 나타났을 때, 왜 <strong>🍯 꿀맛 과일</strong>이라고 생각했을까요?
+                과일만 공부한 로봇 앞에 새빨간 불고추가 나타났을 때, 왜 <strong>🍯 추천 과일</strong>이라고 생각했을까요?
               </p>
             </div>
 
@@ -541,7 +541,7 @@
                 ❶ 고추는 원래 설탕보다 훨씬 더 달콤한 맛을 숨기고 있어서
               </button>
               <button onclick="chooseOutboundAnswer('correct')" class="w-full text-left bg-gray-50 hover:bg-emerald-50 p-3 rounded-xl border border-gray-200 transition font-bold text-sm sm:text-base leading-relaxed">
-                ❷ 빨갛고 작은 과일(사과나 딸기)만 열심히 공부한 탓에, 처음 보는 빨간 고추도 꿀맛 과일 이름표를 억지로 붙였기 때문이에요!
+                ❷ 빨갛고 작은 과일(사과나 딸기)만 열심히 공부한 탓에, 처음 보는 빨간 고추도 추천 과일 이름표를 억지로 붙였기 때문이에요!
               </button>
             </div>
           </div>
@@ -553,7 +553,7 @@
           <p class="font-bold text-emerald-800 text-xl mb-1 title-font">🎉 정답이에요! 아주 똑똑해요!</p>
           <p class="text-base sm:text-lg text-emerald-700 leading-relaxed font-bold">
             인공지능 로봇은 <strong>자신이 공부한 범위 안에서만 생각</strong>할 수 있어요. <br>
-            매운 고추는 한 번도 가르쳐 준 적이 없기 때문에, 자신이 배운 지식 중 '사과'처럼 생김새(빨간색)가 가장 닮은 '꿀맛 과일'에 억지로 끼워 맞춰 생각했던 거예요. <br>
+            매운 고추는 한 번도 가르쳐 준 적이 없기 때문에, 자신이 배운 지식 중 '사과'처럼 생김새(빨간색)가 가장 닮은 '추천 과일'에 억지로 끼워 맞춰 생각했던 거예요. <br>
             그래서 인공지능을 가르칠 때는 **편견 없이 아주 다양하고 넓은 공부 데이터(채소, 매운 음식 등)**를 듬뿍 주어야 한답니다!
           </p>
         </div>
@@ -656,35 +656,47 @@
           <span class="text-6xl animate-bounce block">🍏</span>
           <h3 class="text-2xl sm:text-3xl font-bold text-rose-800 title-font">🚨 돌발 상황: 과일 창고에 새로운 과일 도착!</h3>
           <p class="text-base sm:text-lg text-gray-600 mt-1 font-bold">
-            스스로 모으기(비지도학습) 정렬을 마치자마자, <strong>새로운 과일 2종류</strong>가 창고에 들어왔어요! <br>
-            이 친구들의 감촉 특징을 보고, 알맞은 바구니에 담길 수 있도록 <strong>직접 분류</strong>해 주세요!
+            스스로 모으기(비지도학습) 정렬을 마치자마자, <strong>새로운 과일 6종류</strong>가 대량으로 창고에 들어왔어요! <br>
+            이름표가 없는 처음 보는 과일들을 인공지능이 비지도학습(군집화)으로 어떻게 스스로 분류하는지 관찰해 봅시다!
           </p>
         </div>
 
-        <!-- 새로운 과일 대기 구역 -->
-        <div class="flex justify-center gap-6 my-5 bg-white p-4 rounded-xl border border-rose-200 shadow-inner">
-          <div id="new-alien-1" class="text-center p-3 border-2 border-gray-200 rounded-xl w-36 flex flex-col items-center">
-            <span class="text-6xl block mb-1">🟢</span>
-            <span class="text-sm font-extrabold text-emerald-700">새콤 라임</span>
-            <div class="flex gap-1.5 mt-2 text-xs">
-              <button onclick="sortNewAlien(1, 'smooth')" class="bg-emerald-400 hover:bg-emerald-500 px-2 py-1 rounded text-emerald-950 font-bold title-font">매끈매끈 바구니</button>
-              <button onclick="sortNewAlien(1, 'rough')" class="bg-orange-400 hover:bg-orange-500 px-2 py-1 rounded text-orange-950 font-bold title-font">거칠거칠 바구니</button>
+        <!-- 대기 창고 영역 -->
+        <div class="my-5 bg-white p-4 rounded-2xl border border-rose-200 shadow-inner">
+          <p class="text-sm text-gray-400 font-bold mb-2 text-center">📥 창고에 막 유입된 미분류 과일 데이터셋 (이름표 없음)</p>
+          <div id="new-fruits-waiting-tray" class="flex flex-wrap justify-center gap-4 py-2">
+            <!-- JS에서 동적 렌더링 -->
+          </div>
+        </div>
+
+        <!-- 비지도 자동 군집 분류 바구니 영역 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+          <div class="border-2 border-dashed border-emerald-300 bg-emerald-50/30 p-4 rounded-2xl flex flex-col items-center min-h-[220px]">
+            <span class="font-bold text-emerald-700 text-lg mb-3 title-font">🍏 매끈매끈 군집 (Cluster 1)</span>
+            <div id="new-fruits-smooth-basket" class="flex flex-wrap gap-3 justify-center items-center w-full h-full min-h-[140px] bg-white/50 rounded-xl p-3 border border-emerald-100">
+              <span class="text-gray-300 font-bold text-sm select-none" id="smooth-empty-msg">바구니가 비어 있습니다</span>
             </div>
           </div>
-          <div id="new-alien-2" class="text-center p-3 border-2 border-gray-200 rounded-xl w-36 flex flex-col items-center">
-            <span class="text-6xl block mb-1">🥥</span>
-            <span class="text-sm font-extrabold text-amber-800">털 코코넛</span>
-            <div class="flex gap-1.5 mt-2 text-xs">
-              <button onclick="sortNewAlien(2, 'smooth')" class="bg-emerald-400 hover:bg-emerald-500 px-2 py-1 rounded text-emerald-950 font-bold title-font">매끈매끈 바구니</button>
-              <button onclick="sortNewAlien(2, 'rough')" class="bg-orange-400 hover:bg-orange-500 px-2 py-1 rounded text-orange-950 font-bold title-font">거칠거칠 바구니</button>
+          <div class="border-2 border-dashed border-orange-300 bg-orange-50/30 p-4 rounded-2xl flex flex-col items-center min-h-[220px]">
+            <span class="font-bold text-orange-700 text-lg mb-3 title-font">🍍 거칠거칠 군집 (Cluster 2)</span>
+            <div id="new-fruits-rough-basket" class="flex flex-wrap gap-3 justify-center items-center w-full h-full min-h-[140px] bg-white/50 rounded-xl p-3 border border-orange-100">
+              <span class="text-gray-300 font-bold text-sm select-none" id="rough-empty-msg">바구니가 비어 있습니다</span>
             </div>
           </div>
         </div>
 
+        <!-- 실행 버튼 구역 -->
+        <div class="text-center my-4" id="unsupervised-auto-btn-zone">
+          <button onclick="runAutoUnsupervisedClustering()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-8 py-4 rounded-2xl text-xl fancy-btn w-full max-w-lg">
+            🤖 인공지능 비지도학습(군집화)으로 자동 분류하기! ⚡
+          </button>
+        </div>
+
         <div id="new-alien-success" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4 text-center mt-4">
-          <span class="text-3xl block title-font">🎉 새로운 과일도 완벽 분류 성공!</span>
-          <p class="text-base sm:text-lg text-emerald-800 font-bold mt-1">
-            처음 보는 새로운 과일(🟢, 🥥)도 스스로 발견한 '껍질 감촉' 규칙에 따라 척척 끼리끼리 분류할 수 있음을 확인했어요!
+          <span class="text-3xl block title-font">🎉 비지도학습 모델(군집화) 분석 및 분류 성공!</span>
+          <p class="text-base sm:text-lg text-emerald-800 font-bold mt-2 leading-relaxed text-left max-w-2xl mx-auto">
+            인공지능은 정답 이름표(라벨)를 사전에 제공받지 않았음에도 불구하고, 데이터 고유의 물리적 특징인 <strong>'껍질 감촉' 특징 공간(Feature Space)을 스스로 학습하고 대조</strong>하여 두 개의 서로 다른 <strong>클러스터(군집)로 실시간 분류(Clustering)</strong>해 냈습니다!<br><br>
+            이것이 새로운 데이터가 대량으로 유입되어도 데이터 내부의 잠재 패턴을 스스로 감지하고 그룹핑해 지식을 축적해 나가는 비지도학습의 힘이랍니다! 🚀
           </p>
         </div>
       </div>
@@ -708,8 +720,8 @@
             <button onclick="checkQuiz(1, false)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold transition active:scale-95 text-lg sm:text-xl">
               ① 데이터 포장하기 🎁
             </button>
-            <button onclick="checkQuiz(1, true)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold transition active:scale-95 text-lg sm:text-xl">
-              ② 데이터 청소하기 (전처리) 🧹
+            <button onclick="checkQuiz(1, true)" class="bg-white hover:bg-purple-50 border-2 border-purple-250 py-4 rounded-2xl font-bold transition active:scale-95 text-lg sm:text-xl">
+              ② 데이터 전처리(청소) 🧹
             </button>
           </div>
         </div>
@@ -746,7 +758,7 @@
         <div class="quiz-card hidden text-center py-6" id="quiz-success">
           <span class="text-6xl wiggle block mb-4">🏆</span>
           <h3 class="text-3xl sm:text-4xl font-bold text-purple-800 mb-2 title-font">우와! 백 점으로 수료 완료!</h3>
-          <p class="text-gray-600 mb-6 text-lg sm:text-xl font-bold">데이터 청소와 인공지능 공부법을 완벽하게 통과한 자랑스러운 어린이 과학자입니다.</p>
+          <p class="text-gray-600 mb-6 text-lg sm:text-xl font-bold">데이터 전처리(청소)와 인공지능 공부법을 완벽하게 통과한 자랑스러운 어린이 과학자입니다.</p>
           
           <div class="max-w-xs mx-auto flex gap-2 justify-center mb-6">
             <input type="text" id="student-name" placeholder="이름 입력" class="border-2 border-purple-300 rounded-xl px-4 py-2 w-full focus:outline-none focus:border-purple-500 text-lg text-center font-bold">
@@ -763,7 +775,7 @@
             <p class="text-xl sm:text-2xl text-gray-700 mb-4 font-bold">과학자명: <strong id="cert-name" class="text-2xl sm:text-3xl text-purple-700 border-b-2 border-purple-400 px-3 title-font">홍길동</strong></p>
             <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-bold">
               위 어린이는 우리 일상 속 숨어 있는 데이터를 발견하고,<br>
-              불량 데이터를 걸러내는 <strong>"데이터 청소"</strong> 과정과<br>
+              불량 데이터를 걸러내는 <strong>"데이터 전처리(청소)"</strong> 과정과<br>
               이름표를 다는 <strong>"이름표 공부법"</strong>, 예외를 찾아보는 <strong>"돌발 검증"</strong>,<br>
               스스로 묶어 정렬하는 <strong>"스스로 모으기 공부법"</strong>의 기초를 훌륭히 이수하였습니다.<br>
               이에 멋진 주니어 과학자 자격을 수여합니다.
@@ -880,7 +892,7 @@
       { id: 16, type: 'bad', emoji: '🍼', name: '아기 젖병', sweetness: 0, reason: "젖병은 식기가 아닌 사물이므로 불량 데이터(이상치)예요!" },
       { id: 17, type: 'good', emoji: '🍒', name: '빨간 체리', sweetness: 7.0, reason: "체리는 좋은 과일 데이터(정상치)예요!" },
       { id: 18, type: 'bad', emoji: '🤢', name: '곰팡이 핀 귤', sweetness: 0, reason: "곰팡이가 핀 과일은 꼭 걸러내야 하는 불량 데이터(이상치)예요!" },
-      { id: 19, type: 'good', emoji: '🥭', name: '황금 망고', sweetness: 9.2, reason: "꿀맛 가득한 망고는 훌륭한 과일 데이터(정상치)예요!" },
+      { id: 19, type: 'good', emoji: '🥭', name: '황금 망고', sweetness: 9.2, reason: "달콤함 가득한 망고는 훌륭한 과일 데이터(정상치)예요!" },
       { id: 20, type: 'bad', emoji: '🧸', name: '아기 곰인형', sweetness: 0, reason: "인형은 먹는 음식이 아니므로 불량 데이터(이상치)예요!" },
       { id: 21, type: 'good', emoji: '🍉', name: '시원한 수박', sweetness: 8.8, reason: "여름날 시원한 수박은 아주 좋은 과일 데이터(정상치)예요!" },
       { id: 22, type: 'bad', emoji: '⚽', name: '축구공', sweetness: 0, reason: "축구공은 과일이 아니므로 불량 데이터(이상치)예요!" },
@@ -910,7 +922,7 @@
       { emoji: '🍋', label: 'normal', sweetness: 3.5, text: '당도 3.5점의 신 레몬, 즙이 너무 찌릿하고 당도 기준(7점)보다 한참 낮아요.' },
       { emoji: '🍑', label: 'recommend', sweetness: 9.0, text: '당도 9.0점의 복숭아, 복숭아 향이 폴폴 나며 달달함이 가득해 합격이에요!' },
       { emoji: '🍇', label: 'normal', sweetness: 6.8, text: '당도 6.8점의 청포도 알, 덜 익어 신맛이 나며 당도 기준(7점)보다 살짝 낮아요.' },
-      { emoji: '🍈', label: 'recommend', sweetness: 8.5, text: '당도 8.5점의 멜론, 그물무늬 속에 달콤한 꿀맛 가치가 듬뿍 담겨 합격이에요!' },
+      { emoji: '🍈', label: 'recommend', sweetness: 8.5, text: '당도 8.5점의 멜론, 그물무늬 속에 달콤한 맛이 듬뿍 담겨 합격이에요!' },
       { emoji: '🥭', label: 'normal', sweetness: 6.0, text: '당도 6.0점의 풋망고, 딱딱하고 시큼해서 오늘의 추천 기준에 미달이에요.' },
       { emoji: '🍓', label: 'recommend', sweetness: 9.5, text: '당도 9.5점의 빨간 딸기, 한입 물면 사르르 녹아 최고의 추천 과일이에요!' },
       { emoji: '🍊', label: 'normal', sweetness: 5.0, text: '당도 5.0점의 신 자몽, 씁쓸한 신맛이 강해서 추천 조건에 어울리지 않아요.' },
@@ -919,7 +931,7 @@
       { emoji: '🥭', label: 'recommend', sweetness: 9.2, text: '당도 9.2점의 골드 망고, 황금빛 과육이 꿀처럼 달아 아주 훌륭한 합격품이에요!' },
       { emoji: '🍒', label: 'recommend', sweetness: 7.0, text: '당도 7.0점의 앵두 체리, 앙증맞고 새콤달콤해서 간신히 추천 기준에 통과했어요!' },
       { emoji: '🫐', label: 'normal', sweetness: 6.5, text: '당도 6.5점의 블루베리, 당도 지수가 6.5점이라 7점 기준에는 조금 아쉬워요.' },
-      { emoji: '🍓', label: 'recommend', sweetness: 8.5, text: '당도 8.5점의 왕딸기, 아이들이 정말 좋아하는 당도 8점대의 꿀맛 과일이에요!' }
+      { emoji: '🍓', label: 'recommend', sweetness: 8.5, text: '당도 8.5점의 왕딸기, 아이들이 정말 좋아하는 당도 8점대의 추천 과일이에요!' }
     ];
     let currentTrainIndex = 0;
     let labeledDatabase = [];
@@ -927,9 +939,9 @@
 
     // STEP 5: 순차 테스트 전용 데이터 목록 분리 (어떠한 힌트 문구도 없이 당도 수치만 남김)
     const normalTestDataList = [
-      { emoji: '🍉', sweetness: 8.8, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 8.8점' },
-      { emoji: '🍎', sweetness: 9.0, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 9.0점' },
-      { emoji: '🍋', sweetness: 4.0, correctLabel: 'normal', labelKorean: '추천하지 않는 과일', desc: '당도 4.0점' }
+      { emoji: '🍉', sweetness: 8.8, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 8.8점', name: '수박', josa: '은' },
+      { emoji: '🍎', sweetness: 9.0, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 9.0점', name: '사과', josa: '는' },
+      { emoji: '🍋', sweetness: 4.0, correctLabel: 'normal', labelKorean: '추천하지 않는 과일', desc: '당도 4.0점', name: '레몬', josa: '은' }
     ];
     let currentNormalTestIndex = 0;
     let isNormalTestDone = false;
@@ -1589,7 +1601,7 @@
         initExcelZone();
         
         showCustomModal(
-          "데이터 청소(전처리) 완료! 🧹✨", 
+          "데이터 전처리(청소) 완료! 🧹✨", 
           "정말 훌륭해요! 30개의 데이터를 눈으로 검사하며 불량 데이터(이상치)를 완벽히 치우고, 싱싱한 과일 데이터(정상치) 16개만 엑셀 표에 차곡차곡 모았어요!\n이제 당도 필터링 기능을 써서 최고의 꿀과일을 골라보세요!", 
           "🎉"
         );
@@ -1912,10 +1924,10 @@
       // 학생들이 자유롭게 선택해도 인공지능 테스트는 정해진 정답대로 친절하게 대답하여 성공 유도!
       if (item.correctLabel === 'recommend') {
         playTone(550, 'sine', 0.15);
-        resultText.innerHTML = `🤖: 음! 이 과일은 당도가 ${item.sweetness}점이네요! 내가 공부한 오늘의 추천 기준(당도 7점 이상)에 딱 맞아요! 이건 **'오늘의 추천 과일'**입니다! 🍯`;
+        resultText.innerHTML = `🤖: 제가 공부한 학습 데이터를 바탕으로 분석해 보니, 이 **${item.name}**${item.josa} **'오늘의 추천 과일'**이 맞습니다! 🍯`;
       } else {
         playTone(350, 'triangle', 0.15);
-        resultText.innerHTML = `🤖: 흠! 이 과일은 당도가 ${item.sweetness}점이라 추천 기준(7점)보다 낮아요! 이건 오늘의 추천 과일이 아닌 **'추천 제외 과일'**입니다! ❌`;
+        resultText.innerHTML = `🤖: 제가 공부한 학습 데이터를 바탕으로 분석해 보니, 이 **${item.name}**${item.josa} 오늘의 추천 과일이 아닌 **'추천 제외 과일'**입니다! ❌`;
       }
 
       currentNormalTestIndex++;
@@ -1985,12 +1997,6 @@
       document.getElementById('new-alien-mission-box').classList.add('hidden');
       document.getElementById('new-alien-success').classList.add('hidden');
       solvedNewAliens = { 1: false, 2: false };
-      
-      // Make sure new alien layouts are reset
-      document.getElementById('new-alien-1').classList.remove('opacity-50', 'bg-emerald-50');
-      document.getElementById('new-alien-1').style.pointerEvents = 'auto';
-      document.getElementById('new-alien-2').classList.remove('opacity-50', 'bg-emerald-50');
-      document.getElementById('new-alien-2').style.pointerEvents = 'auto';
     }
 
     function runClustering(mode) {
@@ -2073,12 +2079,9 @@
       
       // Ensure surprise mission box is shown in Step 7 even if skipped in Step 6
       document.getElementById('new-alien-mission-box').classList.remove('hidden');
+      document.getElementById('unsupervised-auto-btn-zone').classList.remove('hidden');
       
-      // Reset new alien blocks style
-      document.getElementById('new-alien-1').classList.remove('opacity-50', 'bg-emerald-50');
-      document.getElementById('new-alien-1').style.pointerEvents = 'auto';
-      document.getElementById('new-alien-2').classList.remove('opacity-50', 'bg-emerald-50');
-      document.getElementById('new-alien-2').style.pointerEvents = 'auto';
+      initNewFruitsClustering();
 
       renderMatchingCards();
     }
@@ -2144,34 +2147,94 @@
       });
     }
 
-    function sortNewAlien(alienId, category) {
-      if (alienId === 1) { // lime (smooth)
-        if (category === 'smooth') {
-          playTone(550, 'sine', 0.1);
-          solvedNewAliens[1] = true;
-          document.getElementById('new-alien-1').classList.add('opacity-50', 'bg-emerald-50');
-          document.getElementById('new-alien-1').style.pointerEvents = 'none';
-        } else {
-          playFailureSound();
-          showCustomModal("다시 해봐요! ⚠️", "라임(🟢)은 껍질이 매끈매끈한 과일이에요! 매끈매끈 바구니에 담아주세요!", "❌");
-        }
-      } else if (alienId === 2) { // coconut (rough)
-        if (category === 'rough') {
-          playTone(580, 'sine', 0.1);
-          solvedNewAliens[2] = true;
-          document.getElementById('new-alien-2').classList.add('opacity-50', 'bg-emerald-50');
-          document.getElementById('new-alien-2').style.pointerEvents = 'none';
-        } else {
-          playFailureSound();
-          showCustomModal("다시 해봐요! ⚠️", "코코넛(🥥)은 껍질이 갈색으로 아주 거칠거칠해요! 거칠거칠 바구니에 담아주세요!", "❌");
-        }
-      }
+    const newFruitDataset = [
+      { id: 'nf1', name: '새콤 라임', emoji: '🟢', texture: 'smooth' },
+      { id: 'nf2', name: '털 코코넛', emoji: '🥥', texture: 'rough' },
+      { id: 'nf3', name: '그물 멜론', emoji: '🍈', texture: 'rough' },
+      { id: 'nf4', name: '골드 망고', emoji: '🥭', texture: 'smooth' },
+      { id: 'nf5', name: '털 복숭아', emoji: '🍑', texture: 'rough' },
+      { id: 'nf6', name: '홍옥 사과', emoji: '🍎', texture: 'smooth' }
+    ];
 
-      if (solvedNewAliens[1] && solvedNewAliens[2]) {
-        playSuccessSound();
-        document.getElementById('new-alien-success').classList.remove('hidden');
-        startConfetti();
-      }
+    function initNewFruitsClustering() {
+      // 1. Render waiting tray
+      const tray = document.getElementById('new-fruits-waiting-tray');
+      tray.innerHTML = '';
+      
+      newFruitDataset.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "text-center p-3 border-2 border-gray-150 rounded-2xl w-28 flex flex-col items-center bg-gray-50/50 shadow-sm transition-all duration-300 transform scale-100 hover:scale-105";
+        div.id = `nf-waiting-${item.id}`;
+        div.innerHTML = `
+          <span class="text-4xl block mb-1">${item.emoji}</span>
+          <span class="text-xs font-extrabold text-gray-700">${item.name}</span>
+        `;
+        tray.appendChild(div);
+      });
+
+      // 2. Clear baskets
+      document.getElementById('new-fruits-smooth-basket').innerHTML = `
+        <span class="text-gray-300 font-bold text-sm select-none" id="smooth-empty-msg">바구니가 비어 있습니다</span>
+      `;
+      document.getElementById('new-fruits-rough-basket').innerHTML = `
+        <span class="text-gray-300 font-bold text-sm select-none" id="rough-empty-msg">바구니가 비어 있습니다</span>
+      `;
+    }
+
+    function runAutoUnsupervisedClustering() {
+      // Disable button during animation
+      const btnZone = document.getElementById('unsupervised-auto-btn-zone');
+      btnZone.classList.add('hidden');
+
+      let currentDelay = 0;
+      
+      newFruitDataset.forEach((item, index) => {
+        setTimeout(() => {
+          // Play tone
+          playTone(450 + (index * 60), 'sine', 0.12);
+
+          // Hide from waiting tray
+          const waitCard = document.getElementById(`nf-waiting-${item.id}`);
+          if (waitCard) {
+            waitCard.classList.add('opacity-0', 'scale-50');
+          }
+
+          // Append to target basket
+          const smoothBasket = document.getElementById('new-fruits-smooth-basket');
+          const roughBasket = document.getElementById('new-fruits-rough-basket');
+
+          // Remove empty message if first item
+          const smoothMsg = document.getElementById('smooth-empty-msg');
+          const roughMsg = document.getElementById('rough-empty-msg');
+          if (item.texture === 'smooth' && smoothMsg) smoothMsg.remove();
+          if (item.texture === 'rough' && roughMsg) roughMsg.remove();
+
+          const basketCard = document.createElement('div');
+          basketCard.className = "text-center p-2.5 border border-gray-150 rounded-xl w-24 flex flex-col items-center bg-white shadow-sm animate-fade-in transform transition-all duration-300 hover:scale-105";
+          basketCard.innerHTML = `
+            <span class="text-3xl block mb-1">${item.emoji}</span>
+            <span class="text-[10px] font-extrabold text-gray-700 leading-none">${item.name}</span>
+          `;
+
+          if (item.texture === 'smooth') {
+            smoothBasket.appendChild(basketCard);
+          } else {
+            roughBasket.appendChild(basketCard);
+          }
+
+          // If last item, trigger success message
+          if (index === newFruitDataset.length - 1) {
+            setTimeout(() => {
+              playSuccessSound();
+              solvedNewAliens = { 1: true, 2: true }; // both solved
+              document.getElementById('new-alien-success').classList.remove('hidden');
+              startConfetti();
+            }, 500);
+          }
+        }, currentDelay);
+        
+        currentDelay += 400; // animate each fruit sequentially
+      });
     }
 
     /* ==========================================================================
