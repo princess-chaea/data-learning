@@ -134,7 +134,7 @@
         <span class="text-5xl bounce-slow">🕵️‍♂️</span>
         <div>
           <h1 class="text-3xl sm:text-4xl font-bold text-lime-700 title-font leading-none">주니어 데이터 과학자 아카데미</h1>
-          <p class="text-sm text-lime-600 font-bold mt-1">그림책 이론부터 전처리, 이름표 공부와 스스로 모으기까지 완벽 마스터! 🚀</p>
+          <p class="text-sm text-lime-600 font-bold mt-1">그림책 이론부터 데이터 전처리(청소), 지도학습과 비지도학습까지 완벽 마스터! 🚀</p>
         </div>
       </div>
       <!-- 단계 표시 뱃지 -->
@@ -366,8 +366,8 @@
     <section id="step4" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-orange-300">
       <div class="text-center mb-6">
         <span class="text-7xl">🏷️</span>
-        <h2 class="text-4xl sm:text-5xl font-bold text-orange-700 mt-2 title-font">4단계: 이름표를 붙여서 로봇 가르치기</h2>
-        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">"이것은 오늘의 추천 과일이야!", "이것은 추천 제외 과일이야!" 정답 이름표를 직접 달아 공부시키는 공부법이에요.</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-orange-700 mt-2 title-font">4단계: 지도학습(이름표 공부법) - 인공지능에게 당도 7 이상 과일 학습 시켜주기</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">정답 이름표를 직접 알려주며 공부시키는 지도학습 과정이에요.</p>
       </div>
 
       <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 mb-6 text-gray-700 text-center sm:text-left animate-fade-in">
@@ -400,7 +400,7 @@
       <!-- 실습 활동 3 -->
       <div class="border-4 border-dashed border-orange-200 rounded-2xl p-4 sm:p-6 bg-orange-50/40">
         <h3 class="text-2xl sm:text-3xl font-bold text-orange-800 mb-2 title-font">
-          <span class="inline-block mr-2">🤖 [실습 미션]</span> 20가지 과일 친구 이름표 붙여주기!
+          <span class="inline-block mr-2">🤖 [실습 미션]</span> 인공지능에게 당도 7 이상 과일 학습 시켜주기(지도학습)
         </h3>
 
         <!-- 현재 학습시킬 대상 -->
@@ -478,7 +478,7 @@
 
           <div class="flex flex-col items-center border-t border-gray-100 pt-4">
             <div id="test-animal-emoji" class="text-8xl p-4 bg-amber-50 rounded-2xl border-2 border-amber-200 mb-3">🍉</div>
-            <p id="test-features" class="text-lg font-bold text-gray-500 mb-4">특징: 초록색 검은 줄무늬, 여름날 시원하고 달달한 맛.</p>
+            <p id="test-features" class="text-lg font-bold text-gray-500 mb-4">특징: 당도 8.8점</p>
             
             <button onclick="robotEvaluateNormal()" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold px-8 py-3.5 rounded-2xl text-lg fancy-btn w-full max-w-xs">
               🤖 로봇아, 이 과일이 뭔지 맞춰봐!
@@ -565,7 +565,7 @@
     <section id="step6" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-teal-300">
       <div class="text-center mb-6">
         <span class="text-7xl">🛸</span>
-        <h2 class="text-4xl sm:text-5xl font-bold text-teal-700 mt-2 title-font">6단계: 스스로 모으기 - 이름표 없이 창고 정리! 🏪</h2>
+        <h2 class="text-4xl sm:text-5xl font-bold text-teal-700 mt-2 title-font">6단계: 비지도학습(스스로 모으기 공부법) - 이름표 없이 창고 정리! 🏪</h2>
         <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">정답 이름표가 없어도, 로봇이 스스로 공통점을 관찰해 과일들을 끼리끼리 모아요.</p>
       </div>
 
@@ -580,13 +580,13 @@
       <!-- 실습 활동 5 -->
       <div class="border-4 border-dashed border-teal-200 rounded-2xl p-4 sm:p-6 bg-teal-50/40">
         <h3 class="text-2xl sm:text-3xl font-bold text-teal-800 mb-2 title-font">
-          <span class="inline-block mr-2">🍏 [실습 미션]</span> 스스로 과일 끼리끼리 정리하기!
+          <span class="inline-block mr-2">🍏 [실습 미션]</span> 스스로 과일 끼리끼리 정리하기(비지도학습)
         </h3>
         <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">아래의 정리 기준 버튼을 클릭해 로봇이 과일들의 어떤 특징을 보고 끼리끼리 묶어내는지 관찰해 보세요!</p>
 
         <!-- 정렬되지 않은 도형들 배치 공간 -->
         <div id="clustering-area" class="bg-white p-6 rounded-2xl border-2 border-teal-100 min-h-[220px] transition-all duration-700 flex flex-wrap gap-4 items-center justify-center shadow-inner">
-          <!-- JS에서 외계인 캐릭터들을 흩뿌려줌 -->
+          <!-- JS에서 과일 캐릭터들을 흩뿌려줌 -->
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3 justify-center mt-6">
@@ -633,7 +633,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-orange-50 border-4 border-dashed border-orange-300 rounded-2xl p-4 text-center">
             <span class="text-4xl block">🏷️</span>
-            <span class="font-bold text-orange-800 text-xl title-font">이름표 공부법 상자</span>
+            <span class="font-bold text-orange-800 text-xl title-font">지도학습 상자</span>
             <p class="text-xs text-orange-600 mb-3 font-bold">(정답 이름표를 알려주어 공부하는 지도학습)</p>
             <div id="supervised-box" class="min-h-[100px] bg-white rounded-xl p-2 border-2 border-orange-100 flex flex-col gap-2">
               <!-- 매칭된 카드 목록 -->
@@ -641,7 +641,7 @@
           </div>
           <div class="bg-teal-50 border-4 border-dashed border-teal-300 rounded-2xl p-4 text-center">
             <span class="text-4xl block">🍏</span>
-            <span class="font-bold text-teal-800 text-xl title-font">스스로 모으기 상자</span>
+            <span class="font-bold text-teal-800 text-xl title-font">비지도학습 상자</span>
             <p class="text-xs text-teal-600 mb-3 font-bold">(스스로 특징을 묶어서 공부하는 비지도학습)</p>
             <div id="unsupervised-box" class="min-h-[100px] bg-white rounded-xl p-2 border-2 border-teal-100 flex flex-col gap-2">
               <!-- 매칭된 카드 목록 -->
@@ -650,7 +650,7 @@
         </div>
       </div>
 
-      <!-- 파트 2: 비지도 추가 돌발 미션 - 새로운 외계인의 도착! -->
+      <!-- 파트 2: 비지도 추가 돌발 미션 - 새로운 과일의 도착! -->
       <div id="new-alien-mission-box" class="hidden border-4 border-dashed border-rose-200 rounded-2xl p-4 sm:p-6 bg-rose-50/20">
         <div class="text-center mb-3">
           <span class="text-6xl animate-bounce block">🍏</span>
@@ -749,7 +749,7 @@
           <p class="text-gray-600 mb-6 text-lg sm:text-xl font-bold">데이터 청소와 인공지능 공부법을 완벽하게 통과한 자랑스러운 어린이 과학자입니다.</p>
           
           <div class="max-w-xs mx-auto flex gap-2 justify-center mb-6">
-            <input type="text" id="student-name" placeholder="멋진 내 이름을 적어주세요" class="border-2 border-purple-300 rounded-xl px-4 py-2 w-full focus:outline-none focus:border-purple-500 text-lg text-center font-bold">
+            <input type="text" id="student-name" placeholder="이름 입력" class="border-2 border-purple-300 rounded-xl px-4 py-2 w-full focus:outline-none focus:border-purple-500 text-lg text-center font-bold">
             <button onclick="generateCertificate()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-2.5 rounded-xl transition fancy-btn whitespace-nowrap text-lg title-font">
               수료증 받기 🎓
             </button>
@@ -925,11 +925,11 @@
     let labeledDatabase = [];
     let trainingCorrectCount = 0; // 훈련 중 정답 카운트 
 
-    // STEP 5: 순차 테스트 전용 데이터 목록 분리
+    // STEP 5: 순차 테스트 전용 데이터 목록 분리 (어떠한 힌트 문구도 없이 당도 수치만 남김)
     const normalTestDataList = [
-      { emoji: '🍉', sweetness: 8.8, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 8.8점의 여름날 수박 (당도 7점 이상 합격!)' },
-      { emoji: '🍎', sweetness: 9.0, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 9.0점의 사과 (당도 7점 이상 합격!)' },
-      { emoji: '🍋', sweetness: 4.0, correctLabel: 'normal', labelKorean: '추천하지 않는 과일', desc: '당도 4.0점의 노란 레몬 (당도 7점 미만 불합격)' }
+      { emoji: '🍉', sweetness: 8.8, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 8.8점' },
+      { emoji: '🍎', sweetness: 9.0, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 9.0점' },
+      { emoji: '🍋', sweetness: 4.0, correctLabel: 'normal', labelKorean: '추천하지 않는 과일', desc: '당도 4.0점' }
     ];
     let currentNormalTestIndex = 0;
     let isNormalTestDone = false;
@@ -949,7 +949,7 @@
     const matchingItems = [
       { id: 'm1', text: "📸 추천 과일 분류", type: 'super', name: "추천 과일 분류" },
       { id: 'm2', text: "✉️ 스팸 메일 차단", type: 'super', name: "스팸 필터" },
-      { id: 'm3', text: "👗 취향 과일끼리 묶기", type: 'unsuper', name: "추천 추천" },
+      { id: 'm3', text: "👗 비슷한 과일끼리 묶기", type: 'unsuper', name: "비슷한 과일 묶기" },
       { id: 'm4', text: "👥 과일 색깔별 정렬", type: 'unsuper', name: "색깔별 정렬" }
     ];
     let activeMatchingList = [];
@@ -1064,7 +1064,7 @@
             return;
           }
           if (!isAliensSolved) {
-            showCustomModal("새로운 외계인 미분류 👾", "추가 미션! 새로 들어온 외계인 2마리를 특징에 알맞은 우주선에 태워주세요!", "⚠️");
+            showCustomModal("새로운 과일 미분류 🍏", "추가 미션! 새로 들어온 과일 2종류를 감촉에 알맞은 바구니에 담아주세요!", "⚠️");
             playFailureSound();
             return;
           }
@@ -1687,30 +1687,36 @@
       
       document.getElementById('excel-total-count').textContent = filtered.length;
       
-      // Render dynamic bar chart (정렬 상태 반영)
+      // Render unified simplified fruit bar chart rows
       const chartBox = document.getElementById('visual-chart-box');
       chartBox.innerHTML = '';
       
       if (filtered.length === 0) {
-        chartBox.innerHTML = `<div class="text-center text-gray-400 py-10">시각화할 데이터가 존재하지 않습니다.</div>`;
+        chartBox.innerHTML = `<div class="text-center text-gray-400 py-10">시각화할 과일 데이터가 존재하지 않습니다.</div>`;
       } else {
-        filtered.forEach(item => {
+        filtered.forEach((item, idx) => {
           const barWidth = (item.sweetness / 10) * 100;
           const div = document.createElement('div');
-          div.className = "flex items-center gap-3 text-sm font-bold text-gray-700";
+          div.className = "flex items-center gap-3 p-2 bg-slate-50/50 border border-slate-100 rounded-xl hover:bg-slate-50 transition shadow-sm font-bold text-sm text-gray-700";
           
           let barGradient = "from-sky-400 to-indigo-500";
+          let textColor = "text-sky-600";
           if (item.sweetness >= 8.5) {
             barGradient = "from-amber-400 to-orange-500";
+            textColor = "text-amber-600";
+          } else if (item.sweetness >= 7.0) {
+            barGradient = "from-emerald-400 to-teal-500";
+            textColor = "text-emerald-600";
           }
           
           div.innerHTML = `
-            <span class="text-2xl w-8 text-center">${item.emoji}</span>
-            <span class="w-16 truncate">${item.name}</span>
-            <div class="flex-grow bg-gray-100 rounded-full h-4 overflow-hidden border border-gray-150">
+            <span class="text-xs text-gray-400 font-mono w-4">${idx + 1}</span>
+            <span class="text-3xl text-center w-8">${item.emoji}</span>
+            <span class="w-20 truncate">${item.name}</span>
+            <div class="flex-grow bg-gray-100 rounded-full h-4 overflow-hidden border border-gray-150 relative">
               <div class="bg-gradient-to-r ${barGradient} h-full rounded-full transition-all duration-500" style="width: ${barWidth}%"></div>
             </div>
-            <span class="w-10 text-right font-mono text-sky-600">${item.sweetness}점</span>
+            <span class="w-14 text-right font-mono ${textColor}">${item.sweetness.toFixed(1)}점</span>
           `;
           chartBox.appendChild(div);
         });
@@ -1751,14 +1757,9 @@
         
         document.getElementById('train-animal-view').textContent = item.emoji;
         
+        // 과일 카드 특징에는 오직 당도 수치만 선명하게 단 하나만 표시하여 변별 학습 유도!
         const featureBox = document.getElementById('train-animal-features');
-        featureBox.innerHTML = '';
-        const features = item.text.split(', ');
-        features.forEach(f => {
-          const li = document.createElement('li');
-          li.textContent = f;
-          featureBox.appendChild(li);
-        });
+        featureBox.innerHTML = `<li class="text-xl font-extrabold text-orange-950 list-none text-center">당도: ${item.sweetness.toFixed(1)}점</li>`;
       } else {
         // 모든 카드 공부 종료 후 정확도(Accuracy) 판정!
         const accuracy = Math.round((trainingCorrectCount / trainingDataList.length) * 100);
@@ -1893,6 +1894,9 @@
         const item = normalTestDataList[currentNormalTestIndex];
         document.getElementById('test-animal-emoji').textContent = item.emoji;
         document.getElementById('test-features').textContent = `특징: ${item.desc}`;
+        
+        // Hide evaluate bubble until button clicked
+        document.getElementById('test-result-bubble').classList.add('hidden');
       }
     }
 
@@ -2067,6 +2071,9 @@
       document.getElementById('unsupervised-box').innerHTML = '';
       document.getElementById('new-alien-success').classList.add('hidden');
       
+      // Ensure surprise mission box is shown in Step 7 even if skipped in Step 6
+      document.getElementById('new-alien-mission-box').classList.remove('hidden');
+      
       // Reset new alien blocks style
       document.getElementById('new-alien-1').classList.remove('opacity-50', 'bg-emerald-50');
       document.getElementById('new-alien-1').style.pointerEvents = 'auto';
@@ -2090,8 +2097,8 @@
         btn.innerHTML = `
           <span class="font-bold text-indigo-900 text-base mb-2 block title-font">${item.text}</span>
           <div class="flex gap-2 justify-center text-xs">
-            <button onclick="matchCard('${item.id}', 'super')" class="bg-orange-400 hover:bg-orange-500 text-orange-950 font-bold px-2 py-1 rounded title-font">이름표</button>
-            <button onclick="matchCard('${item.id}', 'unsuper')" class="bg-teal-400 hover:bg-teal-500 text-teal-950 font-bold px-2 py-1 rounded title-font">스스로</button>
+            <button onclick="matchCard('${item.id}', 'super')" class="bg-orange-500 hover:bg-orange-600 text-white font-extrabold px-3 py-1.5 rounded-lg title-font">지도</button>
+            <button onclick="matchCard('${item.id}', 'unsuper')" class="bg-teal-500 hover:bg-teal-600 text-white font-extrabold px-3 py-1.5 rounded-lg title-font">비지도</button>
           </div>
         `;
         container.appendChild(btn);
@@ -2146,7 +2153,7 @@
           document.getElementById('new-alien-1').style.pointerEvents = 'none';
         } else {
           playFailureSound();
-          showCustomModal("다시 해봐요! ⚠️", "라임(🟢)은 껍질이 매끈매끈한 과일이에요! 매끈이선에 태워주세요!", "❌");
+          showCustomModal("다시 해봐요! ⚠️", "라임(🟢)은 껍질이 매끈매끈한 과일이에요! 매끈매끈 바구니에 담아주세요!", "❌");
         }
       } else if (alienId === 2) { // coconut (rough)
         if (category === 'rough') {
@@ -2156,7 +2163,7 @@
           document.getElementById('new-alien-2').style.pointerEvents = 'none';
         } else {
           playFailureSound();
-          showCustomModal("다시 해봐요! ⚠️", "코코넛(🥥)은 껍질이 갈색으로 아주 거칠거칠해요! 거칠이선에 태워주세요!", "❌");
+          showCustomModal("다시 해봐요! ⚠️", "코코넛(🥥)은 껍질이 갈색으로 아주 거칠거칠해요! 거칠거칠 바구니에 담아주세요!", "❌");
         }
       }
 
@@ -2275,6 +2282,18 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
+
+    // Fisher-Yates Shuffle algorithm
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // Shuffle step3Dataset and trainingDataList dynamically to avoid alternating left-right clicking sequences!
+    shuffleArray(step3Dataset);
+    shuffleArray(trainingDataList);
 
     // 초기화 기동
     renderSlide();
