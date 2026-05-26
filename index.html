@@ -237,107 +237,141 @@
       <div class="text-center mb-6">
         <span class="text-7xl">🧹</span>
         <h2 class="text-4xl sm:text-5xl font-bold text-sky-700 mt-2 title-font">3단계: 목표에 맞게 데이터를 다듬자!</h2>
-        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">인공지능 공부의 80%는 데이터를 원하는 목표 결과에 맞게 정리하고 가공하는 '데이터 전처리'랍니다!</p>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">인공지능 공부의 80%는 데이터를 원하는 목표 결과에 맞게 정리하고 가공하는 **'데이터 전처리(Data Preprocessing)'**랍니다!</p>
       </div>
 
-      <!-- [1부: 데이터 청소 컨테이너] -->
-      <div id="preprocess-part1" class="block">
-        <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-5 mb-6 text-gray-700 text-left">
-          <p class="font-bold text-sky-800 text-2xl mb-1 title-font">🧹 1부: 고장 나고 상한 불량 데이터 청소하기</p>
-          <p class="text-lg sm:text-xl font-bold leading-relaxed">
-            과일 가게 로봇에게 신선한 과일을 구분하게 하려면, 상한 과일(🤢)이나 장난감 과일(🧸), 물음표 상자(❓) 같은 '불량 데이터(이상치)'를 먼저 깨끗이 치워야 해요!
+      <!-- [파트 1: 스토리텔링 및 시작] -->
+      <div id="preprocess-story" class="block bg-sky-50 border-2 border-sky-200 rounded-2xl p-6 text-gray-700 text-center shadow-sm max-w-2xl mx-auto">
+        <span class="text-6xl mb-2 block">🏪🤖</span>
+        <h3 class="font-bold text-sky-800 text-2xl mb-2 title-font">과일 가게 로봇의 미션: "달콤한 꿀과일을 추천하라!"</h3>
+        <p class="text-lg font-bold leading-relaxed mb-5 text-left">
+          우리 과일 가게 로봇에게 손님들이 아주 좋아하는 **달콤한 꿀과일**을 척척 골라내는 능력을 선물해 주려고 해요!<br><br>
+          로봇이 꿀과일을 완벽하게 공부하려면, 먼저 가게 창고에 마구 섞여 들어온 **쓸모없는 사물이나 썩은 과일(이상치)**을 휴지통에 쏙 버리고, **진짜 싱싱한 과일(정상치)**만 깨끗하게 남겨서 가르쳐야 해요! 이 깨끗한 데이터 가공 작업을 **데이터 청소(전처리)**라고 해요! <br><br>
+          자, 지금부터 창고 속 30개의 데이터를 하나씩 검사하러 가볼까요? 🚀
+        </p>
+        <button onclick="startStep3Sorting()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-8 py-3.5 rounded-2xl text-xl fancy-btn">
+          데이터 청소(전처리) 시작하기! 🧹
+        </button>
+      </div>
+
+      <!-- [파트 2: 1개씩 분류하는 카드 소터] -->
+      <div id="preprocess-sorter" class="hidden border-4 border-dashed border-sky-200 rounded-2xl p-4 sm:p-6 bg-sky-50/40 max-w-xl mx-auto text-center">
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-gray-500 text-base font-bold">전체 30개 데이터 분석 중</span>
+          <span class="bg-sky-200 text-sky-900 font-bold px-4 py-1.5 rounded-full text-base title-font">
+            진행 상황: <span id="step3-progress-text" class="text-xl">1 / 30</span>
+          </span>
+        </div>
+        <!-- 미니 프로그레스 바 -->
+        <div class="w-full bg-gray-250 h-3 rounded-full overflow-hidden mb-6 border border-gray-150">
+          <div id="step3-progress-bar" class="bg-sky-500 h-full transition-all" style="width: 3.3%"></div>
+        </div>
+
+        <!-- 분류할 카드 -->
+        <div id="step3-card" class="bg-white p-6 rounded-2xl border-2 border-sky-100 shadow-md mb-6 transform transition-all duration-300">
+          <div id="step3-card-emoji" class="text-9xl p-4 bg-sky-50 rounded-2xl border border-sky-150 inline-block mb-3">🍎</div>
+          <h4 id="step3-card-name" class="font-bold text-3xl text-gray-800 title-font mb-2">싱싱한 사과</h4>
+          <p class="text-base text-gray-400 font-bold mb-4">이 데이터를 어떻게 처리할까요?</p>
+
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="sortStep3Card('good')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-2xl text-lg sm:text-xl fancy-btn flex flex-col items-center justify-center">
+              <span>💚 학습할 데이터</span>
+              <span class="text-xs font-normal opacity-90 mt-1">(정상치/진짜 데이터)</span>
+            </button>
+            <button onclick="sortStep3Card('bad')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-2xl text-lg sm:text-xl fancy-btn flex flex-col items-center justify-center">
+              <span>🗑️ 버릴 데이터</span>
+              <span class="text-xs font-normal opacity-90 mt-1">(이상치/불량 데이터)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- [파트 3: 엑셀 스프레드시트 + 필터링 + 시각화 + 오늘 추천 과일 결론] -->
+      <div id="preprocess-excel-zone" class="hidden animate-fade-in">
+        <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 mb-6 text-gray-700 text-center">
+          <h3 class="font-bold text-emerald-800 text-2xl mb-1 title-font">🎉 축하합니다! 데이터 청소(전처리) 완료!</h3>
+          <p class="text-lg font-bold leading-relaxed">
+            30개의 불량 데이터(이상치)를 깨끗하게 분류하고, 진짜 싱싱한 과일 **16개의 학습 데이터(정상치)**만 엑셀 표에 이쁘게 모았어요!<br>
+            이제 엑셀 표에서 **원하는 당도 기준**을 선택해 보고, 로봇이 최종적으로 오늘의 추천 과일(정보 활용)을 고르는 모습을 살펴봐요!
           </p>
         </div>
 
-        <div class="border-4 border-dashed border-sky-200 rounded-2xl p-4 sm:p-6 bg-sky-50/40">
-          <h3 class="text-2xl sm:text-3xl font-bold text-sky-850 mb-2 title-font">
-            <span class="inline-block mr-2">🧹 [실습 미션]</span> 불량 데이터를 클릭해 휴지통에 쏙 넣기!
-          </h3>
-          <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">
-            공부방에 들어온 데이터 중 <strong>상한 과일(🤢)</strong>, <strong>장난감(🧸)</strong>, <strong>물음표 상자(❓)</strong>를 눌러 휴지통에 버려주세요!
-          </p>
-
-          <!-- 청소 컨테이너 (과일 트레이와 쓰레기통 비주얼 매치) -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <!-- 왼쪽: 과일이 담긴 데이터 트레이 -->
-            <div class="md:col-span-2 bg-white p-4 rounded-2xl border-2 border-sky-100 min-h-[160px] flex flex-wrap gap-4 justify-center items-center shadow-inner" id="preprocessing-tray">
-              <!-- JS에서 동적 타겟 생성 -->
-            </div>
-            <!-- 오른쪽: 쓰레기통 수집 영역 -->
-            <div class="bg-red-50 border-4 border-dashed border-red-300 rounded-2xl p-4 flex flex-col justify-center items-center text-center shadow-md">
-              <span class="text-7xl animate-bounce">🗑️</span>
-              <span class="font-bold text-red-700 mt-2 text-xl title-font">데이터 휴지통</span>
-              <p class="text-xs text-red-500 mt-1 font-bold">불량 데이터 청소 구역</p>
-              <div class="bg-red-200 text-red-950 font-bold py-1.5 px-4 rounded-full mt-3 text-base title-font">
-                비운 개수: <span id="trash-success-count" class="text-xl">0</span>개
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 왼쪽: 엑셀 스프레드시트 표 -->
+          <div class="bg-white p-5 rounded-3xl border-4 border-emerald-300 shadow-lg">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3 mb-4">
+              <h4 class="font-bold text-emerald-800 text-2xl title-font flex items-center gap-1.5">
+                📊 정제된 과일 엑셀 표(데이터베이스)
+              </h4>
+              <!-- 당도 필터 버튼 그룹 -->
+              <div class="flex flex-wrap gap-1 bg-gray-150 p-1 rounded-xl">
+                <button onclick="filterStep3Sweetness(0)" id="filter-btn-0" class="filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500 text-white shadow-sm">전체 📋</button>
+                <button onclick="filterStep3Sweetness(5)" id="filter-btn-5" class="filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-gray-600 hover:bg-gray-50">당도 5+ 🍊</button>
+                <button onclick="filterStep3Sweetness(7)" id="filter-btn-7" class="filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-gray-600 hover:bg-gray-50">당도 7+ ⭐</button>
+                <button onclick="filterStep3Sweetness(8.5)" id="filter-btn-85" class="filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-gray-600 hover:bg-gray-50">당도 8.5+ 🍯</button>
               </div>
             </div>
+
+            <!-- 표 영역 (오버플로우 처리) -->
+            <div class="overflow-x-auto border-2 border-gray-150 rounded-2xl max-h-[360px] overflow-y-auto">
+              <table class="w-full text-left border-collapse text-base">
+                <thead>
+                  <tr class="bg-emerald-500 text-white font-bold border-b border-gray-200 sticky top-0">
+                    <th class="p-3 text-center">번호(ID)</th>
+                    <th class="p-3 text-center">그림</th>
+                    <th class="p-3">과일 이름</th>
+                    <th class="p-3 text-center">당도(달콤한 정도)</th>
+                  </tr>
+                </thead>
+                <tbody id="excel-table-body" class="font-bold text-gray-700">
+                  <!-- JS에서 동적으로 필터링된 행 삽입 -->
+                </tbody>
+              </table>
+            </div>
+            <div class="text-right text-xs text-gray-400 mt-2 font-bold">
+              총 데이터 수: <span id="excel-total-count">16</span>개 행
+            </div>
           </div>
 
-          <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-sky-100/50 p-4 rounded-xl">
-            <div class="text-xl font-bold">
-              남은 불량 데이터: <strong id="dirty-count" class="text-red-500 text-3xl">4</strong>개
+          <!-- 오른쪽: 시각화 및 오늘의 추천 의사결정 -->
+          <div class="bg-white p-5 rounded-3xl border-4 border-amber-300 shadow-lg flex flex-col justify-between">
+            <div>
+              <h4 class="font-bold text-amber-800 text-2xl title-font mb-4 flex items-center gap-1.5">
+                📈 당도 시각화(데이터 시각화) 그래프
+              </h4>
+              <!-- 가로 막대 차트 영역 -->
+              <div class="space-y-2.5 max-h-[220px] overflow-y-auto pr-1" id="visual-chart-box">
+                <!-- JS에서 동적 바 그래프 렌더링 -->
+              </div>
             </div>
-            <div class="text-xl font-bold">
-              살려낸 싱싱 데이터: <strong id="clean-count" class="text-emerald-600 text-3xl">0</strong>개
+
+            <!-- 최종 의사결정 / 추천 결과 -->
+            <div class="mt-6 bg-gradient-to-r from-amber-50 to-orange-50 border-4 border-amber-400 p-5 rounded-2xl shadow-inner text-center">
+              <span class="text-5xl animate-bounce block">🍯🎉</span>
+              <h5 class="font-bold text-amber-900 text-xl title-font mb-1.5">오늘 손님에게 추천할 진짜 꿀과일(정보/의사결정)</h5>
+              <div id="recommendation-result" class="text-2xl sm:text-3xl font-extrabold text-orange-600 title-font tracking-wide leading-relaxed">
+                [과일 목록이 나타납니다]
+              </div>
+              <p class="text-xs text-gray-500 mt-2 font-bold">
+                💡 데이터 청소(전처리)와 분석(필터링)을 거쳐 완벽한 비즈니스 의사결정을 내렸습니다!
+              </p>
             </div>
-            <button onclick="resetPreprocessing()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-2xl text-base fancy-btn">
-              과일 다시 놓기 🔄
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- [2부: 데이터 가공 컨테이너] -->
-      <div id="preprocess-part2" class="hidden animate-fade-in">
-        <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 mb-6 text-gray-700 text-left">
-          <p class="font-bold text-amber-800 text-2xl mb-1 title-font">🎯 2부: 목표 결과를 얻기 위한 데이터 가공 (꿀과일 찾기)</p>
-          <p class="text-lg sm:text-xl font-bold leading-relaxed">
-            데이터 청소는 시작일 뿐이에요! 진짜 전처리는 **우리가 얻고자 하는 특정 결과(예: 손님에게 엄청 달콤한 꿀과일 골라주기)**를 얻기 위해 데이터를 알맞게 가공하는 과정이랍니다!
-          </p>
-        </div>
-
-        <div class="border-4 border-dashed border-amber-200 rounded-2xl p-4 sm:p-6 bg-amber-50/40">
-          <h3 class="text-2xl sm:text-3xl font-bold text-amber-900 mb-2 title-font">
-            <span class="inline-block mr-2">🧪 [실습 미션]</span> 과일의 당도를 측정하고 '꿀과일' 라벨을 달아주세요!
-          </h3>
-          <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">
-            우리의 목표는 **당도(달콤한 정도)가 8점 이상인 과일**을 골라내는 것입니다! <br>
-            각 과일 카드의 <span class="text-sky-600 font-bold">당도를 측정</span>하고, 8점 이상인 과일에 <span class="text-amber-700 font-bold">🍯 꿀맛 합격</span> 이름표를 콕 달아주세요!
-          </p>
-
-          <!-- 4개 과일 가공 대기판 -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="sweet-fruits-grid">
-            <!-- JS로 동적 생성 -->
-          </div>
-
-          <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-amber-100/50 p-4 rounded-xl">
-            <div class="text-xl font-bold">
-              측정 완료 과일: <strong id="measured-count" class="text-sky-600 text-3xl">0</strong> / 4개
-            </div>
-            <div class="text-xl font-bold">
-              찾아낸 꿀과일: <strong id="honey-count" class="text-amber-600 text-3xl">0</strong> / 2개
-            </div>
-            <button onclick="resetPart2()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-2xl text-base fancy-btn">
-              측정 처음부터 하기 🔄
-            </button>
           </div>
         </div>
       </div>
-    </section>
 
     <!-- STEP 4: 지도학습 로봇 학습시키기 (8분) -->
     <section id="step4" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-orange-300">
       <div class="text-center mb-6">
         <span class="text-7xl">🏷️</span>
         <h2 class="text-4xl sm:text-5xl font-bold text-orange-700 mt-2 title-font">4단계: 이름표를 붙여서 로봇 가르치기</h2>
-        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">"이것은 꿀과일이야!", "이것은 시큼과일이야!" 정답 이름표를 직접 달아 공부시키는 공부법이에요.</p>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">"이것은 오늘의 추천 과일이야!", "이것은 추천 제외 과일이야!" 정답 이름표를 직접 달아 공부시키는 공부법이에요.</p>
       </div>
 
       <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 mb-6 text-gray-700">
         <p class="font-bold text-orange-850 text-2xl mb-1 title-font">🎓 ⚡ 20가지 과일 이름표 공부시키기 미션!</p>
         <p class="text-lg sm:text-xl font-bold leading-relaxed">
-          로봇이 꿀맛 과일과 시큼한 과일을 똑똑하게 맞추려면 **많은 공부 데이터**가 필요해요. <br>
+          로봇이 오늘의 추천 과일과 추천 제외 과일을 똑똑하게 맞추려면 **많은 공부 데이터**가 필요해요. <br>
           아래에 등장하는 과일 카드의 특징을 읽고 알맞은 <strong>이름표 버튼</strong>을 콕 눌러 로봇에게 알려주세요!
         </p>
       </div>
@@ -373,11 +407,11 @@
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <button onclick="submitLabel('sweet')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
-              🍯 꿀맛 과일 이름표
+            <button onclick="submitLabel('recommend')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+              👍 오늘의 추천 과일
             </button>
-            <button onclick="submitLabel('sour')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
-              🍋 시큼 과일 이름표
+            <button onclick="submitLabel('normal')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3.5 rounded-2xl text-xl fancy-btn">
+              ❌ 추천 제외 과일
             </button>
           </div>
         </div>
@@ -409,13 +443,13 @@
             <span class="inline-block mr-2">🎯 [1부]</span> 배운 내용 시험 치기 📝
           </h3>
           <p class="text-gray-600 text-base sm:text-lg mb-4 leading-relaxed font-bold">
-            방금 로봇에게 가르쳐 준 꿀과일과 시큼과일 문제를 내볼게요.<br>
+            방금 로봇에게 가르쳐 준 오늘의 추천 과일 문제를 내볼게요.<br>
             로봇이 백 점을 맞추는지 먼저 확인해 봅시다!
           </p>
 
           <div class="flex flex-col items-center border-t border-gray-100 pt-4">
             <div id="test-animal-emoji" class="text-8xl p-4 bg-amber-50 rounded-2xl border-2 border-amber-200 mb-3">🍉</div>
-            <p class="text-lg font-bold text-gray-500 mb-4" id="test-features font-bold">특징: 초록색 검은 줄무늬, 여름날 시원하고 달달한 맛.</p>
+            <p id="test-features" class="text-lg font-bold text-gray-500 mb-4">특징: 초록색 검은 줄무늬, 여름날 시원하고 달달한 맛.</p>
             
             <button onclick="robotEvaluateNormal()" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold px-8 py-3.5 rounded-2xl text-lg fancy-btn w-full max-w-xs">
               🤖 로봇아, 이 과일이 뭔지 맞춰봐!
@@ -430,9 +464,17 @@
 
           <!-- 완료 후 다음 돌발 미션으로 활성화되는 버튼 -->
           <div id="goto-ood-zone" class="hidden mt-6 text-center border-t-2 border-dashed border-amber-200 pt-4">
-            <p class="text-emerald-700 font-bold mb-3 text-lg">🎉 최고예요! 배운 꿀과일과 시큼과일은 아주 척척 맞췄어요!</p>
+            <p class="text-emerald-700 font-bold mb-3 text-lg">🎉 최고예요! 배운 과일들은 아주 척척 맞췄어요!</p>
             <button onclick="startOodStage()" class="bg-red-500 hover:bg-red-600 text-white font-bold px-8 py-3.5 rounded-2xl text-xl fancy-btn animate-bounce w-full max-w-xs">
               🚨 2부: 돌발 새빨간 불고추 등장! 🌶️
+            </button>
+          </div>
+
+          <!-- 학습 오류 시 활성화되는 재학습 버튼 -->
+          <div id="retrain-trigger-box" class="hidden mt-6 text-center border-t-2 border-dashed border-red-200 pt-4">
+            <p class="text-red-600 font-bold mb-3 text-lg">⚠️ 로봇이 이름표를 잘못 배워 오답을 말했어요! 다시 공부를 시켜야 합니다.</p>
+            <button onclick="triggerRetrain()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-2xl text-xl fancy-btn w-full max-w-xs">
+              🔄 4단계로 돌아가 다시 학습시키기
             </button>
           </div>
         </div>
@@ -500,24 +542,24 @@
     <section id="step6" class="step-section hidden bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-teal-300">
       <div class="text-center mb-6">
         <span class="text-7xl">🛸</span>
-        <h2 class="text-4xl sm:text-5xl font-bold text-teal-700 mt-2 title-font">6단계: 스스로 모으기 - 이름표 없이 척척!</h2>
-        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">정답 이름표가 없어도, 로봇이 스스로 공통점을 관찰해 끼리끼리 모아요.</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-teal-700 mt-2 title-font">6단계: 스스로 모으기 - 이름표 없이 창고 정리! 🏪</h2>
+        <p class="text-gray-600 text-xl sm:text-2xl mt-2 font-bold">정답 이름표가 없어도, 로봇이 스스로 공통점을 관찰해 과일들을 끼리끼리 모아요.</p>
       </div>
 
       <div class="bg-teal-50 border-2 border-teal-200 rounded-2xl p-5 mb-6 text-gray-700">
         <p class="font-bold text-teal-800 text-2xl mb-1 title-font">🔍 스스로 모으기 공부법(비지도학습)이란?</p>
         <p class="text-lg sm:text-xl font-bold leading-relaxed">
           정답 이름표를 알려주지 않아도, <strong>로봇 스스로 관찰하여 성질이나 생김새가 비슷한 부류끼리 그룹</strong>을 나누는 방식이에요.<br>
-          우주 정거장에 도달한 꼬마 외계인들을 스스로 묶어 정렬하는 모습을 구경해 볼까요?
+          과일 창고에 흩어진 과일들을 로봇이 스스로 공통점을 찾아 정리하는 모습을 확인해 볼까요?
         </p>
       </div>
 
       <!-- 실습 활동 5 -->
       <div class="border-4 border-dashed border-teal-200 rounded-2xl p-4 sm:p-6 bg-teal-50/40">
         <h3 class="text-2xl sm:text-3xl font-bold text-teal-800 mb-2 title-font">
-          <span class="inline-block mr-2">👾 [실습 미션]</span> 스스로 외계인 끼리끼리 정렬시키기!
+          <span class="inline-block mr-2">🍏 [실습 미션]</span> 스스로 과일 끼리끼리 정리하기!
         </h3>
-        <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">아래 정렬 기준 단추를 클릭해 로봇이 어떤 생김새를 보고 데이터를 끼리끼리 묶는지 관찰해보세요!</p>
+        <p class="text-gray-600 text-base sm:text-lg mb-4 font-bold">아래의 정리 기준 버튼을 클릭해 로봇이 과일들의 어떤 특징을 보고 끼리끼리 묶어내는지 관찰해 보세요!</p>
 
         <!-- 정렬되지 않은 도형들 배치 공간 -->
         <div id="clustering-area" class="bg-white p-6 rounded-2xl border-2 border-teal-100 min-h-[220px] transition-all duration-700 flex flex-wrap gap-4 items-center justify-center shadow-inner">
@@ -526,18 +568,18 @@
 
         <div class="flex flex-col sm:flex-row gap-3 justify-center mt-6">
           <button onclick="runClustering('color')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-3.5 rounded-full text-lg transition fancy-btn">
-            🎨 "몸의 색깔" 기준으로 묶기!
+            🎨 "과일 색깔" 기준으로 묶기!
           </button>
           <button onclick="runClustering('feature')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-6 py-3.5 rounded-full text-lg transition fancy-btn">
-            👽 "눈의 개수" 기준으로 묶기!
+            🍏 "껍질 감촉" 기준으로 묶기!
           </button>
           <button onclick="resetClustering()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-3.5 rounded-full text-lg transition fancy-btn">
-            뒤섞어버리기 🔄
+            창고 뒤섞기 🔄
           </button>
         </div>
 
         <p class="text-center text-teal-900 text-base mt-4 font-bold bg-teal-100/50 p-2 rounded-xl">
-          💡 이름표를 주지 않았지만, 몸의 색깔이나 눈의 모습을 로봇이 스스로 비교하며 예쁘게 정렬해 냅니다!
+          💡 이름표를 주지 않았지만, 과일의 색깔이나 껍질의 감촉을 로봇이 스스로 비교하며 예쁘게 정렬해 냅니다!
         </p>
       </div>
     </section>
@@ -575,7 +617,7 @@
             </div>
           </div>
           <div class="bg-teal-50 border-4 border-dashed border-teal-300 rounded-2xl p-4 text-center">
-            <span class="text-4xl block">👽</span>
+            <span class="text-4xl block">🍏</span>
             <span class="font-bold text-teal-800 text-xl title-font">스스로 모으기 상자</span>
             <p class="text-xs text-teal-600 mb-3 font-bold">(스스로 특징을 묶어서 공부하는 비지도학습)</p>
             <div id="unsupervised-box" class="min-h-[100px] bg-white rounded-xl p-2 border-2 border-teal-100 flex flex-col gap-2">
@@ -588,38 +630,38 @@
       <!-- 파트 2: 비지도 추가 돌발 미션 - 새로운 외계인의 도착! -->
       <div id="new-alien-mission-box" class="hidden border-4 border-dashed border-rose-200 rounded-2xl p-4 sm:p-6 bg-rose-50/20">
         <div class="text-center mb-3">
-          <span class="text-6xl animate-bounce block">👾</span>
-          <h3 class="text-2xl sm:text-3xl font-bold text-rose-800 title-font">🚨 돌발 상황: 우주 정거장에 새로운 외계인 도착!</h3>
+          <span class="text-6xl animate-bounce block">🍏</span>
+          <h3 class="text-2xl sm:text-3xl font-bold text-rose-800 title-font">🚨 돌발 상황: 과일 창고에 새로운 과일 도착!</h3>
           <p class="text-base sm:text-lg text-gray-600 mt-1 font-bold">
-            스스로 모으기(비지도학습) 정렬을 마치자마자, <strong>새로운 외계인 친구 2마리</strong>가 정거장에 도착했어요! <br>
-            이 친구들의 생김새 특징을 보고, 알맞은 우주선에 탑승할 수 있도록 <strong>직접 분류</strong>해 주세요!
+            스스로 모으기(비지도학습) 정렬을 마치자마자, <strong>새로운 과일 2종류</strong>가 창고에 들어왔어요! <br>
+            이 친구들의 감촉 특징을 보고, 알맞은 바구니에 담길 수 있도록 <strong>직접 분류</strong>해 주세요!
           </p>
         </div>
 
-        <!-- 새로운 외계인 전송 대기 구역 -->
+        <!-- 새로운 과일 대기 구역 -->
         <div class="flex justify-center gap-6 my-5 bg-white p-4 rounded-xl border border-rose-200 shadow-inner">
           <div id="new-alien-1" class="text-center p-3 border-2 border-gray-200 rounded-xl w-36 flex flex-col items-center">
             <span class="text-6xl block mb-1">🟢</span>
-            <span class="text-xs font-bold text-gray-500">초록눈이 (눈 1개)</span>
+            <span class="text-sm font-extrabold text-emerald-700">새콤 라임</span>
             <div class="flex gap-1.5 mt-2 text-xs">
-              <button onclick="sortNewAlien(1, 'one')" class="bg-amber-400 hover:bg-amber-500 px-3 py-1.5 rounded text-amber-950 font-bold title-font">외눈박이선</button>
-              <button onclick="sortNewAlien(1, 'many')" class="bg-indigo-400 hover:bg-indigo-500 px-3 py-1.5 rounded text-white font-bold title-font">다눈이선</button>
+              <button onclick="sortNewAlien(1, 'smooth')" class="bg-emerald-400 hover:bg-emerald-500 px-2 py-1 rounded text-emerald-950 font-bold title-font">매끈매끈 바구니</button>
+              <button onclick="sortNewAlien(1, 'rough')" class="bg-orange-400 hover:bg-orange-500 px-2 py-1 rounded text-orange-950 font-bold title-font">거칠거칠 바구니</button>
             </div>
           </div>
           <div id="new-alien-2" class="text-center p-3 border-2 border-gray-200 rounded-xl w-36 flex flex-col items-center">
-            <span class="text-6xl block mb-1">🦖</span>
-            <span class="text-xs font-bold text-gray-500">다눈공룡 (눈 3개)</span>
+            <span class="text-6xl block mb-1">🥥</span>
+            <span class="text-sm font-extrabold text-amber-800">털 코코넛</span>
             <div class="flex gap-1.5 mt-2 text-xs">
-              <button onclick="sortNewAlien(2, 'one')" class="bg-amber-400 hover:bg-amber-500 px-3 py-1.5 rounded text-amber-950 font-bold title-font">외눈박이선</button>
-              <button onclick="sortNewAlien(2, 'many')" class="bg-indigo-400 hover:bg-indigo-500 px-3 py-1.5 rounded text-white font-bold title-font">다눈이선</button>
+              <button onclick="sortNewAlien(2, 'smooth')" class="bg-emerald-400 hover:bg-emerald-500 px-2 py-1 rounded text-emerald-950 font-bold title-font">매끈매끈 바구니</button>
+              <button onclick="sortNewAlien(2, 'rough')" class="bg-orange-400 hover:bg-orange-500 px-2 py-1 rounded text-orange-950 font-bold title-font">거칠거칠 바구니</button>
             </div>
           </div>
         </div>
 
         <div id="new-alien-success" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4 text-center mt-4">
-          <span class="text-3xl block title-font">🎉 새로운 외계인도 완벽 탑승 성공!</span>
+          <span class="text-3xl block title-font">🎉 새로운 과일도 완벽 분류 성공!</span>
           <p class="text-base sm:text-lg text-emerald-800 font-bold mt-1">
-            처음 보는 새로운 친구(🟢, 🦖)도 스스로 발견한 '눈의 개수' 규칙에 따라 척척 끼리끼리 분류할 수 있음을 확인했어요!
+            처음 보는 새로운 과일(🟢, 🥥)도 스스로 발견한 '껍질 감촉' 규칙에 따라 척척 끼리끼리 분류할 수 있음을 확인했어요!
           </p>
         </div>
       </div>
@@ -666,13 +708,13 @@
         <!-- 퀴즈 3 -->
         <div class="quiz-card hidden" id="quiz-3">
           <div class="bg-purple-100 text-purple-800 font-bold px-3 py-1 rounded-full text-base inline-block mb-2 title-font">문제 3 / 3</div>
-          <p class="text-xl sm:text-2xl text-purple-900 font-bold mb-4 leading-relaxed">Q. 강아지와 고양이 이름표만 공부한 로봇 앞에 사자(🦁)가 나타났을 때, 고양이라고 엉뚱하게 오판한 진짜 이유는 무엇일까요?</p>
+          <p class="text-xl sm:text-2xl text-purple-900 font-bold mb-4 leading-relaxed">Q. 빨간색 단 과일만 이름표로 공부한 로봇 앞에 처음 보는 매운 빨간 고추(🌶️)가 나타났을 때, "오늘의 추천 과일"이라고 엉뚱하게 판단한 진짜 이유는 무엇일까요?</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button onclick="checkQuiz(3, false)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold text-base sm:text-lg transition active:scale-95 px-2 font-bold">
-              ① 사자는 원래 고양이 친구라서 🦁🐾
+              ① 고추가 사과처럼 진짜 달콤해서 🌶️
             </button>
             <button onclick="checkQuiz(3, true)" class="bg-white hover:bg-purple-50 border-2 border-purple-200 py-4 rounded-2xl font-bold text-base sm:text-lg transition active:scale-95 px-2 font-bold leading-relaxed">
-              ② 한 번도 배운 적 없는 새로운 종류의 동물이라, 자신이 공부한 범위 안에서 억지로 판단해서 🦁
+              ② 한 번도 가르쳐준 적 없는 돌발 고추를 '빨간색은 추천 과일'이라는 편향된 규칙으로 억지로 오판했기 때문에 🎨
             </button>
           </div>
         </div>
@@ -749,14 +791,14 @@
         title: "1장: '데이터'가 무엇일까요? 🤔",
         emoji: "📦",
         image: "degu_hello.png",
-        desc: "컴퓨터 친구들은 우리가 '눈'으로 보고, '귀'로 듣고, '몸'으로 느끼는 모든 기억들을 다 기록할 수 있어요! 이 소중한 기억들의 조각을 바로 <strong class='text-amber-600 font-bold'>'데이터'</strong>라고 불러요!",
+        desc: "컴퓨터 친구들은 우리가 '눈'으로 보고, '귀'로 듣고, '몸'으로 느끼는 모든 기억들을 다 기록할 수 있어요! 이 소중한 기억들의 조각을 바로 <strong class='text-amber-600 font-bold'>'데이터(Data)'</strong>라고 불러요!",
         tips: "예를 들면 스마트폰 속에 찍어 둔 강아지 사진, 오늘 바깥 날씨 온도, 즐거운 아기상어 노랫소리가 전부 데이터예요!"
       },
       {
         title: "2장: 데이터가 생각으로 바뀌면 '정보'가 돼요! 💡",
         emoji: "🎩",
         image: "degu_data_bubbles.png",
-        desc: "데이터 조각들을 모아서 우리의 머릿속에서 쓸모 있게 변신한 생각을 <strong class='text-indigo-600 font-bold'>'정보'</strong>라고 해요!",
+        desc: "데이터 조각들을 모아서 우리의 머릿속에서 쓸모 있게 변신한 생각을 <strong class='text-indigo-600 font-bold'>'정보(Information)'</strong>라고 해요!",
         tips: "데이터 조각: '현재 온도 22도' 🌡️ ➜ 정보로 변신: '오늘 날씨가 선선하네? 밖에서 킥보드 타고 놀자! 🛹'"
       },
       {
@@ -770,12 +812,12 @@
         emoji: "🤖",
         image: "degu_brain_chest.png",
         desc: "모은 데이터로 로봇 친구를 공부시킬 때, 두 가지 재미있는 마법 공부법이 있어요!",
-        tips: "• <strong>① 이름표 공부법 (지도학습)</strong>: '이건 꿀과일!', '이건 시큼과일!' 정답을 알려주면서 공부하는 마법!<br>• <strong>② 스스로 모으기 공부법 (비지도학습)</strong>: 정답 없이 로봇 스스로 관찰해 비슷한 생김새끼리 모으는 마법!"
+        tips: "• <strong>① 이름표 공부법(지도학습)</strong>: '이건 추천 과일!', '이건 추천 제외!' 정답을 알려주면서 공부하는 마법!<br>• <strong>② 스스로 모으기 공부법(비지도학습)</strong>: 정답 없이 로봇 스스로 관찰해 비슷한 생김새(색깔, 감촉)끼리 모으는 마법!"
       },
       {
         title: "5장: 직접 만져보는 데이터 상자! 🎮",
         emoji: "⚡",
-        desc: "아래 네 가지 데이터 상자를 클릭해 데이터가 로봇의 머릿속 기억 창고로 쏙 날아가는 모습을 관찰해 보아요!",
+        desc: "아래 네 가지 데이터 상자를 클릭해 데이터가 로봇의 머릿속 기억 창고(데이터베이스)로 쏙 날아가는 모습을 관찰해 보아요!",
         interactive: true
       }
     ];
@@ -795,71 +837,96 @@
     ];
     const step2Discovered = {}; 
 
-    // STEP 3: 데이터 전처리 (불량 과일 전처리 미션)
-    const rawDataList = [
-      { id: 1, type: 'good', emoji: '🍎', name: '사과' },
-      { id: 2, type: 'bad', emoji: '🤢', name: '상한 포도' },
-      { id: 3, type: 'good', emoji: '🍌', name: '바나나' },
-      { id: 4, type: 'bad', emoji: '🧸', name: '딸기 완구' },
-      { id: 5, type: 'good', emoji: '🍇', name: '싱싱 포도' },
-      { id: 6, type: 'bad', emoji: '❓', name: '물음표 상자' },
-      { id: 7, type: 'good', emoji: '🍊', name: '오렌지' },
-      { id: 8, type: 'bad', emoji: '🤢', name: '상한 바나나' }
+    // STEP 3: 데이터 전처리(이상치 제거 및 엑셀 필터링) 30개 데이터 세트
+    const step3Dataset = [
+      { id: 1, type: 'good', emoji: '🍎', name: '싱싱한 사과', sweetness: 9.0, reason: "싱싱한 사과는 좋은 과일 데이터(정상치)예요!" },
+      { id: 2, type: 'bad', emoji: '🤢', name: '상한 포도', sweetness: 0, reason: "상한 과일은 로봇이 맛을 오해하게 만드는 불량 데이터(이상치)예요!" },
+      { id: 3, type: 'good', emoji: '🍌', name: '달콤한 바나나', sweetness: 8.0, reason: "달고 맛있는 바나나는 좋은 과일 데이터(정상치)예요!" },
+      { id: 4, type: 'bad', emoji: '🧸', name: '딸기 장난감', sweetness: 0, reason: "장난감은 과일이 아니기 때문에 버려야 하는 불량 데이터(이상치)예요!" },
+      { id: 5, type: 'good', emoji: '🍇', name: '싱싱한 포도', sweetness: 7.5, reason: "새콤달콤한 포도는 좋은 과일 데이터(정상치)예요!" },
+      { id: 6, type: 'bad', emoji: '❓', name: '의문의 상자', sweetness: 0, reason: "내용물을 모르는 빈 상자는 불량 데이터(이상치)예요!" },
+      { id: 7, type: 'good', emoji: '🍊', name: '새콤한 오렌지', sweetness: 5.5, reason: "비타민 가득 오렌지는 좋은 과일 데이터(정상치)예요!" },
+      { id: 8, type: 'bad', emoji: '🤢', name: '상한 바나나', sweetness: 0, reason: "상한 바나나는 버려야 하는 불량 데이터(이상치)예요!" },
+      { id: 9, type: 'good', emoji: '🍓', name: '빨간 딸기', sweetness: 9.5, reason: "달콤한 딸기는 아주 훌륭한 과일 데이터(정상치)예요!" },
+      { id: 10, type: 'bad', emoji: '🧱', name: '빨간 벽돌', sweetness: 0, reason: "벽돌은 사물이므로 버려야 하는 불량 데이터(이상치)예요!" },
+      { id: 11, type: 'good', emoji: '🍑', name: '분홍 복숭아', sweetness: 9.0, reason: "달콤한 복숭아는 훌륭한 과일 데이터(정상치)예요!" },
+      { id: 12, type: 'bad', emoji: '👟', name: '헌 운동화', sweetness: 0, reason: "운동화는 먹을 수 없으므로 무조건 버려야 하는 불량 데이터(이상치)예요!" },
+      { id: 13, type: 'good', emoji: '🍈', name: '달콤한 멜론', sweetness: 8.5, reason: "달달한 멜론은 훌륭한 과일 데이터(정상치)예요!" },
+      { id: 14, type: 'bad', emoji: '🤢', name: '썩은 토마토', sweetness: 0, reason: "상하고 상처 난 과채류는 버려야 하는 불량 데이터(이상치)예요!" },
+      { id: 15, type: 'good', emoji: '🍍', name: '왕관 파인애플', sweetness: 8.0, reason: "새콤달콤한 파인애플은 좋은 과일 데이터(정상치)예요!" },
+      { id: 16, type: 'bad', emoji: '🍼', name: '아기 젖병', sweetness: 0, reason: "젖병은 식기가 아닌 사물이므로 불량 데이터(이상치)예요!" },
+      { id: 17, type: 'good', emoji: '🍒', name: '빨간 체리', sweetness: 7.0, reason: "체리는 좋은 과일 데이터(정상치)예요!" },
+      { id: 18, type: 'bad', emoji: '🤢', name: '곰팡이 핀 귤', sweetness: 0, reason: "곰팡이가 핀 과일은 꼭 걸러내야 하는 불량 데이터(이상치)예요!" },
+      { id: 19, type: 'good', emoji: '🥭', name: '황금 망고', sweetness: 9.2, reason: "꿀맛 가득한 망고는 훌륭한 과일 데이터(정상치)예요!" },
+      { id: 20, type: 'bad', emoji: '🧸', name: '아기 곰인형', sweetness: 0, reason: "인형은 먹는 음식이 아니므로 불량 데이터(이상치)예요!" },
+      { id: 21, type: 'good', emoji: '🍉', name: '시원한 수박', sweetness: 8.8, reason: "여름날 시원한 수박은 아주 좋은 과일 데이터(정상치)예요!" },
+      { id: 22, type: 'bad', emoji: '⚽', name: '축구공', sweetness: 0, reason: "축구공은 과일이 아니므로 불량 데이터(이상치)예요!" },
+      { id: 23, type: 'good', emoji: '🍐', name: '아삭한 배', sweetness: 7.2, reason: "아삭한 배는 좋은 과일 데이터(정상치)예요!" },
+      { id: 24, type: 'bad', emoji: '🤢', name: '뭉개진 딸기', sweetness: 0, reason: "상한 딸기는 버려야 하는 불량 데이터(이상치)예요!" },
+      { id: 25, type: 'good', emoji: '🍋', name: '새콤한 레몬', sweetness: 4.0, reason: "신 레몬은 좋은 과일 데이터(정상치)예요!" },
+      { id: 26, type: 'bad', emoji: '🪨', name: '마당 돌멩이', sweetness: 0, reason: "돌멩이는 기계를 망가뜨릴 수 있는 불량 데이터(이상치)예요!" },
+      { id: 27, type: 'good', emoji: '🥝', name: '초록색 키위', sweetness: 6.5, reason: "영양 가득 키위는 좋은 과일 데이터(정상치)예요!" },
+      { id: 28, type: 'bad', emoji: '🥫', name: '빈 알루미늄 캔', sweetness: 0, reason: "빈 캔은 버려야 하는 불량 데이터(이상치)예요!" },
+      { id: 29, type: 'good', emoji: '🫐', name: '블루베리 알', sweetness: 6.8, reason: "블루베리는 좋은 과일 데이터(정상치)예요!" },
+      { id: 30, type: 'bad', emoji: '🤢', name: '상한 사과', sweetness: 0, reason: "검게 변해버린 상한 사과는 버려야 하는 불량 데이터(이상치)예요!" }
     ];
-    let activePreprocessingList = [];
-    let trashSuccessCount = 0;
+    let currentStep3Index = 0;
+    let step3CleanedData = [];
+    let isStep3Completed = false;
+    let step3FilterValue = 0;
 
     // STEP 4: 지도학습 20가지 과일 데이터 세트
     const trainingDataList = [
-      { emoji: '🍎', label: 'sweet', text: '붉고 아주 예쁜 빨간색, 설탕처럼 달콤한 향기' },
-      { emoji: '🍋', label: 'sour', text: '노란 레몬 모양, 과즙이 입안에서 찌릿찌릿 셔요' },
-      { emoji: '🍇', label: 'sweet', text: '송이송이 맺힌 포도, 한입 쏙 베어 물면 꿀맛' },
-      { emoji: ' kiwi', label: 'sour', text: '갈색 껍질 솜털 가득, 속은 초록색이고 아주 셔요' },
-      { emoji: '🍌', label: 'sweet', text: '길쭉하고 샛노란 색깔, 아주 부드럽고 달콤함' },
-      { emoji: '🍊', label: 'sour', text: '동글동글 주황 귤, 먹으면 눈이 저절로 찌푸려지는 시큼함' },
-      { emoji: '🍉', label: 'sweet', text: '초록색 검은 줄무늬, 여름날 시원하고 달달한 맛' },
-      { emoji: ' lime', label: 'sour', text: '새파란 라임 조각, 침이 고이도록 엄청 셔요' },
-      { emoji: '🍑', label: 'sweet', text: '핑크빛 분홍 복숭아, 달콤한 솜사탕 향기가 폴폴' },
-      { emoji: ' green_grape', label: 'sour', text: '덜 익은 청포도 알, 단맛보다는 신맛이 톡 터져요' },
-      { emoji: '🍈', label: 'sweet', text: '그물 무늬 연두색 멜론, 입안에 넣자마자 꿀 향기 가득' },
-      { emoji: ' green_mango', label: 'sour', text: '아주 딱딱한 초록 풋망고, 시큼하고 아삭아삭해요' },
-      { emoji: '🍓', label: 'sweet', text: '하트 모양 빨간 딸기, 아이스크림에 얹어먹는 달달함' },
-      { emoji: ' grapefruit', label: 'sour', text: '뚱뚱한 루비 자몽, 씁쓸하고 톡 쏘는 강한 신맛' },
-      { emoji: ' Pineapple', label: 'sweet', text: '왕관을 쓴 노란 파인애플, 주스로 마시는 달콤 시원한 맛' },
-      { emoji: ' green_apple', label: 'sour', text: '초록색 청사과, 한입 베면 아주 풋풋하고 시큼새큼' },
-      { emoji: ' mango', label: 'sweet', text: '말랑말랑 황금색 망고, 부드럽고 꿀처럼 단 맛' },
-      { emoji: ' green_plum', label: 'sour', text: '초록빛 풋매실, 씹으면 깜짝 놀라도록 신 즙이 나와요' },
-      { emoji: '🍒', label: 'sweet', text: '두 알이 모인 빨간 체리, 케이크 위의 최고 달콤한 열매' },
-      { emoji: ' berry', label: 'sour', text: '탱글탱글 덜 익은 머루, 신맛이 강한 산과일이에요' }
+      { emoji: '🍎', label: 'recommend', sweetness: 9.0, text: '당도 9.0점의 사과, 오늘의 추천 기준(당도 7점 이상)에 잘 맞아요!' },
+      { emoji: '🍋', label: 'normal', sweetness: 4.0, text: '당도 4.0점의 레몬, 신맛이 강하고 추천 기준(당도 7점 이상)보다 낮아요.' },
+      { emoji: '🍇', label: 'recommend', sweetness: 7.5, text: '당도 7.5점의 싱싱 포도, 추천 기준(당도 7점 이상)을 가뿐히 넘어요!' },
+      { emoji: '🥝', label: 'normal', sweetness: 6.5, text: '당도 6.5점의 키위, 약간 새콤하고 추천 기준(당도 7점 이상)에 미달이에요.' },
+      { emoji: '🍌', label: 'recommend', sweetness: 8.0, text: '당도 8.0점의 단 바나나, 든든하고 달콤해서 추천 과일 조건에 어울려요!' },
+      { emoji: '🍊', label: 'normal', sweetness: 5.5, text: '당도 5.5점의 오렌지, 당도가 조금 약해서 추천 과일 조건보다 낮아요.' },
+      { emoji: '🍉', label: 'recommend', sweetness: 8.8, text: '당도 8.8점의 시원 수박, 수분이 가득하고 매우 달콤하여 추천 과일이에요!' },
+      { emoji: '🍋', label: 'normal', sweetness: 3.5, text: '당도 3.5점의 신 레몬, 즙이 너무 찌릿하고 당도 기준(7점)보다 한참 낮아요.' },
+      { emoji: '🍑', label: 'recommend', sweetness: 9.0, text: '당도 9.0점의 복숭아, 복숭아 향이 폴폴 나며 달달함이 가득해 합격이에요!' },
+      { emoji: '🍇', label: 'normal', sweetness: 6.8, text: '당도 6.8점의 청포도 알, 덜 익어 신맛이 나며 당도 기준(7점)보다 살짝 낮아요.' },
+      { emoji: '🍈', label: 'recommend', sweetness: 8.5, text: '당도 8.5점의 멜론, 그물무늬 속에 달콤한 꿀맛 가치가 듬뿍 담겨 합격이에요!' },
+      { emoji: '🥭', label: 'normal', sweetness: 6.0, text: '당도 6.0점의 풋망고, 딱딱하고 시큼해서 오늘의 추천 기준에 미달이에요.' },
+      { emoji: '🍓', label: 'recommend', sweetness: 9.5, text: '당도 9.5점의 빨간 딸기, 한입 물면 사르르 녹아 최고의 추천 과일이에요!' },
+      { emoji: '🍊', label: 'normal', sweetness: 5.0, text: '당도 5.0점의 신 자몽, 씁쓸한 신맛이 강해서 추천 조건에 어울리지 않아요.' },
+      { emoji: '🍍', label: 'recommend', sweetness: 8.0, text: '당도 8.0점의 파인애플, 상큼하면서도 단맛 지수가 높아 합격이에요!' },
+      { emoji: '🍏', label: 'normal', sweetness: 5.2, text: '당도 5.2점의 아오리 사과, 새큼한 맛 위주라 달달한 추천 기준보다 낮아요.' },
+      { emoji: '🥭', label: 'recommend', sweetness: 9.2, text: '당도 9.2점의 골드 망고, 황금빛 과육이 꿀처럼 달아 아주 훌륭한 합격품이에요!' },
+      { emoji: '🍒', label: 'recommend', sweetness: 7.0, text: '당도 7.0점의 앵두 체리, 앙증맞고 새콤달콤해서 간신히 추천 기준에 통과했어요!' },
+      { emoji: '🫐', label: 'normal', sweetness: 6.5, text: '당도 6.5점의 블루베리, 당도 지수가 6.5점이라 7점 기준에는 조금 아쉬워요.' },
+      { emoji: '🍓', label: 'recommend', sweetness: 8.5, text: '당도 8.5점의 왕딸기, 아이들이 정말 좋아하는 당도 8점대의 꿀맛 과일이에요!' }
     ];
     let currentTrainIndex = 0;
     let labeledDatabase = []; 
 
-    // STEP 5: 순차 테스트 전용 데이터 목록 분리 (과일 매칭)
+    // STEP 5: 순차 테스트 전용 데이터 목록 분리
     const normalTestDataList = [
-      { emoji: '🍉', correctLabel: 'sweet', labelKorean: '꿀맛 과일', desc: '초록색 검은 줄무늬, 여름날 시원하고 달달한 맛.' },
-      { emoji: '🥝', correctLabel: 'sour', labelKorean: '시큼 과일', desc: '갈색 껍질 솜털 가득, 속은 초록색이고 아주 셔요.' }
+      { emoji: '🍉', sweetness: 8.8, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 8.8점의 여름날 수박 (당도 7점 이상 합격!)' },
+      { emoji: '🍎', sweetness: 9.0, correctLabel: 'recommend', labelKorean: '오늘의 추천 과일', desc: '당도 9.0점의 사과 (당도 7점 이상 합격!)' },
+      { emoji: '🍋', sweetness: 4.0, correctLabel: 'normal', labelKorean: '추천하지 않는 과일', desc: '당도 4.0점의 노란 레몬 (당도 7점 미만 불합격)' }
     ];
     let currentNormalTestIndex = 0;
     let isNormalTestDone = false;
     let isTestCompleted = false;
 
-    // STEP 6: 비지도학습 외계인 데이터셋
+    // STEP 6: 비지도학습 창고 과일 데이터셋
     const alienList = [
-      { id: 1, color: 'pink', eyes: 'one', emoji: '👾' }, 
-      { id: 2, color: 'blue', eyes: 'many', emoji: '👽' }, 
-      { id: 3, color: 'pink', eyes: 'one', emoji: '🐙' }, 
-      { id: 4, color: 'blue', eyes: 'many', emoji: '🤖' }, 
-      { id: 5, color: 'pink', eyes: 'many', emoji: '👹' }, 
-      { id: 6, color: 'blue', eyes: 'one', emoji: '👁️' }   
+      { id: 1, color: 'red', texture: 'smooth', emoji: '🍎', name: '사과' },
+      { id: 2, color: 'yellow', texture: 'smooth', emoji: '🍌', name: '바나나' },
+      { id: 3, color: 'red', texture: 'smooth', emoji: '🍒', name: '체리' },
+      { id: 4, color: 'yellow', texture: 'rough', emoji: '🍍', name: '파인애플' },
+      { id: 5, color: 'red', texture: 'rough', emoji: '🍓', name: '딸기' },
+      { id: 6, color: 'yellow', texture: 'rough', emoji: '🍋', name: '레몬' }
     ];
 
-    // STEP 7: 매칭 데이터 목록 및 신규 외계인
+    // STEP 7: 매칭 데이터 목록 및 신규 과일
     const matchingItems = [
-      { id: 'm1', text: "📸 얼굴인식 사진", type: 'super', name: "얼굴 인식" },
+      { id: 'm1', text: "📸 추천 과일 분류", type: 'super', name: "추천 과일 분류" },
       { id: 'm2', text: "✉️ 스팸 메일 차단", type: 'super', name: "스팸 필터" },
-      { id: 'm3', text: "👗 취향 옷끼리 묶기", type: 'unsuper', name: "추천 추천" },
-      { id: 'm4', text: "👥 관심사 그룹 나누기", type: 'unsuper', name: "친구 관심 그룹" }
+      { id: 'm3', text: "👗 취향 과일끼리 묶기", type: 'unsuper', name: "추천 추천" },
+      { id: 'm4', text: "👥 과일 색깔별 정렬", type: 'unsuper', name: "색깔별 정렬" }
     ];
     let activeMatchingList = [];
     let supervisedMatched = [];
@@ -938,30 +1005,8 @@
           }
         }
         if (currentStep === 3) {
-          const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
-          if (remainingBad > 0) {
-            showCustomModal("청소 중! 🧹", `남은 불량 데이터(${remainingBad}개)를 마저 클릭해 쓰레기통에 쏙 버려주세요!`, "⚠️");
-            playFailureSound();
-            return;
-          }
-
-          // 만약 1부가 끝났는데 2부가 활성화되지 않은 상태라면, 2부를 열어줍니다.
-          const part2 = document.getElementById('preprocess-part2');
-          if (part2.classList.contains('hidden')) {
-            initPart2();
-            showCustomModal(
-              "2부 시작! 🎯🧪", 
-              "와! 불량 과일 청소를 잘 마쳤어요!\n이제 우리의 진짜 목표인 '손님을 위한 달콤한 꿀과일 추천'에 맞게 과일 데이터를 가공하는 2부를 진행해 보아요!", 
-              "🧪"
-            );
-            return;
-          }
-
-          // 2부가 열려있는데 완료되지 않았다면 차단
-          const allMeasured = activeSweetFruits.every(x => x.isMeasured);
-          const allLabeled = activeSweetFruits.filter(x => x.sweetness >= 8).every(x => x.isLabeled);
-          if (!allMeasured || !allLabeled) {
-            showCustomModal("가공 중! 🧪", "모든 과일의 당도를 측정하고, 8점 이상인 꿀과일에는 '꿀맛 합격' 마크를 마저 달아주세요!", "⚠️");
+          if (!isStep3Completed) {
+            showCustomModal("데이터 청소 중! 🧹", "30개의 데이터를 모두 분류(전처리)하고, 엑셀 표에서 당도 필터링을 설정하여 오늘의 추천 과일을 완성해 주세요!", "⚠️");
             playFailureSound();
             return;
           }
@@ -975,7 +1020,7 @@
         }
         if (currentStep === 5) {
           if (!isTestCompleted) {
-            showCustomModal("시험 단계 📝", "1부 일반 시험과 2부 돌발 사자 문제의 정답을 모두 확인해야 다음 단계로 이동할 수 있어요!", "⚠️");
+            showCustomModal("시험 단계 📝", "1부 일반 시험과 2부 돌발 고추 문제의 정답을 모두 확인해야 다음 단계로 이동할 수 있어요!", "⚠️");
             playFailureSound();
             return;
           }
@@ -1015,11 +1060,7 @@
       } else if (currentStep === 2) {
         initDataGallery();
       } else if (currentStep === 3) {
-        resetPreprocessing();
-        document.getElementById('preprocess-part1').classList.remove('hidden');
-        document.getElementById('preprocess-part1').classList.add('block');
-        document.getElementById('preprocess-part2').classList.add('hidden');
-        document.getElementById('preprocess-part2').classList.remove('block');
+        resetStep3();
       } else if (currentStep === 4) {
         renderTrainItem();
         renderDatabaseGrid();
@@ -1065,31 +1106,69 @@
             <p class="text-sm sm:text-base text-red-500 mb-4 font-bold">👇 아래 4개의 데이터 상자 단추를 클릭해 데이터를 컴퓨터에 넣어보세요!</p>
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 justify-center mb-6">
-              <button onclick="triggerInteractiveData('text', '🔤 글자 상자', '📱 엄마의 문자: 조심히 오렴!')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
-                🔤 글자 상자
+              <button onclick="triggerInteractiveData('text', '🔤 글자 상자(텍스트 데이터)', '📱 엄마의 문자: 조심히 오렴!')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🔤 글자 상자(텍스트)
               </button>
-              <button onclick="triggerInteractiveData('number', '🔢 숫자 상자', '🌡️ 오늘 날씨: 22도')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
-                🔢 숫자 상자
+              <button onclick="triggerInteractiveData('number', '🔢 숫자 상자(수치 데이터)', '🌡️ 오늘 날씨: 22도')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🔢 숫자 상자(수치)
               </button>
-              <button onclick="triggerInteractiveData('sound', '🔊 소리 상자', '🎵 노래: 아기상어 뚜루루뚜루~')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
-                🔊 소리 상자
+              <button onclick="triggerInteractiveData('sound', '🔊 소리 상자(오디오 데이터)', '🎵 노래: 아기상어 뚜루루뚜루~')" class="bg-pink-500 hover:bg-pink-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🔊 소리 상자(오디오)
               </button>
-              <button onclick="triggerInteractiveData('image', '🖼️ 그림 상자', '📸 사진: 가족들의 활짝 웃는 얼굴')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
-                🖼️ 그림 상자
+              <button onclick="triggerInteractiveData('image', '🖼️ 그림 상자(이미지 데이터)', '📸 사진: 가족들의 활짝 웃는 얼굴')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold p-3.5 rounded-2xl fancy-btn text-lg title-font">
+                🖼️ 그림 상자(이미지)
               </button>
             </div>
 
-            <!-- 데이터가 실시간 적재되는 대시보드 화면 (글라스모피즘 아동 맞춤형) -->
-            <div id="interactive-dashboard" class="hidden bg-white/95 border-4 border-lime-300 p-5 rounded-3xl text-center max-w-sm mx-auto shadow-md transform transition-all duration-300">
-              <span class="text-4xl block">🧠</span>
-              <h4 class="font-bold text-lime-800 text-2xl mt-1 title-font">로봇의 머릿속 기억 창고</h4>
-              <p class="text-sm text-lime-600 font-bold mb-3">데이터가 공부방으로 쏙 도착했어요! 📥</p>
-              
-              <div class="bg-lime-50 rounded-2xl p-4 border-2 border-lime-200 text-left text-lg text-gray-700 font-bold">
-                <p id="dash-type" class="font-bold text-lime-700">상자 이름: -</p>
-                <p id="dash-content" class="mt-1 text-gray-800">기억한 내용: -</p>
+            <!-- 데이터가 실시간 적재되는 대시보드 화면 -->
+            <div id="interactive-dashboard" class="hidden bg-white border-4 border-lime-300 p-6 rounded-3xl text-center max-w-xl mx-auto shadow-2xl transform transition-all duration-500 animate-fade-in">
+              <div class="flex items-center justify-center gap-3 mb-4 bg-lime-50/50 py-3 px-6 rounded-2xl border border-lime-200">
+                <span id="dash-robot-emoji" class="text-6xl animate-bounce">🤖</span>
+                <div class="text-left">
+                  <h4 class="font-bold text-lime-800 text-2xl title-font">로봇의 생각 발전소 ⚡</h4>
+                  <p class="text-sm text-lime-600 font-bold">들어온 데이터를 정보(가공된 지식)와 행동(의사결정)으로 변신시켜요!</p>
+                </div>
               </div>
-              <p id="dash-status" class="mt-3 text-base text-emerald-600 font-extrabold animate-pulse">✨ 로봇 머릿속 서랍에 저장 완료! ✨</p>
+              
+              <div class="space-y-4 text-left text-lg">
+                <div class="bg-gray-50 border-2 border-gray-100 rounded-2xl p-4">
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <span class="bg-gray-200 text-gray-700 text-xs px-2 py-0.5 rounded-full font-bold">1단계</span>
+                    <strong class="text-gray-700 text-base">데이터 조각 입력 📥</strong>
+                  </div>
+                  <div id="dash-step1-val" class="text-lg text-gray-800 font-bold pl-2 border-l-4 border-gray-300">
+                    -
+                  </div>
+                </div>
+
+                <div class="text-center text-gray-300 text-xl font-bold leading-none my-1">▼</div>
+
+                <div class="bg-sky-50 border-2 border-sky-100 rounded-2xl p-4">
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <span class="bg-sky-200 text-sky-800 text-xs px-2 py-0.5 rounded-full font-bold">2단계</span>
+                    <strong class="text-sky-700 text-base">로봇의 연산 및 처리 ⚙️</strong>
+                  </div>
+                  <div id="dash-step2-val" class="text-lg text-sky-800 font-bold pl-2 border-l-4 border-sky-300">
+                    -
+                  </div>
+                </div>
+
+                <div class="text-center text-sky-200 text-xl font-bold leading-none my-1">▼</div>
+
+                <div class="bg-emerald-50 border-2 border-emerald-100 rounded-2xl p-4">
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <span class="bg-emerald-200 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">3단계</span>
+                    <strong class="text-emerald-700 text-base">최종 정보 및 결과로 탄생! 💡</strong>
+                  </div>
+                  <div id="dash-step3-val" class="text-lg text-emerald-800 font-bold pl-2 border-l-4 border-emerald-300">
+                    -
+                  </div>
+                </div>
+              </div>
+              
+              <p id="dash-status-msg" class="mt-5 text-base text-emerald-600 font-extrabold animate-pulse">
+                ✨ 데이터 분석 성공! 로봇이 똑똑한 생각(정보)을 해냈어요! ✨
+              </p>
             </div>
           </div>
         `;
@@ -1124,11 +1203,57 @@
       
       const dashboard = document.getElementById('interactive-dashboard');
       dashboard.classList.remove('hidden');
-
-      document.getElementById('dash-type').innerHTML = `상자 이름: <span class="text-lime-700 font-bold">${title}</span>`;
-      document.getElementById('dash-content').textContent = `기억한 내용: ${content}`;
       
-      playTone(700, 'sine', 0.05);
+      dashboard.className = "bg-white border-4 p-6 rounded-3xl text-center max-w-xl mx-auto shadow-2xl transform transition-all duration-500 animate-fade-in";
+      
+      let borderTheme = "border-lime-300";
+      let robotEmoji = "🤖";
+      let step2Text = "";
+      let step3Text = "";
+      
+      if (type === 'text') {
+        borderTheme = "border-emerald-300 bg-emerald-50/10";
+        robotEmoji = "🥰";
+        step2Text = "⚙️ 글자 분석 및 감정 단어 분류 중... ['엄마', '사랑해', '조심히'] 감지!";
+        step3Text = "❤️ 감정 정보 획득: <strong>'따뜻한 사랑의 메시지!'</strong> 로봇이 행복해하고 기분이 아주 좋아요!";
+      } else if (type === 'number') {
+        borderTheme = "border-blue-300 bg-blue-50/10";
+        robotEmoji = "🏃‍♂️";
+        step2Text = "⚙️ 기온 데이터 수치 대조 연산 중... [18도 < 22도 < 25도] 쾌적함 확인!";
+        step3Text = "☀️ 추천 정보 도출: <strong>'선선하고 뛰어놀기 좋은 날씨!'</strong> 밖으로 나가자고 추천해요!";
+      } else if (type === 'sound') {
+        borderTheme = "border-pink-300 bg-pink-50/10";
+        robotEmoji = "🎶";
+        step2Text = "⚙️ 소리 주파수 패턴 매칭 연산 중... '아기상어' 동요 음계와 99.9% 일치!";
+        step3Text = "💃 행동 분석 결과: <strong>'신나는 댄스 동요!'</strong> 로봇이 바퀴를 굴리며 춤을 춰요!";
+      } else if (type === 'image') {
+        borderTheme = "border-amber-300 bg-amber-50/10";
+        robotEmoji = "💖";
+        step2Text = "⚙️ 픽셀 스캔 및 표정 랜드마크 분석 중... 활짝 웃는 눈코입 3인분 감지!";
+        step3Text = "😊 이미지 이해 완료: <strong>'가족들의 기쁜 미소!'</strong> 로봇이 소중한 기억첩에 저장해요!";
+      }
+      
+      dashboard.classList.add(borderTheme.split(' ')[0]);
+      if (borderTheme.split(' ')[1]) {
+        dashboard.classList.add(borderTheme.split(' ')[1]);
+      }
+      
+      document.getElementById('dash-robot-emoji').textContent = "⚙️";
+      document.getElementById('dash-robot-emoji').classList.add('animate-spin');
+      
+      document.getElementById('dash-step1-val').innerHTML = `상자: <span class="text-lime-700 font-bold">${title}</span> ➜ <code>${content}</code>`;
+      document.getElementById('dash-step2-val').innerHTML = `<span class="inline-block animate-spin text-xl mr-2">⏳</span> 로봇이 데이터를 열심히 연산하고 있어요...`;
+      document.getElementById('dash-step3-val').innerHTML = `<span class="text-gray-400">연산 대기 중...</span>`;
+      
+      setTimeout(() => {
+        document.getElementById('dash-robot-emoji').textContent = robotEmoji;
+        document.getElementById('dash-robot-emoji').classList.remove('animate-spin');
+        
+        document.getElementById('dash-step2-val').innerHTML = `<span class="text-sky-700">✅ ${step2Text}</span>`;
+        document.getElementById('dash-step3-val').innerHTML = `<span class="text-emerald-700">${step3Text}</span>`;
+        
+        playSuccessSound();
+      }, 700);
     }
 
     function prevSlide() {
@@ -1373,197 +1498,209 @@
     }
 
     /* ==========================================================================
-       [3단계] 데이터 전처리 (불량 과일 쓰레기통 청소)
+       [3단계] 데이터 전처리(이상치 제거 및 엑셀 필터링)
        ========================================================================== */
-    function resetPreprocessing() {
-      activePreprocessingList = JSON.parse(JSON.stringify(rawDataList)).sort(() => Math.random() - 0.5);
-      trashSuccessCount = 0;
-      document.getElementById('trash-success-count').textContent = trashSuccessCount;
-      renderPreprocessingTray();
-      updatePreprocessingCounts();
+    function resetStep3() {
+      currentStep3Index = 0;
+      step3CleanedData = [];
+      isStep3Completed = false;
+      step3FilterValue = 0;
+
+      // Show storytelling block and hide sorter & excel
+      document.getElementById('preprocess-story').classList.remove('hidden');
+      document.getElementById('preprocess-story').classList.add('block');
+      document.getElementById('preprocess-sorter').classList.add('hidden');
+      document.getElementById('preprocess-sorter').classList.remove('block');
+      document.getElementById('preprocess-excel-zone').classList.add('hidden');
+      document.getElementById('preprocess-excel-zone').classList.remove('block');
     }
 
-    function renderPreprocessingTray() {
-      const tray = document.getElementById('preprocessing-tray');
-      tray.innerHTML = '';
-
-      activePreprocessingList.forEach(item => {
-        const btn = document.createElement('button');
-        btn.innerHTML = `
-          <span class="text-5xl block mb-1 transition transform duration-150 active:scale-75">${item.emoji}</span>
-          <span class="text-[13px] font-bold text-gray-600 block leading-none title-font">${item.name}</span>
-        `;
-        btn.className = "p-3 bg-slate-50 border-2 border-gray-200 rounded-2xl transition transform hover:scale-105 hover:border-sky-300 w-24 h-24 flex flex-col items-center justify-center fancy-btn";
-        btn.onclick = () => handlePreprocessingClick(item, btn);
-        tray.appendChild(btn);
-      });
+    function startStep3Sorting() {
+      playTone(500, 'sine', 0.1);
+      
+      document.getElementById('preprocess-story').classList.add('hidden');
+      document.getElementById('preprocess-story').classList.remove('block');
+      document.getElementById('preprocess-sorter').classList.remove('hidden');
+      document.getElementById('preprocess-sorter').classList.add('block');
+      
+      currentStep3Index = 0;
+      step3CleanedData = [];
+      renderStep3Card();
     }
 
-    function handlePreprocessingClick(item, element) {
-      if (item.type === 'bad') {
-        playTone(700, 'sine', 0.08);
-        element.style.pointerEvents = 'none';
-        element.style.opacity = '0';
-        element.style.transform = 'scale(0) translateY(50px)';
+    function renderStep3Card() {
+      if (currentStep3Index < step3Dataset.length) {
+        const item = step3Dataset[currentStep3Index];
+        
+        // Update progress UI
+        document.getElementById('step3-progress-text').textContent = `${currentStep3Index + 1} / ${step3Dataset.length}`;
+        const pct = ((currentStep3Index) / step3Dataset.length) * 100;
+        document.getElementById('step3-progress-bar').style.width = `${pct}%`;
+        
+        // Update card visual
+        const card = document.getElementById('step3-card');
+        card.className = "bg-white p-6 rounded-2xl border-2 border-sky-100 shadow-md mb-6 transform transition-all duration-300 scale-95 opacity-50";
         
         setTimeout(() => {
-          element.classList.add('hidden');
-        }, 200);
-
-        activePreprocessingList = activePreprocessingList.filter(x => x.id !== item.id);
-        trashSuccessCount++;
-        document.getElementById('trash-success-count').textContent = trashSuccessCount;
-        updatePreprocessingCounts();
-
-        const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
-        if (remainingBad === 0) {
-          playSuccessSound();
-          showCustomModal(
-            "1부: 데이터 청소 완료! 🧹", 
-            "상하고 고장 난 불량 데이터들을 모두 휴지통에 깨끗이 치웠어요!\n이제 아래의 '다음 단계로 ➡️' 단추를 눌러 2부: 목표 맞춤형 데이터 가공을 시작해 보아요!", 
-            "🥳"
-          );
-        }
-      } else {
-        playFailureSound();
-        element.classList.add('animate-bounce', 'border-red-400');
-        setTimeout(() => element.classList.remove('animate-bounce'), 800);
-        showCustomModal("앗! 버리면 안 돼요 ⚠️", "그 과일은 깨끗하고 훌륭한 진짜 데이터예요! 로봇이 올바르게 훈련할 수 있도록 보관해야 합니다.", "🍎");
-      }
-    }
-
-    function updatePreprocessingCounts() {
-      const remainingBad = activePreprocessingList.filter(d => d.type === 'bad').length;
-      document.getElementById('dirty-count').textContent = remainingBad;
-      document.getElementById('clean-count').textContent = rawDataList.filter(d => d.type === 'good').length - activePreprocessingList.filter(d => d.type === 'good').length;
-    }
-
-    // 3단계 2부: 당도 및 가공 데이터 상태
-    const sweetFruitsData = [
-      { id: 'sf1', emoji: '🍎', name: '사과', sweetness: 9, isMeasured: false, isLabeled: false },
-      { id: 'sf2', emoji: '🍌', name: '바나나', sweetness: 5, isMeasured: false, isLabeled: false },
-      { id: 'sf3', emoji: '🍇', name: '싱싱 포도', sweetness: 8.5, isMeasured: false, isLabeled: false },
-      { id: 'sf4', emoji: '🍊', name: '오렌지', sweetness: 4, isMeasured: false, isLabeled: false }
-    ];
-    let activeSweetFruits = [];
-
-    function initPart2() {
-      document.getElementById('preprocess-part1').classList.add('hidden');
-      document.getElementById('preprocess-part1').classList.remove('block');
-      document.getElementById('preprocess-part2').classList.remove('hidden');
-      document.getElementById('preprocess-part2').classList.add('block');
-      
-      activeSweetFruits = JSON.parse(JSON.stringify(sweetFruitsData));
-      renderSweetFruits();
-      updatePart2Counts();
-    }
-
-    function resetPart2() {
-      activeSweetFruits = JSON.parse(JSON.stringify(sweetFruitsData));
-      renderSweetFruits();
-      updatePart2Counts();
-      playTone(320, 'triangle', 0.1);
-    }
-
-    function renderSweetFruits() {
-      const grid = document.getElementById('sweet-fruits-grid');
-      grid.innerHTML = '';
-
-      activeSweetFruits.forEach(item => {
-        const card = document.createElement('div');
-        card.className = `p-4 bg-white border-2 rounded-2xl flex flex-col items-center justify-between text-center transition-all duration-300 min-h-[220px] shadow-sm ${item.isLabeled ? 'border-amber-400 bg-amber-50/20' : 'border-sky-100 hover:border-sky-200'}`;
+          document.getElementById('step3-card-emoji').textContent = item.emoji;
+          document.getElementById('step3-card-name').textContent = item.name;
+          card.className = "bg-white p-6 rounded-2xl border-2 border-sky-150 shadow-md mb-6 transform transition-all duration-300 scale-100 opacity-100 animate-fade-in";
+        }, 100);
         
-        let sweetnessText = '당도: 측정 대기 ❓';
-        if (item.isMeasured) {
-          sweetnessText = `당도: <span class="text-2xl font-bold text-sky-600">${item.sweetness}</span> 점`;
-        }
-
-        let actionHtml = '';
-        if (!item.isMeasured) {
-          actionHtml = `
-            <button onclick="measureSweetness('${item.id}')" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 rounded-xl text-sm fancy-btn title-font">
-              🧪 당도 측정하기
-            </button>
-          `;
-        } else if (item.sweetness >= 8 && !item.isLabeled) {
-          actionHtml = `
-            <button onclick="labelHoneyFruit('${item.id}')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-sm fancy-btn title-font animate-bounce">
-              🍯 꿀맛 합격 달기
-            </button>
-          `;
-        } else if (item.isLabeled) {
-          actionHtml = `
-            <span class="text-amber-700 font-extrabold text-base flex items-center gap-1 title-font bg-amber-100 px-3 py-1 rounded-full animate-pulse">
-              🍯 꿀맛 합격!
-            </span>
-          `;
-        } else {
-          actionHtml = `
-            <span class="text-gray-400 font-bold text-sm bg-gray-100 px-3 py-1.5 rounded-full title-font">
-              일반 과일
-            </span>
-          `;
-        }
-
-        card.innerHTML = `
-          <span class="text-6xl mb-2 block">${item.emoji}</span>
-          <span class="font-bold text-lg text-gray-800 block title-font">${item.name}</span>
-          <div class="text-sm font-bold text-gray-500 my-2">${sweetnessText}</div>
-          <div class="w-full flex justify-center mt-auto">${actionHtml}</div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function measureSweetness(id) {
-      const item = activeSweetFruits.find(x => x.id === id);
-      if (!item) return;
-
-      playTone(450, 'sine', 0.1);
-      setTimeout(() => {
-        playTone(600, 'sine', 0.15);
-        item.isMeasured = true;
-        renderSweetFruits();
-        updatePart2Counts();
-        checkPart2Complete();
-      }, 600);
-    }
-
-    function labelHoneyFruit(id) {
-      const item = activeSweetFruits.find(x => x.id === id);
-      if (!item) return;
-
-      playSuccessSound();
-      item.isLabeled = true;
-      renderSweetFruits();
-      updatePart2Counts();
-      checkPart2Complete();
-    }
-
-    function updatePart2Counts() {
-      const measured = activeSweetFruits.filter(x => x.isMeasured).length;
-      const labeled = activeSweetFruits.filter(x => x.isLabeled).length;
-
-      document.getElementById('measured-count').textContent = measured;
-      document.getElementById('honey-count').textContent = labeled;
-    }
-
-    function checkPart2Complete() {
-      const allMeasured = activeSweetFruits.every(x => x.isMeasured);
-      const allLabeled = activeSweetFruits.filter(x => x.sweetness >= 8).every(x => x.isLabeled);
-
-      if (allMeasured && allLabeled) {
+      } else {
+        // All sorted! Transition to spreadsheet & filter zone
         playSuccessSound();
+        
+        document.getElementById('preprocess-sorter').classList.add('hidden');
+        document.getElementById('preprocess-sorter').classList.remove('block');
+        document.getElementById('preprocess-excel-zone').classList.remove('hidden');
+        document.getElementById('preprocess-excel-zone').classList.add('block');
+        
+        initExcelZone();
+        
         showCustomModal(
-          "꿀과일 전처리 완료! 🎯✨", 
-          "우와! 상한 과일을 지운 다음, 우리의 목표인 '손님을 위한 달콤한 꿀과일 추천'에 맞게 당도를 측정하고 꿀맛 합격 이름표까지 성공적으로 달아주었어요!\n이것이 바로 목적을 달성하는 진짜 데이터 전처리랍니다!", 
+          "데이터 청소(전처리) 완료! 🧹✨", 
+          "정말 훌륭해요! 30개의 데이터를 눈으로 검사하며 불량 데이터(이상치)를 완벽히 치우고, 싱싱한 과일 데이터(정상치) 16개만 엑셀 표에 차곡차곡 모았어요!\n이제 당도 필터링 기능을 써서 최고의 꿀과일을 골라보세요!", 
           "🎉"
         );
       }
     }
 
+    function sortStep3Card(userChoice) {
+      const item = step3Dataset[currentStep3Index];
+      const isGood = item.type === 'good';
+      
+      let isCorrect = false;
+      if (userChoice === 'good' && isGood) isCorrect = true;
+      if (userChoice === 'bad' && !isGood) isCorrect = true;
+      
+      if (isCorrect) {
+        playTone(600, 'sine', 0.08);
+        if (userChoice === 'good') {
+          step3CleanedData.push(item);
+        }
+        currentStep3Index++;
+        renderStep3Card();
+      } else {
+        playFailureSound();
+        if (isGood) {
+          showCustomModal(
+            "앗! 잠깐만요! ⚠️", 
+            `[${item.emoji} ${item.name}]은(는) 상하지 않은 진짜 과일이에요!\n로봇이 맛을 훈련하려면 꼭 필요한 **'학습할 데이터(정상치)'**랍니다!`, 
+            "❌"
+          );
+        } else {
+          showCustomModal(
+            "앗! 잠깐만요! ⚠️", 
+            `[${item.emoji} ${item.name}]은(는) 먹을 수 없는 물건이거나 썩은 과일이네요!\n로봇이 훈련할 때 섞여 들어가면 안 되는 **'버릴 데이터(이상치)'**랍니다!`, 
+            "❌"
+          );
+        }
+      }
+    }
+
+    function initExcelZone() {
+      // By default, filter threshold is 0 (show all)
+      filterStep3Sweetness(0);
+    }
+
+    function filterStep3Sweetness(threshold) {
+      step3FilterValue = threshold;
+      
+      // Update filter buttons styling
+      const buttons = {
+        0: 'filter-btn-0',
+        5: 'filter-btn-5',
+        7: 'filter-btn-7',
+        8.5: 'filter-btn-85'
+      };
+      
+      Object.keys(buttons).forEach(val => {
+        const btn = document.getElementById(buttons[val]);
+        if (Number(val) === threshold) {
+          btn.className = "filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500 text-white shadow-sm";
+        } else {
+          btn.className = "filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-gray-600 hover:bg-gray-50 border border-gray-200";
+        }
+      });
+      
+      // Filter the clean data list
+      const filtered = step3CleanedData.filter(x => x.sweetness >= threshold);
+      
+      // Render excel table rows
+      const tbody = document.getElementById('excel-table-body');
+      tbody.innerHTML = '';
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400">필터 조건에 맞는 과일 데이터가 없어요. ❓</td></tr>`;
+      } else {
+        filtered.forEach((item, idx) => {
+          const tr = document.createElement('tr');
+          tr.className = "border-b border-gray-150 hover:bg-gray-50 transition-colors";
+          
+          let rowColor = "text-gray-800";
+          if (item.sweetness >= 8.5) {
+            rowColor = "text-amber-700 bg-amber-50/20";
+          }
+          
+          tr.innerHTML = `
+            <td class="p-3 text-center text-sm text-gray-400">${idx + 1}</td>
+            <td class="p-3 text-center text-3xl">${item.emoji}</td>
+            <td class="p-3 font-extrabold ${rowColor}">${item.name}</td>
+            <td class="p-3 text-center font-mono text-lg"><strong class="text-sky-600 font-bold">${item.sweetness}</strong> 점</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+      
+      document.getElementById('excel-total-count').textContent = filtered.length;
+      
+      // Render dynamic bar chart
+      const chartBox = document.getElementById('visual-chart-box');
+      chartBox.innerHTML = '';
+      
+      if (filtered.length === 0) {
+        chartBox.innerHTML = `<div class="text-center text-gray-400 py-10">시각화할 데이터가 존재하지 않습니다.</div>`;
+      } else {
+        filtered.forEach(item => {
+          const barWidth = (item.sweetness / 10) * 100;
+          const div = document.createElement('div');
+          div.className = "flex items-center gap-3 text-sm font-bold text-gray-700";
+          
+          // Color coding for visual bars
+          let barGradient = "from-sky-400 to-indigo-500";
+          if (item.sweetness >= 8.5) {
+            barGradient = "from-amber-400 to-orange-500";
+          }
+          
+          div.innerHTML = `
+            <span class="text-2xl w-8 text-center">${item.emoji}</span>
+            <span class="w-16 truncate">${item.name}</span>
+            <div class="flex-grow bg-gray-100 rounded-full h-4 overflow-hidden border border-gray-150">
+              <div class="bg-gradient-to-r ${barGradient} h-full rounded-full transition-all duration-500" style="width: ${barWidth}%"></div>
+            </div>
+            <span class="w-10 text-right font-mono text-sky-600">${item.sweetness}점</span>
+          `;
+          chartBox.appendChild(div);
+        });
+      }
+      
+      // Update recommendation message
+      const recResult = document.getElementById('recommendation-result');
+      if (filtered.length === 0) {
+        recResult.textContent = "조건에 부합하는 과일이 없어 추천을 건너뛰었어요! 😢";
+      } else {
+        const fruitNames = filtered.map(x => `${x.emoji} ${x.name}`).join(', ');
+        recResult.innerHTML = `🍯 ${fruitNames}`;
+      }
+      
+      // Mark step 3 completed when user has interacted with filtering at least once after sorting all
+      isStep3Completed = true;
+      playTone(400, 'sine', 0.05);
+    }
+
     /* ==========================================================================
-       [4단계] 지도학습 훈련 (20마리 댕냥이 데이터 구축)
+       [4단계] 지도학습 훈련 (20개 과일 추천 데이터 구축)
        ========================================================================== */
     function renderTrainItem() {
       if (currentTrainIndex < trainingDataList.length) {
@@ -1587,7 +1724,7 @@
         document.getElementById('train-index-text').textContent = "공부 완료!";
         document.getElementById('train-mini-progress').style.width = `100%`;
         document.getElementById('train-animal-view').textContent = "🎓";
-        document.getElementById('train-animal-features').innerHTML = "<li class='text-orange-600 font-bold'>20마리 공부를 마쳤어요!</li><li>로봇이 시험을 치를 준비가 다 되었어요!</li>";
+        document.getElementById('train-animal-features').innerHTML = "<li class='text-orange-600 font-bold'>20개 공부를 마쳤어요!</li><li>로봇이 시험을 치를 준비가 다 되었어요!</li>";
         playSuccessSound();
       }
     }
@@ -1603,7 +1740,7 @@
           slot.className = "border-2 border-orange-400 bg-orange-50/50 p-1.5 rounded-xl text-center flex flex-col items-center justify-center transition-all scale-100";
           slot.innerHTML = `
             <span class="text-3xl">${data.emoji}</span>
-            <span class="text-[11px] font-bold text-orange-900 bg-orange-200 px-1 rounded mt-0.5 leading-none title-font">${data.labelKorean}</span>
+            <span class="text-[10px] font-bold text-orange-950 bg-orange-200 px-1 rounded mt-0.5 leading-none title-font">${data.labelKorean}</span>
           `;
         } else {
           slot.className = "border-2 border-dashed border-gray-200 bg-gray-50 h-12 rounded-xl flex items-center justify-center text-gray-350 text-base font-bold title-font";
@@ -1620,10 +1757,11 @@
       }
 
       const activeItem = trainingDataList[currentTrainIndex];
-      const correctKorean = label === 'sweet' ? '꿀맛 과일' : '시큼 과일';
+      const correctKorean = label === 'recommend' ? '오늘의 추천 과일' : '추천 제외 과일';
 
       labeledDatabase.push({
         emoji: activeItem.emoji,
+        sweetness: activeItem.sweetness,
         label: label,
         labelKorean: correctKorean
       });
@@ -1659,12 +1797,6 @@
         const item = normalTestDataList[currentNormalTestIndex];
         document.getElementById('test-animal-emoji').textContent = item.emoji;
         document.getElementById('test-features').textContent = `특징: ${item.desc}`;
-        document.getElementById('test-result-bubble').classList.add('hidden');
-      } else {
-        isNormalTestDone = true;
-        document.getElementById('test-animal-emoji').textContent = "💯";
-        document.getElementById('test-features').textContent = "공부했던 문제를 다 풀었습니다!";
-        document.getElementById('goto-ood-zone').classList.remove('hidden');
       }
     }
 
@@ -1672,109 +1804,223 @@
       if (currentNormalTestIndex >= normalTestDataList.length) return;
 
       const item = normalTestDataList[currentNormalTestIndex];
-      const bubble = document.getElementById('test-result-bubble');
-      const text = document.getElementById('test-result-text');
+      const resultBubble = document.getElementById('test-result-bubble');
+      const resultText = document.getElementById('test-result-text');
 
-      bubble.classList.remove('hidden');
-      playTone(600, 'sine', 0.2);
+      resultBubble.classList.remove('hidden');
+      
+      // 기계학습 1-NN 알고리즘 (가장 가까운 당도의 학습 데이터 라벨을 예측값으로 선택)
+      let closestItem = null;
+      let minDiff = Infinity;
+      labeledDatabase.forEach(trained => {
+        let diff = Math.abs(trained.sweetness - item.sweetness);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestItem = trained;
+        }
+      });
 
-      const labelColor = item.correctLabel === 'sweet' ? 'text-amber-600' : 'text-yellow-600';
-      text.innerHTML = `🤖 "나는 방금 과일 이름표를 열심히 공부했어! 특징을 보니... 이건 맛있는 <strong class='${labelColor}'>${item.labelKorean}</strong>가 맞아!"`;
+      const predictedLabel = closestItem ? closestItem.label : 'recommend';
+      
+      if (predictedLabel === 'recommend') {
+        playTone(550, 'sine', 0.15);
+        resultText.innerHTML = `🤖: 음! 이 과일은 당도가 ${item.sweetness}점이네요! 내가 공부한 대로라면... 이건 **'오늘의 추천 과일'**입니다! 🍯`;
+      } else {
+        playTone(350, 'triangle', 0.15);
+        resultText.innerHTML = `🤖: 흠! 이 과일은 당도가 ${item.sweetness}점이라 추천 기준(7점)보다 낮아요! 내가 공부한 대로라면... 이건 **'추천 제외 과일'**입니다! ❌`;
+      }
 
-      setTimeout(() => {
-        currentNormalTestIndex++;
-        renderNormalTestItem();
-      }, 1500);
+      // 예측한 라벨이 실제 정답과 맞는지 확인
+      const isCorrectPrediction = (predictedLabel === item.correctLabel);
+
+      if (!isCorrectPrediction) {
+        // 학습이 잘못됨! 학습 오류 안내 모달을 띄우고 다시 학습하기 버튼 활성화
+        setTimeout(() => {
+          playFailureSound();
+          showCustomModal(
+            "앗! 로봇이 오판했어요! 😵💦",
+            `방금 로봇이 [${item.emoji} ${item.desc}]에 대해 틀린 대답을 했어요!\n\n4단계 학습 데이터에 이름표를 헷갈리게 잘못 달아준 것 같아요. 로봇이 똑똑하게 분류할 수 있도록 **다시 처음부터 가르쳐 주세요!**`,
+            "❌"
+          );
+          document.getElementById('retrain-trigger-box').classList.remove('hidden');
+          document.getElementById('goto-ood-zone').classList.add('hidden');
+        }, 1500);
+        return;
+      }
+
+      currentNormalTestIndex++;
+
+      if (currentNormalTestIndex < normalTestDataList.length) {
+        setTimeout(() => {
+          renderNormalTestItem();
+          resultBubble.classList.add('hidden');
+        }, 2200);
+      } else {
+        isNormalTestDone = true;
+        document.getElementById('goto-ood-zone').classList.remove('hidden');
+        document.getElementById('retrain-trigger-box').classList.add('hidden');
+      }
+    }
+
+    // 다시 학습하기 로직 추가
+    function triggerRetrain() {
+      currentTrainIndex = 0;
+      labeledDatabase = [];
+      currentNormalTestIndex = 0;
+      isNormalTestDone = false;
+      isTestCompleted = false;
+
+      document.getElementById('retrain-trigger-box').classList.add('hidden');
+      document.getElementById('goto-ood-zone').classList.add('hidden');
+      document.getElementById('test-result-bubble').classList.add('hidden');
+      document.getElementById('ood-result-bubble').classList.add('hidden');
+      document.getElementById('ood-explanation').classList.add('hidden');
+      document.getElementById('ood-riddle-card').classList.add('hidden');
+
+      // 4단계로 스텝 이동
+      document.getElementById(`step${currentStep}`).classList.add('hidden');
+      document.getElementById(`step${currentStep}`).classList.remove('block');
+
+      currentStep = 4;
+
+      document.getElementById(`step${currentStep}`).classList.remove('hidden');
+      document.getElementById(`step${currentStep}`).classList.add('block');
+
+      updateStepHeader();
+      renderTrainItem();
+      renderDatabaseGrid();
+      
+      playTone(300, 'sine', 0.1);
+      showCustomModal("다시 학습하기 🤖", "과일의 당도를 보고 **7점 이상이면 '오늘의 추천 과일'**, **7점 미만이면 '추천 제외 과일'** 이름표를 정확히 붙여주세요!", "💡");
     }
 
     function startOodStage() {
-      playTone(700, 'sine', 0.15);
-      
+      playTone(450, 'triangle', 0.15);
       document.getElementById('normal-test-zone').classList.add('hidden');
       document.getElementById('ood-test-zone').classList.remove('hidden');
-      document.getElementById('ood-result-bubble').classList.add('hidden');
-      document.getElementById('ood-riddle-card').classList.add('hidden');
     }
 
     function robotEvaluateOod() {
-      const bubble = document.getElementById('ood-result-bubble');
-      const text = document.getElementById('ood-result-text');
+      const resultBubble = document.getElementById('ood-result-bubble');
+      const resultText = document.getElementById('ood-result-text');
 
-      bubble.classList.remove('hidden');
-      playTone(400, 'triangle', 0.35);
+      resultBubble.classList.remove('hidden');
+      playFailureSound();
 
-      text.innerHTML = `🤖 "어라..? 고추는 내 공부장에 없는데... 색깔이 빨간 사과나 딸기랑 똑같고 작으니까... 내 생각엔 <strong class='text-amber-600'>꿀맛 과일</strong> 같아!"`;
+      // Robot gets fooled because pepper is red and long like red apple/strawberry
+      resultText.innerHTML = `🤖💦: 어라? 이 빨갛고 길쭉한 모습은 내가 공부한 빨간 사과나 딸기와 아주 닮았네요! 그러므로 이것은 **'오늘의 추천 과일'**이 맞습니다! 🍯`;
 
-      setTimeout(() => {
-        document.getElementById('ood-riddle-card').classList.remove('hidden');
-        showCustomModal("로봇의 엉뚱한 실수! 🧐", "로봇이 배운 적 없는 빨간 고추에게 '꿀맛 과일'이라는 이름표를 억지로 붙였어요! 왜 그런 실수를 했는지 오른쪽 문제를 같이 풀어보아요.", "⚡");
-        playTone(650, 'sine', 0.25);
-      }, 600);
+      document.getElementById('ood-riddle-card').classList.remove('hidden');
     }
 
-    function chooseOutboundAnswer(ansType) {
-      if (ansType === 'correct') {
+    function chooseOutboundAnswer(answer) {
+      if (answer === 'correct') {
         playSuccessSound();
         document.getElementById('ood-explanation').classList.remove('hidden');
-        isTestCompleted = true; 
+        isTestCompleted = true;
       } else {
         playFailureSound();
-        showCustomModal("다시 한 번 고민해 보세요! ❌", "고추는 한 번도 가르쳐 준 적 없는 새로운 채소 데이터예요! 로봇은 자신이 공부한 좁은 범위(빨간 과일) 안에서만 억지로 끼워 맞춰 오판한 것이랍니다.", "⚠️");
+        showCustomModal("다시 한 번 생각해 볼까요? ⚠️", "고추가 설탕보다 달지는 않답니다! 로봇이 왜 헷갈렸을지 다시 고민해 봐요!", "❌");
       }
     }
 
     /* ==========================================================================
-       [6단계] 비지도학습 (이름표 없이 공통점 끼리끼리 정렬)
+       [6단계] 비지도학습 스스로 모으기
        ========================================================================== */
     function resetClustering() {
       const area = document.getElementById('clustering-area');
       area.innerHTML = '';
-      area.className = "bg-white p-6 rounded-2xl border-2 border-teal-100 min-h-[220px] flex flex-wrap gap-4 items-center justify-center shadow-inner";
 
       alienList.forEach(item => {
-        const el = document.createElement('div');
-        el.className = "text-6xl transition-all duration-700 ease-in-out p-3 bg-gray-50 border border-gray-100 rounded-xl shadow-sm cursor-pointer";
-        el.textContent = item.emoji;
-        el.id = `alien-item-${item.id}`;
-        area.appendChild(el);
+        const div = document.createElement('div');
+        div.className = "p-4 bg-slate-50 border border-gray-200 rounded-2xl flex flex-col items-center justify-center w-24 h-24 transition-all duration-700 shadow-sm";
+        div.id = `alien-${item.id}`;
+        div.innerHTML = `
+          <span class="text-4xl">${item.emoji}</span>
+          <span class="text-xs font-bold text-gray-500 mt-1">${item.name}</span>
+        `;
+        area.appendChild(div);
       });
-      playTone(320, 'triangle', 0.1);
+      
+      playTone(350, 'triangle', 0.1);
+      document.getElementById('new-alien-mission-box').classList.add('hidden');
+      document.getElementById('new-alien-success').classList.add('hidden');
+      solvedNewAliens = { 1: false, 2: false };
+      
+      // Make sure new alien layouts are reset
+      document.getElementById('new-alien-1').classList.remove('opacity-50', 'bg-emerald-50');
+      document.getElementById('new-alien-1').style.pointerEvents = 'auto';
+      document.getElementById('new-alien-2').classList.remove('opacity-50', 'bg-emerald-50');
+      document.getElementById('new-alien-2').style.pointerEvents = 'auto';
     }
 
-    function runClustering(criteria) {
+    function runClustering(mode) {
+      playTone(500, 'sine', 0.1);
       const area = document.getElementById('clustering-area');
       area.innerHTML = '';
-      area.className = "bg-white p-6 rounded-2xl border-2 border-teal-100 min-h-[220px] grid grid-cols-2 gap-4 transition-all duration-700 shadow-inner";
 
-      playTone(650, 'sine', 0.1);
-
-      if (criteria === 'color') {
-        const pinkGroup = document.createElement('div');
-        pinkGroup.className = "bg-pink-50 border-2 border-dashed border-pink-300 p-4 rounded-xl text-center transition-all";
-        pinkGroup.innerHTML = "<p class='font-bold text-pink-700 text-lg mb-2 title-font'>🌸 분홍색 몸 외모 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👾 🐙 👹</div>";
-
-        const blueGroup = document.createElement('div');
-        blueGroup.className = "bg-sky-50 border-2 border-dashed border-sky-300 p-4 rounded-xl text-center transition-all";
-        blueGroup.innerHTML = "<p class='font-bold text-sky-700 text-lg mb-2 title-font'>💎 파란색 몸 외모 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👽 🤖 👁️</div>";
-
-        area.appendChild(pinkGroup);
-        area.appendChild(blueGroup);
-      } else {
-        const oneEyeGroup = document.createElement('div');
-        oneEyeGroup.className = "bg-amber-50 border-2 border-dashed border-amber-300 p-4 rounded-xl text-center transition-all";
-        oneEyeGroup.innerHTML = "<p class='font-bold text-amber-700 text-lg mb-2 title-font'>👁️ 눈이 1개인 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👾 🐙 👁️</div>";
-
-        const multiEyeGroup = document.createElement('div');
-        multiEyeGroup.className = "bg-indigo-50 border-2 border-dashed border-indigo-300 p-4 rounded-xl text-center transition-all";
-        multiEyeGroup.innerHTML = "<p class='font-bold text-indigo-700 text-lg mb-2 title-font'>👁️👁️ 눈이 여러 개인 그룹</p><div class='flex gap-3 justify-center text-5xl mt-3 animate-pulse'>👽 🤖 👹</div>";
-
-        area.appendChild(oneEyeGroup);
-        area.appendChild(multiEyeGroup);
+      if (mode === 'color') {
+        // Create color group containers
+        const groupRed = document.createElement('div');
+        groupRed.className = "border-2 border-dashed border-red-300 bg-red-50/30 p-4 rounded-2xl flex flex-col gap-2 items-center min-w-[200px] min-h-[180px] animate-fade-in";
+        groupRed.innerHTML = `<span class="font-bold text-red-700 text-sm mb-2 title-font">🔴 빨간 과일 그룹</span>`;
+        
+        const groupYellow = document.createElement('div');
+        groupYellow.className = "border-2 border-dashed border-yellow-300 bg-yellow-50/30 p-4 rounded-2xl flex flex-col gap-2 items-center min-w-[200px] min-h-[180px] animate-fade-in";
+        groupYellow.innerHTML = `<span class="font-bold text-yellow-700 text-sm mb-2 title-font">🟡 노란 과일 그룹</span>`;
+        
+        const flexContainer = document.createElement('div');
+        flexContainer.className = "flex gap-6 justify-center w-full";
+        flexContainer.appendChild(groupRed);
+        flexContainer.appendChild(groupYellow);
+        area.appendChild(flexContainer);
+        
+        alienList.forEach(item => {
+          const div = document.createElement('div');
+          div.className = "p-3 bg-white border border-red-150 rounded-xl flex items-center gap-1.5 w-36 shadow-sm";
+          div.innerHTML = `<span class="text-3xl">${item.emoji}</span><span class="text-sm font-bold text-gray-700">${item.name}</span>`;
+          
+          if (item.color === 'red') {
+            groupRed.appendChild(div);
+          } else {
+            groupYellow.appendChild(div);
+          }
+        });
+      } else if (mode === 'feature') {
+        // Create texture group containers
+        const groupSmooth = document.createElement('div');
+        groupSmooth.className = "border-2 border-dashed border-emerald-300 bg-emerald-50/30 p-4 rounded-2xl flex flex-col gap-2 items-center min-w-[200px] min-h-[180px] animate-fade-in";
+        groupSmooth.innerHTML = `<span class="font-bold text-emerald-700 text-sm mb-2 title-font">🍏 매끈매끈 그룹</span>`;
+        
+        const groupRough = document.createElement('div');
+        groupRough.className = "border-2 border-dashed border-orange-300 bg-orange-50/30 p-4 rounded-2xl flex flex-col gap-2 items-center min-w-[200px] min-h-[180px] animate-fade-in";
+        groupRough.innerHTML = `<span class="font-bold text-orange-700 text-sm mb-2 title-font">🍍 거칠거칠 그룹</span>`;
+        
+        const flexContainer = document.createElement('div');
+        flexContainer.className = "flex gap-6 justify-center w-full";
+        flexContainer.appendChild(groupSmooth);
+        flexContainer.appendChild(groupRough);
+        area.appendChild(flexContainer);
+        
+        alienList.forEach(item => {
+          const div = document.createElement('div');
+          div.className = "p-3 bg-white border border-emerald-150 rounded-xl flex items-center gap-1.5 w-36 shadow-sm";
+          div.innerHTML = `<span class="text-3xl">${item.emoji}</span><span class="text-sm font-bold text-gray-700">${item.name}</span>`;
+          
+          if (item.texture === 'smooth') {
+            groupSmooth.appendChild(div);
+          } else {
+            groupRough.appendChild(div);
+          }
+        });
       }
+
+      // Show new alien (new fruit) mission block
+      document.getElementById('new-alien-mission-box').classList.remove('hidden');
     }
 
     /* ==========================================================================
-       [7단계] 일상 AI 공부법 매칭 및 신규 데이터 추가 분류 미션
+       [7단계] 일상 AI 탐험 & 비지도 추가 미션
        ========================================================================== */
     function initMatchingGame() {
       activeMatchingList = JSON.parse(JSON.stringify(matchingItems)).sort(() => Math.random() - 0.5);
@@ -1782,14 +2028,15 @@
       unsupervisedMatched = [];
       solvedNewAliens = { 1: false, 2: false };
 
-      document.getElementById('supervised-box').innerHTML = `<p class='text-base text-gray-400 italic py-4 font-bold'>알맞은 카드의 단추를 클릭해 분류하세요</p>`;
-      document.getElementById('unsupervised-box').innerHTML = `<p class='text-base text-gray-400 italic py-4 font-bold'>알맞은 카드의 단추를 클릭해 분류하세요</p>`;
-      
-      document.getElementById('new-alien-mission-box').classList.add('hidden');
+      document.getElementById('supervised-box').innerHTML = '';
+      document.getElementById('unsupervised-box').innerHTML = '';
       document.getElementById('new-alien-success').classList.add('hidden');
       
+      // Reset new alien blocks style
       document.getElementById('new-alien-1').classList.remove('opacity-50', 'bg-emerald-50');
+      document.getElementById('new-alien-1').style.pointerEvents = 'auto';
       document.getElementById('new-alien-2').classList.remove('opacity-50', 'bg-emerald-50');
+      document.getElementById('new-alien-2').style.pointerEvents = 'auto';
 
       renderMatchingCards();
     }
@@ -1799,8 +2046,6 @@
       container.innerHTML = '';
 
       if (activeMatchingList.length === 0) {
-        container.innerHTML = `<span class='text-emerald-600 font-bold text-xl animate-bounce title-font'>🎉 일상 예시 상자 분류 완료! 이어서 아래의 2차 돌발 외계인 미션을 풀어주세요!</span>`;
-        document.getElementById('new-alien-mission-box').classList.remove('hidden');
         return;
       }
 
@@ -1808,10 +2053,10 @@
         const btn = document.createElement('div');
         btn.className = "bg-white border-2 border-indigo-200 rounded-xl p-3 shadow-md text-center max-w-[200px] cursor-pointer hover:border-indigo-500 hover:scale-105 transform transition duration-150 flex flex-col justify-between";
         btn.innerHTML = `
-          <span class="font-bold text-indigo-900 text-lg mb-2 block title-font">${item.text}</span>
+          <span class="font-bold text-indigo-900 text-base mb-2 block title-font">${item.text}</span>
           <div class="flex gap-2 justify-center text-xs">
-            <button onclick="matchCard('${item.id}', 'super')" class="bg-orange-400 hover:bg-orange-500 text-orange-950 font-bold px-2.5 py-1.5 rounded title-font">이름표 공부</button>
-            <button onclick="matchCard('${item.id}', 'unsuper')" class="bg-teal-400 hover:bg-teal-500 text-teal-950 font-bold px-2.5 py-1.5 rounded title-font">스스로 모으기</button>
+            <button onclick="matchCard('${item.id}', 'super')" class="bg-orange-400 hover:bg-orange-500 text-orange-950 font-bold px-2 py-1 rounded title-font">이름표</button>
+            <button onclick="matchCard('${item.id}', 'unsuper')" class="bg-teal-400 hover:bg-teal-500 text-teal-950 font-bold px-2 py-1 rounded title-font">스스로</button>
           </div>
         `;
         container.appendChild(btn);
@@ -1842,7 +2087,7 @@
         }
       } else {
         playFailureSound();
-        showCustomModal("오답이에요 ⚠️", "로봇 공부법을 다시 한 번 떠올려보아요!\n\n• 이름표 공부: 정답 이름표(라벨)를 알려주며 공부\n• 스스로 모으기: 정답 없이 로봇 스스로 공통점 찾기", "❌");
+        showCustomModal("매칭 실패 ⚠️", "인공지능 공부법을 다시 살펴보고 매칭해 보세요!\n\n🏷️ 이름표 공부법(지도학습): 정답 이름표(라벨)를 알려주며 공부함\n👽 스스로 모으기(비지도학습): 스스로 비슷한 성질이나 공통점 찾음", "❌");
       }
     }
 
@@ -1852,31 +2097,31 @@
       list.forEach(item => {
         const div = document.createElement('div');
         div.className = `p-3 border rounded-xl text-base font-bold ${classes} animate-pulse title-font`;
-        div.textContent = item.text + " (보관 완료!)";
+        div.textContent = item.text + " (담기 완료!)";
         container.appendChild(div);
       });
     }
 
     function sortNewAlien(alienId, category) {
-      if (alienId === 1) {
-        if (category === 'one') {
+      if (alienId === 1) { // lime (smooth)
+        if (category === 'smooth') {
           playTone(550, 'sine', 0.1);
           solvedNewAliens[1] = true;
           document.getElementById('new-alien-1').classList.add('opacity-50', 'bg-emerald-50');
           document.getElementById('new-alien-1').style.pointerEvents = 'none';
         } else {
           playFailureSound();
-          showCustomModal("다시 생각해보아요! ⚠️", "초록눈이(🟢)는 눈의 개수가 '1개'예요! 눈 개수 특징에 맞춰 '외눈박이선'에 태워주세요!", "👾");
+          showCustomModal("다시 해봐요! ⚠️", "라임(🟢)은 껍질이 매끈매끈한 과일이에요! 매끈이선에 태워주세요!", "❌");
         }
-      } else if (alienId === 2) {
-        if (category === 'many') {
+      } else if (alienId === 2) { // coconut (rough)
+        if (category === 'rough') {
           playTone(580, 'sine', 0.1);
           solvedNewAliens[2] = true;
           document.getElementById('new-alien-2').classList.add('opacity-50', 'bg-emerald-50');
           document.getElementById('new-alien-2').style.pointerEvents = 'none';
         } else {
           playFailureSound();
-          showCustomModal("다시 생각해보아요! ⚠️", "다눈공룡(🦖)은 눈의 개수가 '3개'예요! 눈 개수 특징에 맞춰 '다눈이선'에 태워주세요!", "🦖");
+          showCustomModal("다시 해봐요! ⚠️", "코코넛(🥥)은 껍질이 갈색으로 아주 거칠거칠해요! 거칠이선에 태워주세요!", "❌");
         }
       }
 
@@ -1888,7 +2133,7 @@
     }
 
     /* ==========================================================================
-       [8단계] 최종 퀴즈 및 수료증 발급
+       [8단계] 명예 퀴즈 및 과학자 수료증 발송
        ========================================================================== */
     function checkQuiz(questionNumber, isCorrect) {
       if (isCorrect) {
@@ -1913,13 +2158,13 @@
         const activeCard = document.getElementById(`quiz-${questionNumber}`);
         activeCard.classList.add('animate-bounce');
         setTimeout(() => activeCard.classList.remove('animate-bounce'), 800);
-        showCustomModal("틀렸어요 😢", "데이터들의 정의를 잘 되새겨 보며 정답을 다시 골라보아요!", "⚠️");
+        showCustomModal("오답 ⚠️", "힌트를 다시 읽어보거나 다른 보기를 신중히 골라봐요!", "❌");
       }
     }
 
     function generateCertificate() {
       const nameInput = document.getElementById('student-name').value.trim();
-      const finalName = nameInput === "" ? "어린이 데이터 과학자" : nameInput;
+      const finalName = nameInput === "" ? "어린이 과학자" : nameInput;
       
       document.getElementById('cert-name').textContent = finalName;
       document.getElementById('certificate-box').classList.remove('hidden');
@@ -1932,7 +2177,7 @@
     }
 
     /* ==========================================================================
-       불꽃놀이 (Confetti) 파티클 효과
+       꽃가루 (Confetti) 파티클 효과
        ========================================================================== */
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
@@ -1996,9 +2241,10 @@
       canvas.height = window.innerHeight;
     });
 
-    // 시작 기동 세팅
+    // 초기화 기동
     renderSlide();
     updateStepHeader();
-  </script>
+
+</script>
 </body>
 </html>
